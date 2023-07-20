@@ -5,11 +5,14 @@ import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
@@ -27,6 +30,10 @@ public class User implements UserDetails {
 
     @NotBlank(message = "Password is required !!")
     private String password;
+
+    @OneToOne(mappedBy = "user")
+    @JsonIgnore
+    private RefreshToken refreshToken;
 
     public int getUserId() {
         return userId;
@@ -52,14 +59,18 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    public User(int userId, String email, String password) {
+    public User(int userId,
+            @NotBlank(message = "Please provide email") @Pattern(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$", message = "Invalid email !!") String email,
+            @NotBlank(message = "Password is required !!") String password, RefreshToken refreshToken) {
         this.userId = userId;
         this.email = email;
         this.password = password;
+        this.refreshToken = refreshToken;
     }
 
     public User() {
     }
+
 
     @Override
     public String toString() {
@@ -94,6 +105,14 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public RefreshToken getRefreshToken() {
+        return refreshToken;
+    }
+
+    public void setRefreshToken(RefreshToken refreshToken) {
+        this.refreshToken = refreshToken;
     }
 
 }

@@ -1,12 +1,15 @@
 package com.websiteReview.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.websiteReview.Exception.ResourceNotFoundException;
+import com.websiteReview.Helper.UserDto;
 import com.websiteReview.Model.User;
 import com.websiteReview.Respository.UserRepository;
 
@@ -19,21 +22,48 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public User createUser(User user){
-		user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return this.userRepository.save(user);
+    @Autowired
+    private ModelMapper modelMapper;
+
+    public UserDto createUser(UserDto userDto) {
+        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+
+        User user = this.modelMapper.map(userDto, User.class);
+        user = this.userRepository.save(user);
+        
+        userDto = this.modelMapper.map(user, UserDto.class);
+
+        return userDto;
     }
 
-    public User getUserById(int userId){
-        return this.userRepository.findById(userId).orElseThrow(()->new ResourceNotFoundException("The expected user is not found"));
+    public List<UserDto> getAllUsers(){
+        List<User> list = this.userRepository.findAll();
+        List<UserDto> listDto = list.stream().map( user -> this.modelMapper.map(user,UserDto.class)).collect(Collectors.toList());
+        return listDto;
     }
 
-    public void deleteUser(String email){
-        User user = this.userRepository.findByEmail(email).orElseThrow(()->new ResourceNotFoundException("The expected user is not found"));
+    public UserDto getUserById(int userId) {
+        User user = this.userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("The expected user is not found"));
+        return this.modelMapper.map(user, UserDto.class);
+    }
+
+    public void deleteUser(String email) {
+        User user = this.userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("The expected user is not found"));
         this.userRepository.delete(user);
     }
-    
-    public List<User> getAllUsers(){
-        return this.userRepository.findAll();
+
+    public UserDto updateUser(UserDto userDto, int userId){
+        User oldUser = this.userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("The requested user is not found while updating"));
+        //setting new password into oldUser
+        oldUser.setPassword(userDto.getPassword());
+        
+        this.userRepository.save(oldUser);
+
+        // oldUser to oldUserDto
+        return this.modelMapper.map(oldUser, UserDto.class);
+
     }
+
 }

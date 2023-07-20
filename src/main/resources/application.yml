@@ -10,19 +10,19 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
-        format_sql: true
     show-sql: true
-  # security:
-  #   user:
-  #   oauth2:
-  #     client:
-  #       registration:
-  #         google:
-  #           client-id: http://395158047872-kaoiagei6cn2tvp1ud7s1anhgg6u8mvd.apps.googleusercontent.com
-  #           client-secret: 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
-  #           scope:
-  #             - email
-  #             - profile
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 395158047872-kaoiagei6cn2tvp1ud7s1anhgg6u8mvd.apps.googleusercontent.com
+            client-secret: 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
+            redirect-uri : http://localhost:8080/login/oauth2/code/google
+            scope:
+              - email
+              - profile
 
 
      

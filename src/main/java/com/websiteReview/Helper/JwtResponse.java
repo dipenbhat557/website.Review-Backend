@@ -5,7 +5,9 @@ import com.websiteReview.Model.User;
 public class JwtResponse {
     
     private String token;
+    private String refreshToken;
     private User user;
+    
     
     public String getToken() {
         return token;
@@ -21,13 +23,22 @@ public class JwtResponse {
     }
     public JwtResponse() {
     }
-    public JwtResponse(String token, User user) {
+    
+    public JwtResponse(String token, String refreshToken, User user) {
         this.token = token;
+        this.refreshToken = refreshToken;
         this.user = user;
     }
+    
     @Override
     public String toString() {
-        return "JwtResponse [token=" + token + ", user=" + user + "]";
+        return "JwtResponse [token=" + token + ", refreshToken=" + refreshToken + ", user=" + user + "]";
+    }
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
 
 }
