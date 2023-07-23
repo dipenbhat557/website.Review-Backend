@@ -1,0 +1,27 @@
+spring:
+ datasource:
+   driver-class-name: com.mysql.cj.jdbc.Driver
+   password: Mume@143
+   url: jdbc:mysql://localhost:3306/websitereview
+   username: root
+
+ jpa:
+   hibernate:
+     ddl-auto: update
+   properties:
+     hibernate:
+       dialect: org.hibernate.dialect.MySQL8Dialect
+   show-sql: true
+
+#  security:
+#    oauth2:
+#      client:
+#        registration:
+#          google:
+#            client-id: 395158047872-kaoiagei6cn2tvp1ud7s1anhgg6u8mvd.apps.googleusercontent.com
+#            client-secret: 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
+#            redirect-uri : http://localhost:8080/login/oauth2/code/google
+#            scope:
+#              - email
+#              - profile
+

@@ -1,6 +1,8 @@
 package com.websiteReview.Model;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,6 +14,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -35,38 +38,64 @@ public class User implements UserDetails {
     @JsonIgnore
     private RefreshToken refreshToken;
 
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<Review> reviews = new ArrayList<>();
+
+    
+
     public int getUserId() {
         return userId;
     }
+
 
     public void setUserId(int userId) {
         this.userId = userId;
     }
 
+
     public String getEmail() {
         return email;
     }
+
 
     public void setEmail(String email) {
         this.email = email;
     }
 
+
     public String getPassword() {
         return password;
     }
+
 
     public void setPassword(String password) {
         this.password = password;
     }
 
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+
+    
+
     public User(int userId,
             @NotBlank(message = "Please provide email") @Pattern(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$", message = "Invalid email !!") String email,
-            @NotBlank(message = "Password is required !!") String password, RefreshToken refreshToken) {
+            @NotBlank(message = "Password is required !!") String password, RefreshToken refreshToken,
+            List<Review> reviews) {
         this.userId = userId;
         this.email = email;
         this.password = password;
         this.refreshToken = refreshToken;
+        this.reviews = reviews;
     }
+
 
     public User() {
     }

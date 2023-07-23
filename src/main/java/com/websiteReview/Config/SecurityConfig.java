@@ -40,8 +40,8 @@ public class SecurityConfig {
     @Autowired
     private UserDetailsService userDetailsService;
 
-    @Autowired
-    private CustomerOAuth2UserService customerOAuth2UserService;
+    // @Autowired
+    // private CustomerOAuth2UserService customerOAuth2UserService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -57,21 +57,22 @@ public class SecurityConfig {
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/login", "/login/oauth2/code/**", "user/create", "auth/refresh")
+                        .requestMatchers( "/user/create","/auth/**", "/login/oauth2/code/**")
                         .permitAll())
-                .oauth2Login(o -> o
-                        .defaultSuccessUrl("/auth/oauth2LoginSuccess")
-                        .userInfoEndpoint(u -> u
-                                .oidcUserService(this.oidcUserService())
-                                .userService(customerOAuth2UserService)))
-                .formLogin(Customizer.withDefaults())
-                // .exceptionHandling(ex ->
-                // ex.authenticationEntryPoint(jwtAuthenticationEntryPoint))
+                // .oauth2Login(o -> o
+                //         .defaultSuccessUrl("/auth/oauth2LoginSuccess")
+                //         .userInfoEndpoint(u -> u
+                //                 .oidcUserService(this.oidcUserService())
+                //                 .userService(customerOAuth2UserService))
+                //                 .defaultSuccessUrl("/auth/oauth2LoginSuccess", true))
+                // .formLogin(Customizer.withDefaults())
+                .exceptionHandling(ex ->
+                ex.authenticationEntryPoint(jwtAuthenticationEntryPoint))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
                 .logout(logout -> logout.permitAll());
 
-        // http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -109,9 +110,9 @@ public class SecurityConfig {
         return bean;
     }
 
-    private OidcUserService oidcUserService() {
-        OidcUserService oidcUserService = new OidcUserService();
-        return oidcUserService;
-    }
+    // private OidcUserService oidcUserService() {
+    //     OidcUserService oidcUserService = new OidcUserService();
+    //     return oidcUserService;
+    // }
 
 }

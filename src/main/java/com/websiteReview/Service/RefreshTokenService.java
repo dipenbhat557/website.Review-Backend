@@ -15,10 +15,12 @@ import com.websiteReview.Model.User;
 import com.websiteReview.Respository.RefreshTokenRepository;
 import com.websiteReview.Respository.UserRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class RefreshTokenService {
 
-    public long refreshTokenValidity = 5 * 60 * 60 * 1000;
+    public long refreshTokenValidity =  60 * 1000;
 
     @Autowired
     private RefreshTokenRepository refreshTokenRepository;
@@ -47,15 +49,21 @@ public class RefreshTokenService {
         return this.modelMapper.map(refreshToken, RefreshTokenDto.class);
     }
 
-    public RefreshTokenDto verifyRefreshToken(String refreshTokenId) {
-        RefreshToken refreshToken = this.refreshTokenRepository.findByRefreshToken(refreshTokenId)
+    public RefreshTokenDto verifyRefreshToken(String providedRefreshToken) {
+        RefreshToken refreshToken = this.refreshTokenRepository.findByRefreshToken(providedRefreshToken)
                 .orElseThrow(() -> new ResourceNotFoundException("The expected refresh token is not found"));
-
+    
         if (refreshToken.getExpiry().compareTo(Instant.now()) < 0) {
-            this.refreshTokenRepository.delete(refreshToken);
-            throw new ResourceNotFoundException("The provied refresh token has been expired !!");
+            try {
+                this.refreshTokenRepository.delete(refreshToken);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            throw new ResourceNotFoundException("The provided refresh token has been expired !!");
         }
-
+    
         return this.modelMapper.map(refreshToken, RefreshTokenDto.class);
     }
+    
 }
+

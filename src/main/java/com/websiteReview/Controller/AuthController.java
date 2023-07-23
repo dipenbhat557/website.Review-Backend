@@ -16,6 +16,8 @@ import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,9 +51,6 @@ public class AuthController {
 
     @Autowired
     private ModelMapper modelMapper;
-
-    @Autowired
-    private OAuth2AuthorizedClientService authclientService;
 
     @PostMapping("/login")
     public ResponseEntity<JwtResponse> login(@RequestBody JwtRequest request) {
@@ -91,34 +90,6 @@ public class AuthController {
 
         return new ResponseEntity<>(jwtResponse, HttpStatus.OK);
 
-    }
-
-    @RequestMapping("/oauth2LoginSuccess")
-    public ResponseEntity<?> getOauth2LoginInfo(@AuthenticationPrincipal OAuth2AuthenticationToken authenticationToken) {
-        // fetching the client details and user details
-        System.out.println(authenticationToken.getAuthorizedClientRegistrationId()); // client name like facebook,
-                                                                                     // google etc.
-        System.out.println(authenticationToken.getName()); // facebook/google userId
-
-        // 1.Fetching User Info
-        OAuth2User user = authenticationToken.getPrincipal(); // When you login with OAuth it gives you OAuth2User else
-                                                              // UserDetails
-        System.out.println("userId: " + user.getName()); // returns the userId of facebook something like 12312312313212
-        // getAttributes map Contains User details like name, email etc// print the
-        // whole map for more details
-        System.out.println("Email:" + user.getAttributes().get("email"));
-
-        // 2. Just in case if you want to obtain User's auth token value, refresh token,
-        // expiry date etc you can use below snippet
-        OAuth2AuthorizedClient client = authclientService.loadAuthorizedClient(
-                authenticationToken.getAuthorizedClientRegistrationId(),
-                authenticationToken.getName());
-        System.out.println("Token Value" + client.getAccessToken().getTokenValue());
-
-        // 3. Now you have full control on users data.You can eitehr see if user is not
-        // present in Database then store it and
-        // send welcome email for the first time
-        return new ResponseEntity<>(Map.of("name",user.getAttributes().get("name")),HttpStatus.OK);
     }
 
 }
