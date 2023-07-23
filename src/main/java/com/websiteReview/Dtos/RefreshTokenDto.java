@@ -1,4 +1,4 @@
-package com.websiteReview.Helper;
+package com.websiteReview.Dtos;
 
 import java.time.Instant;
 

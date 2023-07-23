@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.websiteReview.Dtos.UserDto;
 import com.websiteReview.Exception.ResourceNotFoundException;
-import com.websiteReview.Helper.UserDto;
 import com.websiteReview.Model.User;
 import com.websiteReview.Respository.UserRepository;
 

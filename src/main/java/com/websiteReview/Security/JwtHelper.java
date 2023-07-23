@@ -16,7 +16,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class JwtHelper {
 
     // jwt token validition time limit(in seconds)
-    public static final long JWT_TOKEN_VALIDITY = 1 * 60 * 60;
+    public static final long JWT_TOKEN_VALIDITY = 2 * 60 * 60;
     // jwt secret key
     private String secret = "dfajklafdkjalafdkljfklqefadsjkfahlkjbadffjkalnfajkldfnasdjkafdrhiofFJKLADFDAJLFADSHJLDHJKLncjdsfklaadfkjafdfjkladsfjkadf";
 

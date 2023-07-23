@@ -58,7 +58,8 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers( "/user/create","/auth/**", "/login/oauth2/code/**")
-                        .permitAll())
+                        .permitAll()
+                        .anyRequest().authenticated())
                 // .oauth2Login(o -> o
                 //         .defaultSuccessUrl("/auth/oauth2LoginSuccess")
                 //         .userInfoEndpoint(u -> u

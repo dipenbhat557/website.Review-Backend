@@ -23,12 +23,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.websiteReview.Dtos.RefreshTokenDto;
+import com.websiteReview.Dtos.UserDto;
 import com.websiteReview.Exception.ResourceNotFoundException;
 import com.websiteReview.Helper.JwtRequest;
 import com.websiteReview.Helper.JwtResponse;
-import com.websiteReview.Helper.RefreshTokenDto;
 import com.websiteReview.Helper.RefreshTokenRequest;
-import com.websiteReview.Helper.UserDto;
 import com.websiteReview.Model.User;
 import com.websiteReview.Security.JwtHelper;
 import com.websiteReview.Service.RefreshTokenService;

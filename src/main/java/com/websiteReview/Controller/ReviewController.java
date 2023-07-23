@@ -1,10 +1,10 @@
 package com.websiteReview.Controller;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.actuate.web.exchanges.HttpExchange.Principal;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,9 +16,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.websiteReview.Helper.AboutReviewProductDto;
-import com.websiteReview.Helper.AboutReviewUserDto;
-import com.websiteReview.Helper.ReviewDto;
+import com.websiteReview.Dtos.AboutReviewProductDto;
+import com.websiteReview.Dtos.AboutReviewUserDto;
+import com.websiteReview.Dtos.ReviewDto;
+import com.websiteReview.Helper.AppConstants;
+import com.websiteReview.Helper.FilterByOrganizationSizeRequest;
+import com.websiteReview.Helper.FilterByPurposeRequest;
+import com.websiteReview.Helper.ReviewResponse;
 import com.websiteReview.Service.AboutReviewProductService;
 import com.websiteReview.Service.AboutReviewUserService;
 import com.websiteReview.Service.FileUploadService;
@@ -45,20 +49,72 @@ public class ReviewController {
     // creating review
     @PostMapping("/createReview")
     public ResponseEntity<ReviewDto> createReview(@RequestBody ReviewDto reviewDto, Principal principal) {
+        System.out.println("Inside creation of review");
+        System.out.println(principal.getName());
         return new ResponseEntity<ReviewDto>(this.reviewService.create(principal.getName(), reviewDto),
                 HttpStatus.CREATED);
     }
 
-    //getting review by id
+    // getting review by id
     @GetMapping("/viewReviewById/{reviewId}")
-    public ResponseEntity<ReviewDto> viewById(@PathVariable int reviewId){
+    public ResponseEntity<ReviewDto> viewById(@PathVariable int reviewId) {
         return new ResponseEntity<ReviewDto>(this.reviewService.viewById(reviewId), HttpStatus.OK);
     }
 
-    //getting review by user
+    // getting review by user
     @GetMapping("/viewReviewsByUser")
-    public ResponseEntity<List<ReviewDto>> viewByUser(Principal principal){
+    public ResponseEntity<List<ReviewDto>> viewByUser(Principal principal) {
         return new ResponseEntity<List<ReviewDto>>(this.reviewService.viewByUser(principal.getName()), HttpStatus.OK);
+    }
+
+    // deleting the review
+    @GetMapping("/delete/{reviewId}")
+    public ResponseEntity<String> delete(@PathVariable int reviewId) {
+        this.reviewService.delete(reviewId);
+        return new ResponseEntity<String>("Successffully deleted...", HttpStatus.OK);
+    }
+
+    // filtering reviews by organizationSize
+    @PostMapping("/filterBySize")
+    public ResponseEntity<ReviewResponse> filterBySize(@RequestBody FilterByOrganizationSizeRequest request,
+            @RequestParam(value = "pageNumber", defaultValue = AppConstants.pageNumberString, required = false) int pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = AppConstants.pageSizeString, required = false) int pageSize) {
+        ReviewResponse reviewResponse = this.reviewService.filterReviewsByOrganizationSize(request.getMinSize(),
+                request.getMaxSize(), pageNumber, pageSize);
+        return new ResponseEntity<ReviewResponse>(reviewResponse, HttpStatus.OK);
+    }
+
+    // filtering by rating
+    @GetMapping("/filterByRating/{rating}")
+    public ResponseEntity<ReviewResponse> filterByRating(@PathVariable int rating,
+            @RequestParam(value = "pageNumber", defaultValue = AppConstants.pageNumberString, required = false) int pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = AppConstants.pageSizeString, required = false) int pageSize) {
+
+        ReviewResponse response = this.reviewService.filterReviewsByRating(rating, pageNumber, pageSize);
+
+        return new ResponseEntity<ReviewResponse>(response, HttpStatus.OK);
+    }
+
+    // filtering by purpose
+    @PostMapping("/filterByPurpose")
+    public ResponseEntity<ReviewResponse> filterByPurpose(@RequestBody FilterByPurposeRequest request,
+            @RequestParam(value = "pageNumber", defaultValue = AppConstants.pageNumberString, required = false) int pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = AppConstants.pageSizeString, required = false) int pageSize) {
+
+        ReviewResponse response = this.reviewService.filterReviewsByPurpose(request.getPurpose(), pageNumber, pageSize);
+
+        return new ResponseEntity<ReviewResponse>(response, HttpStatus.OK);
+    }
+
+    //filtering by user role
+    @GetMapping("/filterByUserRole/{userRole}")
+    public ResponseEntity<ReviewResponse> filterByUserRole(@PathVariable String userRole,
+            @RequestParam(value = "pageNumber", defaultValue = AppConstants.pageNumberString, required = false) int pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = AppConstants.pageSizeString, required = false) int pageSize) {
+
+        ReviewResponse response = this.reviewService.filterReviewsByUserRole(userRole, pageNumber, pageSize);
+
+        return new ResponseEntity<ReviewResponse>(response, HttpStatus.OK);
     }
 
     // creating the details about the product while writing review

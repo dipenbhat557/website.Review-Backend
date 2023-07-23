@@ -1,4 +1,4 @@
-package com.websiteReview.Helper;
+package com.websiteReview.Dtos;
 
 import com.websiteReview.Model.Review;
 

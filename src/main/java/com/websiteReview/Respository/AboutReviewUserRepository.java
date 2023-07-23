@@ -5,8 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.websiteReview.Model.AboutReviewUser;
 import com.websiteReview.Model.Review;
 
-import java.util.List;
-
 
 public interface AboutReviewUserRepository extends JpaRepository<AboutReviewUser, Integer>{
     

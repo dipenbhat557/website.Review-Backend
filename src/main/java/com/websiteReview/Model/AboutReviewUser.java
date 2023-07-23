@@ -15,6 +15,7 @@ public class AboutReviewUser {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int reviewUserId;
     private int organizationSize;
+    @Column(name = "`current_user`")
     private boolean currentUser;
     private boolean switchFromAnother;
     private String screenshotName;

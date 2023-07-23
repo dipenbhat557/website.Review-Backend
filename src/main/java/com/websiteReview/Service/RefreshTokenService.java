@@ -7,20 +7,18 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.websiteReview.Dtos.RefreshTokenDto;
 import com.websiteReview.Exception.ResourceNotFoundException;
-import com.websiteReview.Helper.RefreshTokenDto;
-import com.websiteReview.Helper.UserDto;
 import com.websiteReview.Model.RefreshToken;
 import com.websiteReview.Model.User;
 import com.websiteReview.Respository.RefreshTokenRepository;
 import com.websiteReview.Respository.UserRepository;
 
-import jakarta.transaction.Transactional;
 
 @Service
 public class RefreshTokenService {
 
-    public long refreshTokenValidity =  60 * 1000;
+    public long refreshTokenValidity = 5 * 60 * 60 * 1000;
 
     @Autowired
     private RefreshTokenRepository refreshTokenRepository;

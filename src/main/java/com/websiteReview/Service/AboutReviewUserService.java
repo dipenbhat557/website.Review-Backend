@@ -4,9 +4,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.websiteReview.Dtos.AboutReviewUserDto;
+import com.websiteReview.Dtos.ReviewDto;
 import com.websiteReview.Exception.ResourceNotFoundException;
-import com.websiteReview.Helper.AboutReviewUserDto;
-import com.websiteReview.Helper.ReviewDto;
 import com.websiteReview.Model.AboutReviewUser;
 import com.websiteReview.Model.Review;
 import com.websiteReview.Respository.AboutReviewUserRepository;

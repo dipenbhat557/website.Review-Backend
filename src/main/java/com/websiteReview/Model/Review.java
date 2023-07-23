@@ -18,7 +18,7 @@ public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int reviewId;
-    private int title;
+    private String title;
     @Column(length = 2500)
     private String whatYouLike;
     @Column(length = 2500)
@@ -29,6 +29,9 @@ public class Review {
     @ManyToOne
     private User user;
 
+    @ManyToOne
+    private Software software;
+
     @OneToOne(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private AboutReviewUser aboutReviewUser;
@@ -36,6 +39,7 @@ public class Review {
     @OneToOne(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private AboutReviewProduct aboutReviewProduct;
+
 
     public int getReviewId() {
         return reviewId;
@@ -45,11 +49,11 @@ public class Review {
         this.reviewId = reviewId;
     }
 
-    public int getTitle() {
+    public String getTitle() {
         return title;
     }
 
-    public void setTitle(int title) {
+    public void setTitle(String title) {
         this.title = title;
     }
 
@@ -109,11 +113,15 @@ public class Review {
         this.aboutReviewProduct = aboutReviewProduct;
     }
 
+    
+
     public Review() {
     }
 
-    public Review(int reviewId, int title, String whatYouLike, String whatYouDislike, String userRole, double rating,
-            User user, AboutReviewUser aboutReviewUser, AboutReviewProduct aboutReviewProduct) {
+    
+
+    public Review(int reviewId, String title, String whatYouLike, String whatYouDislike, String userRole, double rating,
+            User user, Software software, AboutReviewUser aboutReviewUser, AboutReviewProduct aboutReviewProduct) {
         this.reviewId = reviewId;
         this.title = title;
         this.whatYouLike = whatYouLike;
@@ -121,15 +129,25 @@ public class Review {
         this.userRole = userRole;
         this.rating = rating;
         this.user = user;
+        this.software = software;
         this.aboutReviewUser = aboutReviewUser;
         this.aboutReviewProduct = aboutReviewProduct;
+    }
+
+    public Software getSoftware() {
+        return software;
+    }
+
+    public void setSoftware(Software software) {
+        this.software = software;
     }
 
     @Override
     public String toString() {
         return "Review [reviewId=" + reviewId + ", title=" + title + ", whatYouLike=" + whatYouLike
-                + ", whatYouDislike=" + whatYouDislike + ", userRole=" + userRole + ", rating=" + rating
-                + "]";
+                + ", whatYouDislike=" + whatYouDislike + ", userRole=" + userRole + ", rating=" + rating + ", user="
+                + user + ", software=" + software + ", aboutReviewUser=" + aboutReviewUser + ", aboutReviewProduct="
+                + aboutReviewProduct + "]";
     }
 
     
