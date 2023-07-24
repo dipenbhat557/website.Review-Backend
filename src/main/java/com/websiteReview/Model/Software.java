@@ -6,33 +6,41 @@ import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.websiteReview.Helper.MapToJsonConverter;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
 
+@Entity
 public class Software {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int softwareId;
     private String title;
-    @Column(length = 9999)
+    @Lob
     private String description;
     private String location;
     private int yearFounded;
     private String language;
-    @Column(length = 5000)
+    @Lob
     private String differenceFromOthers;
     private String profileImageName;
     private String websiteLink;
     private String twitterId;
     private String linkedInId;
+    @Convert(converter = MapToJsonConverter.class)
+    @Column(columnDefinition = "TEXT")
     private Map<String, String> features = new HashMap<>();
     private String videoName;
+    @Lob
     private List<String> screenshots = new ArrayList<>();
     private int noOfResponses;
     private double rating;

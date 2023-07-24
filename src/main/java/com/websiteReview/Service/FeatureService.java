@@ -37,4 +37,9 @@ public class FeatureService {
         Features features = this.featureRepository.findById(featureId).orElseThrow(() -> new ResourceNotFoundException("The expected feature is not found"));
         return this.modelMapper.map(features, FeaturesDto.class);
     }
+
+    public void delete(int featureId){
+        Features feature = this.featureRepository.findById(featureId).orElseThrow(() -> new ResourceNotFoundException("The expected feature is not found"));
+        this.featureRepository.delete(feature);
+    }
 }

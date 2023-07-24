@@ -29,7 +29,7 @@ public class SoftwareDto {
     private double easeOfUseRating;
     private double meetsRequirementRating;
     private double qualitySupportRating;
-    private List<Review> reviews = new ArrayList<>();
+    private List<ReviewDto> reviewDtos = new ArrayList<>();
     
     public int getSoftwareId() {
         return softwareId;
@@ -151,11 +151,11 @@ public class SoftwareDto {
     public void setQualitySupportRating(double qualitySupportRating) {
         this.qualitySupportRating = qualitySupportRating;
     }
-    public List<Review> getReviews() {
-        return reviews;
+    public List<ReviewDto> getReviewDtos() {
+        return reviewDtos;
     }
-    public void setReviews(List<Review> reviews) {
-        this.reviews = reviews;
+    public void setReviewDtos(List<ReviewDto> reviewDtos) {
+        this.reviewDtos = reviewDtos;
     }
     public SoftwareDto() {
     }
@@ -163,7 +163,7 @@ public class SoftwareDto {
             String language, String differenceFromOthers, String profileImageName, String websiteLink, String twitterId,
             String linkedInId, Map<String, String> features, String videoName, List<String> screenshots,
             int noOfResponses, double rating, double notionDirectionRating, double easeOfUseRating,
-            double meetsRequirementRating, double qualitySupportRating, List<Review> reviews) {
+            double meetsRequirementRating, double qualitySupportRating, List<ReviewDto> reviewDtos) {
         this.softwareId = softwareId;
         this.title = title;
         this.description = description;
@@ -184,7 +184,7 @@ public class SoftwareDto {
         this.easeOfUseRating = easeOfUseRating;
         this.meetsRequirementRating = meetsRequirementRating;
         this.qualitySupportRating = qualitySupportRating;
-        this.reviews = reviews;
+        this.reviewDtos = reviewDtos;
     }
     @Override
     public String toString() {
@@ -195,7 +195,7 @@ public class SoftwareDto {
                 + ", features=" + features + ", videoName=" + videoName + ", screenshots=" + screenshots
                 + ", noOfResponses=" + noOfResponses + ", rating=" + rating + ", notionDirectionRating="
                 + notionDirectionRating + ", easeOfUseRating=" + easeOfUseRating + ", meetsRequirementRating="
-                + meetsRequirementRating + ", qualitySupportRating=" + qualitySupportRating + ", reviews=" + reviews
+                + meetsRequirementRating + ", qualitySupportRating=" + qualitySupportRating + ", reviews=" + reviewDtos
                 + "]";
     }
 

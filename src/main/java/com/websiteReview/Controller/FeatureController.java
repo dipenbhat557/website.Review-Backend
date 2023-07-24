@@ -37,4 +37,9 @@ public class FeatureController {
         return new ResponseEntity<FeaturesDto>(this.featureService.getById(featureId), HttpStatus.OK);
     }
 
+    @GetMapping("/delete/{featureId}")
+    public ResponseEntity<String> delete(@PathVariable int featureId){
+        return new ResponseEntity<String>("Successfully deleted.....", HttpStatus.OK);
+    }
+
 }
