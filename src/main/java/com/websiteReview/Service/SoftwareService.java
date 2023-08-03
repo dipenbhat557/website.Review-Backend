@@ -57,7 +57,7 @@ public class SoftwareService {
         return null;
     }
 
-    public List<SoftwareDto> filterByCategory(){
+    public List<SoftwareDto> filterBySubCategory(){
         return null;
     }
 

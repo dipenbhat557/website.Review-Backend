@@ -3,11 +3,15 @@ package com.websiteReview.Model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class SubCategory {
@@ -15,11 +19,15 @@ public class SubCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int subCategoryId;
-    
+
     private String title;
 
     @ManyToMany
     private List<Category> categories = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "subCategory")
+    @JsonIgnore
+    private List<Software> softwares = new ArrayList<>();
 
     public int getSubCategoryId() {
         return subCategoryId;
@@ -37,18 +45,15 @@ public class SubCategory {
         this.title = title;
     }
 
-    
-
-    public SubCategory(int subCategoryId, String title, List<Category> categories) {
+    public SubCategory(int subCategoryId, String title, List<Category> categories, List<Software> softwares) {
         this.subCategoryId = subCategoryId;
         this.title = title;
         this.categories = categories;
+        this.softwares = softwares;
     }
 
     public SubCategory() {
     }
-
-    
 
     @Override
     public String toString() {
@@ -63,6 +68,12 @@ public class SubCategory {
         this.categories = categories;
     }
 
-    
-    
+    public List<Software> getSoftwares() {
+        return softwares;
+    }
+
+    public void setSoftwares(List<Software> softwares) {
+        this.softwares = softwares;
+    }
+
 }

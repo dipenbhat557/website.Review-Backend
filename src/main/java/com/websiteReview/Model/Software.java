@@ -16,6 +16,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
 @Entity
@@ -52,6 +53,15 @@ public class Software {
     @OneToMany(mappedBy = "software", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Review> reviews = new ArrayList<>();
+
+    @ManyToOne
+    private SubCategory subCategory;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "software", orphanRemoval = true)
+    private List<Pricing> pricings = new ArrayList<>();
+
+    @ManyToOne
+    private CompanySize companySize;
 
     public int getSoftwareId() {
         return softwareId;
@@ -221,6 +231,14 @@ public class Software {
         this.reviews = reviews;
     }
 
+    public SubCategory getSubCategory() {
+        return subCategory;
+    }
+
+    public void setSubCategory(SubCategory subCategory) {
+        this.subCategory = subCategory;
+    }
+
     public Software() {
     }
 
@@ -228,7 +246,8 @@ public class Software {
             String differenceFromOthers, String profileImageName, String websiteLink, String twitterId,
             String linkedInId, Map<String, String> features, String videoName, List<String> screenshots,
             int noOfResponses, double rating, double notionDirectionRating, double easeOfUseRating,
-            double meetsRequirementRating, double qualitySupportRating, List<Review> reviews) {
+            double meetsRequirementRating, double qualitySupportRating, List<Review> reviews, SubCategory subCategory,
+            List<Pricing> pricings, CompanySize companySize) {
         this.softwareId = softwareId;
         this.title = title;
         this.description = description;
@@ -250,6 +269,9 @@ public class Software {
         this.meetsRequirementRating = meetsRequirementRating;
         this.qualitySupportRating = qualitySupportRating;
         this.reviews = reviews;
+        this.subCategory = subCategory;
+        this.pricings = pricings;
+        this.companySize = companySize;
     }
 
     @Override
@@ -261,9 +283,24 @@ public class Software {
                 + ", features=" + features + ", videoName=" + videoName + ", screenshots=" + screenshots
                 + ", noOfResponses=" + noOfResponses + ", rating=" + rating + ", notionDirectionRating="
                 + notionDirectionRating + ", easeOfUseRating=" + easeOfUseRating + ", meetsRequirementRating="
-                + meetsRequirementRating + ", qualitySupportRating=" + qualitySupportRating + "]";
+                + meetsRequirementRating + ", qualitySupportRating=" + qualitySupportRating + ", reviews=" + reviews
+                + ", subCategory=" + subCategory + "]";
     }
 
-    
+    public List<Pricing> getPricings() {
+        return pricings;
+    }
+
+    public void setPricings(List<Pricing> pricings) {
+        this.pricings = pricings;
+    }
+
+    public CompanySize getCompanySize() {
+        return companySize;
+    }
+
+    public void setCompanySize(CompanySize companySize) {
+        this.companySize = companySize;
+    }
 
 }
