@@ -1,4 +1,4 @@
-FROM openjdk:17
+FROM openjdk:18
 
 COPY target/websiteReview-0.0.1-SNAPSHOT.jar app.jar
 

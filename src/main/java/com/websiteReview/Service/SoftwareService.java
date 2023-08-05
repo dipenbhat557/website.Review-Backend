@@ -5,96 +5,172 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.websiteReview.Dtos.AboutReviewUserDto;
 import com.websiteReview.Dtos.ReviewDto;
 import com.websiteReview.Dtos.SoftwareDto;
 import com.websiteReview.Exception.ResourceNotFoundException;
-import com.websiteReview.Model.AboutReviewUser;
+import com.websiteReview.Helper.SoftwareResponse;
+import com.websiteReview.Model.CompanySize;
 import com.websiteReview.Model.Review;
 import com.websiteReview.Model.Software;
+import com.websiteReview.Model.SubCategory;
+import com.websiteReview.Respository.CompanySizeRepository;
 import com.websiteReview.Respository.SoftwareRepository;
+import com.websiteReview.Respository.SubCategoryRepository;
 
 @Service
 public class SoftwareService {
 
-    @Autowired
-    private SoftwareRepository softwareRepository;
-    
-    @Autowired
-    private ModelMapper modelMapper;
+        @Autowired
+        private SoftwareRepository softwareRepository;
 
-    public SoftwareDto createSoftware(SoftwareDto softwareDto){
-        Software software = this.modelMapper.map(softwareDto, Software.class);
-        List<ReviewDto> reviewDtos = softwareDto.getReviewDtos();
-        List<Review> reviews = reviewDtos.stream().map((reviewDto) -> this.modelMapper.map(reviewDto, Review.class)).collect(Collectors.toList());
-        software.setReviews(reviews);
+        @Autowired
+        private ModelMapper modelMapper;
 
-        software = this.softwareRepository.save(software);
+        @Autowired
+        private SubCategoryRepository subCategoryRepository;
 
-        softwareDto.setSoftwareId(software.getSoftwareId());
+        @Autowired
+        private CompanySizeRepository companySizeRepository;
 
-        return softwareDto;
-    }
+        public SoftwareDto create(SoftwareDto softwareDto) {
+                Software software = this.modelMapper.map(softwareDto, Software.class);
+                List<ReviewDto> reviewDtos = softwareDto.getReviewDtos();
+                List<Review> reviews = reviewDtos.stream()
+                                .map((reviewDto) -> this.modelMapper.map(reviewDto, Review.class))
+                                .collect(Collectors.toList());
+                software.setReviews(reviews);
 
-    public SoftwareDto getById(int softwareId){
-        Software software = this.softwareRepository.findById(softwareId).orElseThrow(() -> new ResourceNotFoundException("The expected software is not found"));
-        return this.modelMapper.map(software,SoftwareDto.class);
-    }
+                software = this.softwareRepository.save(software);
 
-    public List<SoftwareDto> getAllSoftwares(){
-        List<Software> softwares = this.softwareRepository.findAll();
-        List<SoftwareDto> softwareDtos = softwares.stream().map(software -> this.modelMapper.map(software, SoftwareDto.class)).collect(Collectors.toList());
-        return softwareDtos;
-    }
+                softwareDto.setSoftwareId(software.getSoftwareId());
 
-    public void deleteSoftware(int softwareId){
-        this.softwareRepository.delete(this.softwareRepository.findById(softwareId).orElseThrow(() -> new ResourceNotFoundException("The expected resource is not found while trying to delete it")));
-    }
+                return softwareDto;
+        }
 
-    public List<SoftwareDto> filterByRating(){
-        return null;
-    }
+        public SoftwareDto viewById(int softwareId) {
+                Software software = this.softwareRepository.findById(softwareId)
+                                .orElseThrow(() -> new ResourceNotFoundException("The expected software is not found"));
+                return this.modelMapper.map(software, SoftwareDto.class);
+        }
 
-    public List<SoftwareDto> filterBySubCategory(){
-        return null;
-    }
+        public List<SoftwareDto> viewAll() {
+                List<Software> softwares = this.softwareRepository.findAll();
+                List<SoftwareDto> softwareDtos = softwares.stream()
+                                .map(software -> this.modelMapper.map(software, SoftwareDto.class))
+                                .collect(Collectors.toList());
+                return softwareDtos;
+        }
 
-    public List<SoftwareDto> filterBySegment(){
-        return null;
-    }
+        public void delete(int softwareId) {
+                this.softwareRepository.delete(this.softwareRepository.findById(softwareId).orElseThrow(
+                                () -> new ResourceNotFoundException(
+                                                "The expected resource is not found while trying to delete it")));
+        }
 
-    public SoftwareDto update(int softwareId, SoftwareDto softwareDto){
+        public SoftwareResponse viewByRating(int rating, int pageNumber, int pageSize) {
+                Pageable pageable = PageRequest.of(pageNumber, pageSize);
+                Page<Software> page = this.softwareRepository.findByRatingRange(rating, rating + 1, pageable);
+                List<Software> pageSoftware = page.getContent();
 
-        Software oldSoftware = this.softwareRepository.findById(softwareId).orElseThrow(() -> new ResourceNotFoundException("The expected software has not been found while updating the screenshots..."));
+                List<SoftwareDto> pageSoftwareDtos = pageSoftware.stream()
+                                .map(software -> this.modelMapper.map(software, SoftwareDto.class))
+                                .collect(Collectors.toList());
 
-        oldSoftware.setTitle(softwareDto.getTitle());
-        oldSoftware.setDescription(softwareDto.getDescription());
-        oldSoftware.setLocation(softwareDto.getLocation());
-        oldSoftware.setYearFounded(softwareDto.getYearFounded());
-        oldSoftware.setLanguage(softwareDto.getLanguage());
-        oldSoftware.setDifferenceFromOthers(softwareDto.getDifferenceFromOthers());
-        oldSoftware.setProfileImageName(softwareDto.getProfileImageName());
-        oldSoftware.setWebsiteLink(softwareDto.getWebsiteLink());
-        oldSoftware.setTwitterId(softwareDto.getTwitterId());
-        oldSoftware.setLinkedInId(softwareDto.getLinkedInId());
-        oldSoftware.setFeatures(softwareDto.getFeatures());
-        oldSoftware.setVideoName(softwareDto.getVideoName());
-        oldSoftware.setScreenshots(softwareDto.getScreenshots());
-        oldSoftware.setNoOfResponses(softwareDto.getNoOfResponses());
-        oldSoftware.setRating(softwareDto.getRating());
-        oldSoftware.setNotionDirectionRating(softwareDto.getNotionDirectionRating());
-        oldSoftware.setEaseOfUseRating(softwareDto.getEaseOfUseRating());
-        oldSoftware.setMeetsRequirementRating(softwareDto.getMeetsRequirementRating());
-        oldSoftware.setQualitySupportRating(softwareDto.getQualitySupportRating());
+                SoftwareResponse response = new SoftwareResponse();
+                response.setContent(pageSoftwareDtos);
+                response.setPageNumber(page.getNumber());
+                response.setPageSize(page.getSize());
+                response.setTotalPages(page.getTotalPages());
+                response.setLastPage(page.isLast());
 
-        List<ReviewDto> reviewDtos = softwareDto.getReviewDtos();
-        List<Review> reviews = reviewDtos.stream().map((reviewDto) -> this.modelMapper.map(reviewDto, Review.class)).collect(Collectors.toList());
+                return response;
+        }
 
-        oldSoftware.setReviews(reviews);
+        public SoftwareResponse viewBySubCategory(int subCategoryId, int pageNumber, int pageSize) {
+                SubCategory subCategory = this.subCategoryRepository.findById(subCategoryId)
+                                .orElseThrow(() -> new ResourceNotFoundException(
+                                                "The requested sub category is not found"));
 
-        return this.modelMapper.map(this.softwareRepository.save(oldSoftware),SoftwareDto.class);
-    }
-    
+                Pageable pageable = PageRequest.of(pageNumber, pageSize);
+                Page<Software> page = this.softwareRepository.findBySubCategory(subCategory, pageable);
+                List<Software> pageSoftwares = page.getContent();
+
+                List<SoftwareDto> pageSoftwareDtos = pageSoftwares.stream()
+                                .map(software -> this.modelMapper.map(software, SoftwareDto.class))
+                                .collect(Collectors.toList());
+
+                SoftwareResponse response = new SoftwareResponse();
+                response.setContent(pageSoftwareDtos);
+                response.setPageNumber(page.getNumber());
+                response.setPageSize(page.getSize());
+                response.setTotalPages(page.getTotalPages());
+                response.setLastPage(page.isLast());
+
+                return response;
+        }
+
+        public SoftwareResponse viewBySegment(int sizeId, int pageNumber, int pageSize) {
+                CompanySize companySize = this.companySizeRepository.findById(sizeId)
+                                .orElseThrow(() -> new ResourceNotFoundException(
+                                                "The expected company size is not found"));
+
+                Pageable pageable = PageRequest.of(pageNumber, pageSize);
+                Page<Software> page = this.softwareRepository.findByCompanySize(companySize, pageable);
+                List<Software> pageSoftwares = page.getContent();
+
+                List<SoftwareDto> pageSoftwareDtos = pageSoftwares.stream()
+                                .map(software -> this.modelMapper.map(software, SoftwareDto.class))
+                                .collect(Collectors.toList());
+
+                SoftwareResponse response = new SoftwareResponse();
+                response.setContent(pageSoftwareDtos);
+                response.setPageNumber(page.getNumber());
+                response.setPageSize(page.getSize());
+                response.setTotalPages(page.getTotalPages());
+                response.setLastPage(page.isLast());
+
+                return response;
+        }
+
+        public SoftwareDto update(int softwareId, SoftwareDto softwareDto) {
+
+                Software oldSoftware = this.softwareRepository.findById(softwareId)
+                                .orElseThrow(() -> new ResourceNotFoundException(
+                                                "The expected software has not been found while updating the screenshots..."));
+
+                oldSoftware.setTitle(softwareDto.getTitle());
+                oldSoftware.setDescription(softwareDto.getDescription());
+                oldSoftware.setLocation(softwareDto.getLocation());
+                oldSoftware.setYearFounded(softwareDto.getYearFounded());
+                oldSoftware.setLanguage(softwareDto.getLanguage());
+                oldSoftware.setDifferenceFromOthers(softwareDto.getDifferenceFromOthers());
+                oldSoftware.setProfileImageName(softwareDto.getProfileImageName());
+                oldSoftware.setWebsiteLink(softwareDto.getWebsiteLink());
+                oldSoftware.setTwitterId(softwareDto.getTwitterId());
+                oldSoftware.setLinkedInId(softwareDto.getLinkedInId());
+                oldSoftware.setFeatures(softwareDto.getFeatures());
+                oldSoftware.setVideoName(softwareDto.getVideoName());
+                oldSoftware.setScreenshots(softwareDto.getScreenshots());
+                oldSoftware.setNoOfResponses(softwareDto.getNoOfResponses());
+                oldSoftware.setRating(softwareDto.getRating());
+                oldSoftware.setNotionDirectionRating(softwareDto.getNotionDirectionRating());
+                oldSoftware.setEaseOfUseRating(softwareDto.getEaseOfUseRating());
+                oldSoftware.setMeetsRequirementRating(softwareDto.getMeetsRequirementRating());
+                oldSoftware.setQualitySupportRating(softwareDto.getQualitySupportRating());
+
+                List<ReviewDto> reviewDtos = softwareDto.getReviewDtos();
+                List<Review> reviews = reviewDtos.stream()
+                                .map((reviewDto) -> this.modelMapper.map(reviewDto, Review.class))
+                                .collect(Collectors.toList());
+
+                oldSoftware.setReviews(reviews);
+
+                return this.modelMapper.map(this.softwareRepository.save(oldSoftware), SoftwareDto.class);
+        }
+
 }

@@ -14,9 +14,12 @@ import com.websiteReview.Dtos.ReviewDto;
 import com.websiteReview.Dtos.UserDto;
 import com.websiteReview.Exception.ResourceNotFoundException;
 import com.websiteReview.Helper.ReviewResponse;
+import com.websiteReview.Model.AboutReviewProduct;
 import com.websiteReview.Model.Review;
+import com.websiteReview.Model.Software;
 import com.websiteReview.Model.User;
 import com.websiteReview.Respository.ReviewRepository;
+import com.websiteReview.Respository.SoftwareRepository;
 import com.websiteReview.Respository.UserRepository;
 
 @Service
@@ -31,14 +34,48 @@ public class ReviewService {
     @Autowired
     private UserRepository userRepository;
 
-    public ReviewDto create(String username, ReviewDto reviewDto) {
+    @Autowired
+    private SoftwareRepository softwareRepository;
+
+    public ReviewDto create(String username, ReviewDto reviewDto, int softwareId) {
         User user = this.userRepository.findByEmail(username).orElseThrow(
                 () -> new ResourceNotFoundException("The expected user is not found while setting to review"));
+
+        AboutReviewProduct aboutReviewProduct = reviewDto.getAboutReviewProduct();
+
+        Software software = this.softwareRepository.findById(softwareId)
+                .orElseThrow(() -> new ResourceNotFoundException("The expected software is not found"));
+
+        int noOfResponses = software.getNoOfResponses();
+        double rating = software.getRating();
+        double notionDirectionRating = software.getNotionDirectionRating();
+        double easeOfUseRating = software.getEaseOfUseRating();
+        double meetsRequirementRating = software.getMeetsRequirementRating();
+        double qualitySupportRating = software.getQualitySupportRating();
+
+        software.setNoOfResponses(noOfResponses + 1);
+        software.setRating((rating * noOfResponses + reviewDto.getRating()) / software.getNoOfResponses());
+        software.setNotionDirectionRating(
+                (notionDirectionRating * noOfResponses + aboutReviewProduct.getNotionDirectionRating())
+                        / software.getNoOfResponses());
+        software.setEaseOfUseRating((easeOfUseRating * noOfResponses + aboutReviewProduct.getEaseOfUseRating())
+                / software.getNoOfResponses());
+        software.setMeetsRequirementRating(
+                (meetsRequirementRating * noOfResponses + aboutReviewProduct.getMeetsRequirementRating())
+                        / software.getNoOfResponses());
+        software.setQualitySupportRating(
+                (qualitySupportRating * noOfResponses + aboutReviewProduct.getQualitySupportRating())
+                        / software.getNoOfResponses());
+        this.softwareRepository.save(software);
+
         Review review = this.modelMapper.map(reviewDto, Review.class);
         review.setUser(user);
         review.setRating(review.getRating() / 2);
+        review.setSoftware(software);
+
         ReviewDto savedReviewDto = this.modelMapper.map(this.reviewRepository.save(review), ReviewDto.class);
         savedReviewDto.setUserDto(this.modelMapper.map(user, UserDto.class));
+
         return savedReviewDto;
     }
 
@@ -51,16 +88,16 @@ public class ReviewService {
         return reviewDto;
     }
 
-    public List<ReviewDto> viewByUser(String username) {
+    public ReviewResponse viewByUser(String username, int pageSize, int pageNumber) {
         User user = this.userRepository.findByEmail(username)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "The expected user is not found while getting review by user"));
 
-        List<Review> list = this.reviewRepository.findByUser(user);
-        System.out.println("Inside");
-        System.out.println(list);
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Review> page = this.reviewRepository.findByUser(user, pageable);
+        List<Review> reviews = page.getContent();
 
-        List<ReviewDto> reviewsDtos = list.stream()
+        List<ReviewDto> reviewsDtos = reviews.stream()
                 .map((Review review) -> this.modelMapper.map(review, ReviewDto.class))
                 .collect(Collectors.toList());
 
@@ -74,7 +111,14 @@ public class ReviewService {
                 })
                 .collect(Collectors.toList());
 
-        return newReviewsDtos;
+        ReviewResponse response = new ReviewResponse();
+        response.setContent(newReviewsDtos);
+        response.setPageNumber(page.getNumber());
+        response.setPageSize(page.getSize());
+        response.setTotalPages(page.getTotalPages());
+        response.setLastPage(page.isLast());
+
+        return response;
     }
 
     public void delete(int reviewId) {
@@ -89,7 +133,8 @@ public class ReviewService {
         Page<Review> page = this.reviewRepository.findByOrganizationSizeRange(minSize, maxSize, pageable);
         List<Review> pageReview = page.getContent();
 
-        List<ReviewDto> pageReviewDtos = pageReview.stream().map(review -> this.modelMapper.map(review,ReviewDto.class)).collect(Collectors.toList());
+        List<ReviewDto> pageReviewDtos = pageReview.stream()
+                .map(review -> this.modelMapper.map(review, ReviewDto.class)).collect(Collectors.toList());
 
         ReviewResponse response = new ReviewResponse();
         response.setContent(pageReviewDtos);
@@ -101,12 +146,13 @@ public class ReviewService {
         return response;
     }
 
-    public ReviewResponse filterReviewsByRating(int rating, int pageNumber, int pageSize) {
+    public ReviewResponse viewByRating(int rating, int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Page<Review> page = this.reviewRepository.findByRatingRange(rating, rating + 1, pageable);
         List<Review> pageReview = page.getContent();
 
-        List<ReviewDto> pageReviewDtos = pageReview.stream().map(review -> this.modelMapper.map(review,ReviewDto.class)).collect(Collectors.toList());
+        List<ReviewDto> pageReviewDtos = pageReview.stream()
+                .map(review -> this.modelMapper.map(review, ReviewDto.class)).collect(Collectors.toList());
 
         ReviewResponse response = new ReviewResponse();
         response.setContent(pageReviewDtos);
@@ -118,12 +164,13 @@ public class ReviewService {
         return response;
     }
 
-    public ReviewResponse filterReviewsByPurpose(String purpose, int pageNumber, int pageSize) {
+    public ReviewResponse viewByPurpose(String purpose, int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Page<Review> page = this.reviewRepository.findByPurposeOfUse(purpose, pageable);
         List<Review> pageReview = page.getContent();
 
-        List<ReviewDto> pageReviewDtos = pageReview.stream().map(review -> this.modelMapper.map(review,ReviewDto.class)).collect(Collectors.toList());
+        List<ReviewDto> pageReviewDtos = pageReview.stream()
+                .map(review -> this.modelMapper.map(review, ReviewDto.class)).collect(Collectors.toList());
 
         ReviewResponse response = new ReviewResponse();
         response.setContent(pageReviewDtos);
@@ -135,12 +182,13 @@ public class ReviewService {
         return response;
     }
 
-    public ReviewResponse filterReviewsByUserRole(String userRole, int pageNumber, int pageSize) {
+    public ReviewResponse viewByUserRole(String userRole, int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Page<Review> page = this.reviewRepository.findByUserRole(userRole, pageable);
         List<Review> pageReview = page.getContent();
 
-        List<ReviewDto> pageReviewDtos = pageReview.stream().map(review -> this.modelMapper.map(review,ReviewDto.class)).collect(Collectors.toList());
+        List<ReviewDto> pageReviewDtos = pageReview.stream()
+                .map(review -> this.modelMapper.map(review, ReviewDto.class)).collect(Collectors.toList());
 
         ReviewResponse response = new ReviewResponse();
         response.setContent(pageReviewDtos);

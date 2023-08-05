@@ -8,7 +8,7 @@ import jakarta.persistence.OneToOne;
 
 @Entity
 public class AboutReviewProduct {
-    //consists of the information about the product being reviewed
+    // consists of the information about the product being reviewed
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -110,6 +110,4 @@ public class AboutReviewProduct {
                 + qualitySupportRating + ", review=" + review + "]";
     }
 
-    
-    
 }

@@ -24,17 +24,17 @@ public class FeatureController {
 
     @PostMapping("/create")
     public ResponseEntity<FeaturesDto> createFeatures(@RequestBody FeaturesDto featuresDto) {
-        return new ResponseEntity<FeaturesDto>(this.featureService.createFeature(featuresDto), HttpStatus.CREATED);
+        return new ResponseEntity<FeaturesDto>(this.featureService.create(featuresDto), HttpStatus.CREATED);
     }
 
-    @GetMapping("/viewAllFeatures")
+    @GetMapping("/viewAll")
     public ResponseEntity<List<FeaturesDto>> viewAllFeatures() {
-        return new ResponseEntity<List<FeaturesDto>>(this.featureService.getAllFeatures(), HttpStatus.OK);
+        return new ResponseEntity<List<FeaturesDto>>(this.featureService.viewAll(), HttpStatus.OK);
     }
 
     @GetMapping("/viewById/{featureId}")
     public ResponseEntity<FeaturesDto> viewById(@PathVariable int featureId) {
-        return new ResponseEntity<FeaturesDto>(this.featureService.getById(featureId), HttpStatus.OK);
+        return new ResponseEntity<FeaturesDto>(this.featureService.viewById(featureId), HttpStatus.OK);
     }
 
     @GetMapping("/delete/{featureId}")

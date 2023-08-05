@@ -23,18 +23,18 @@ public class CompanySizeController {
 
     @PostMapping("/create")
     public ResponseEntity<CompanySizeDto> createCompanySize(CompanySizeDto companySizeDto) {
-        return new ResponseEntity<CompanySizeDto>(this.companySizeService.createCompanySize(companySizeDto),
+        return new ResponseEntity<CompanySizeDto>(this.companySizeService.create(companySizeDto),
                 HttpStatus.CREATED);
     }
 
     @GetMapping("/viewById/{sizeId}")
     public ResponseEntity<CompanySizeDto> viewById(@PathVariable int sizeId) {
-        return new ResponseEntity<CompanySizeDto>(this.companySizeService.viewSizeById(sizeId), HttpStatus.OK);
+        return new ResponseEntity<CompanySizeDto>(this.companySizeService.viewById(sizeId), HttpStatus.OK);
     }
 
     @GetMapping("/delete/{sizeId}")
     public ResponseEntity<String> deleteSize(@PathVariable int sizeId) {
-        this.companySizeService.deleteSize(sizeId);
+        this.companySizeService.delete(sizeId);
         return new ResponseEntity<String>("Deleted Successfully", HttpStatus.OK);
     }
 

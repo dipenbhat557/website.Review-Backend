@@ -24,22 +24,22 @@ public class PricingController {
     
     @PostMapping("/create")
     public ResponseEntity<PricingDto> createPricing(@RequestBody PricingDto pricingDto){
-        return new ResponseEntity<PricingDto>(this.pricingService.createPricing(pricingDto), HttpStatus.CREATED);
+        return new ResponseEntity<PricingDto>(this.pricingService.create(pricingDto), HttpStatus.CREATED);
     }
 
     @GetMapping("/getById/{pricingId}")
     public ResponseEntity<PricingDto> getById(@PathVariable int pricingId){
-        return new ResponseEntity<PricingDto>(this.pricingService.viewPricingById(pricingId), HttpStatus.ACCEPTED);
+        return new ResponseEntity<PricingDto>(this.pricingService.viewById(pricingId), HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/getBySoftware/{softwareId}")
     public ResponseEntity<List<PricingDto>> getBySoftware(@PathVariable int softwareId){
-        return new ResponseEntity<List<PricingDto>>(this.pricingService.getPricingBySoftware(softwareId), HttpStatus.OK);
+        return new ResponseEntity<List<PricingDto>>(this.pricingService.viewBySoftware(softwareId), HttpStatus.OK);
     }
 
     @GetMapping("/delete/{pricingId}")
-    public ResponseEntity<String> deletepricing(@PathVariable int pricingId){
-        this.pricingService.deletePricing(pricingId);
+    public ResponseEntity<String> deletePricing(@PathVariable int pricingId){
+        this.pricingService.delete(pricingId);
         return new ResponseEntity<String>("Deleted Successfully......", HttpStatus.OK);
     }
 }

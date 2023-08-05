@@ -25,7 +25,7 @@ public class UserService {
     @Autowired
     private ModelMapper modelMapper;
 
-    public UserDto createUser(UserDto userDto) {
+    public UserDto create(UserDto userDto) {
         userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
 
         User user = this.modelMapper.map(userDto, User.class);
@@ -36,25 +36,25 @@ public class UserService {
         return userDto;
     }
 
-    public List<UserDto> getAllUsers(){
-        List<User> list = this.userRepository.findAll();
-        List<UserDto> listDto = list.stream().map( user -> this.modelMapper.map(user,UserDto.class)).collect(Collectors.toList());
-        return listDto;
+    public List<UserDto> viewAll(){
+        List<User> users = this.userRepository.findAll();
+        List<UserDto> userDtos = users.stream().map( user -> this.modelMapper.map(user,UserDto.class)).collect(Collectors.toList());
+        return userDtos;
     }
 
-    public UserDto getUserById(int userId) {
+    public UserDto viewById(int userId) {
         User user = this.userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("The expected user is not found"));
         return this.modelMapper.map(user, UserDto.class);
     }
 
-    public void deleteUser(String email) {
+    public void delete(String email) {
         User user = this.userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("The expected user is not found"));
         this.userRepository.delete(user);
     }
 
-    public UserDto updateUser(UserDto userDto, int userId){
+    public UserDto update(UserDto userDto, int userId){
         User oldUser = this.userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("The requested user is not found while updating"));
         //setting new password into oldUser
         oldUser.setPassword(userDto.getPassword());

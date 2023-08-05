@@ -24,23 +24,23 @@ public class UserController {
 	
 	@PostMapping("/create")
 	public ResponseEntity<UserDto> createUser(@RequestBody UserDto usertDto){
-		return new ResponseEntity<UserDto>(this.userService.createUser(usertDto), HttpStatus.CREATED);
+		return new ResponseEntity<UserDto>(this.userService.create(usertDto), HttpStatus.CREATED);
 	}
 
-	@GetMapping("/view")
+	@GetMapping("/viewAll")
 	public ResponseEntity<List<UserDto>> getAllUsers(){
-		return new ResponseEntity<List<UserDto>>(this.userService.getAllUsers(), HttpStatus.OK);
+		return new ResponseEntity<List<UserDto>>(this.userService.viewAll(), HttpStatus.OK);
 	}
 
 	@GetMapping("/viewById/{userId}")
 	public ResponseEntity<UserDto> getUserById(@PathVariable int userId){
-		return new ResponseEntity<UserDto>(this.userService.getUserById(userId),HttpStatus.ACCEPTED);
+		return new ResponseEntity<UserDto>(this.userService.viewById(userId),HttpStatus.ACCEPTED);
 	}
 
 	@GetMapping("/delete/{userId}")
 	public ResponseEntity<String> deleteUser(@PathVariable int userId){
-		UserDto userDto = this.userService.getUserById(userId);
-		this.userService.deleteUser(userDto.getEmail());
+		UserDto userDto = this.userService.viewById(userId);
+		this.userService.delete(userDto.getEmail());
 		return new ResponseEntity<String>("User Deleted Successfully !! ", HttpStatus.OK);
 	}
 

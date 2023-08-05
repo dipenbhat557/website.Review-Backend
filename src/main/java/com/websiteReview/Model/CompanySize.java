@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
+@Entity
 public class CompanySize {
 
     @Id
@@ -17,7 +19,7 @@ public class CompanySize {
 
     private String title;
 
-    @OneToMany(mappedBy = "companySize", orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "companySize")
     private List<Software> softwares = new ArrayList<>();
 
     public int getSizeId() {
@@ -58,6 +60,4 @@ public class CompanySize {
         return "CompanySize [sizeId=" + sizeId + ", title=" + title + ", softwares=" + softwares + "]";
     }
 
-    
-    
 }

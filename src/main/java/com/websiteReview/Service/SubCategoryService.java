@@ -5,10 +5,14 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.websiteReview.Dtos.SubCategoryDto;
 import com.websiteReview.Exception.ResourceNotFoundException;
+import com.websiteReview.Helper.SubCategoryResponse;
 import com.websiteReview.Model.Category;
 import com.websiteReview.Model.SubCategory;
 import com.websiteReview.Respository.CategoryRepository;
@@ -26,33 +30,44 @@ public class SubCategoryService {
     @Autowired
     private SubCategoryRepository subCategoryRepository;
 
-    public SubCategoryDto createSubCategory(SubCategoryDto subCategoryDto){
+    public SubCategoryDto create(SubCategoryDto subCategoryDto){
         SubCategory subCategory = this.modelMapper.map(subCategoryDto, SubCategory.class);
         subCategory = this.subCategoryRepository.save(subCategory);
         return this.modelMapper.map(subCategory, SubCategoryDto.class);
     }
 
-    public SubCategoryDto getSubCategoryById(int subCategoryId){
+    public SubCategoryDto viewById(int subCategoryId){
         SubCategory subCategory = this.subCategoryRepository.findById(subCategoryId).orElseThrow(() -> new ResourceNotFoundException("The expected sub category was not found."));
         return this.modelMapper.map(subCategory, SubCategoryDto.class);
     }
 
-    public List<SubCategoryDto> getAllSubCategories(){
+    public List<SubCategoryDto> viewAll(){
         List<SubCategory>  subCategories = this.subCategoryRepository.findAll();
         List<SubCategoryDto> subCategoryDtos = subCategories.stream().map(subCategory -> this.modelMapper.map(subCategory, SubCategoryDto.class)).collect(Collectors.toList());
         return subCategoryDtos;
     }
 
-    public void deleteSubCategory(int subCategoryId){
+    public void delete(int subCategoryId){
         SubCategory subCategory = this.subCategoryRepository.findById(subCategoryId).orElseThrow(() -> new ResourceNotFoundException("The expected sub category was not found."));
         this.subCategoryRepository.delete(subCategory);
     }
 
-    public List<SubCategoryDto> getSubCategoriesByCategory(int categoryId){
+    public SubCategoryResponse viewByCategory(int categoryId, int pageSize,int pageNumber){
         Category category = this.categoryRepository.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("The expected category is not found"));
-        List<SubCategory> subCategories = this.subCategoryRepository.findByCategories(category);
+
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<SubCategory> page = this.subCategoryRepository.findByCategories(category,pageable);
+        List<SubCategory> subCategories = page.getContent();
         List<SubCategoryDto> subCategoryDtos = subCategories.stream().map(subCategory -> this.modelMapper.map(subCategory, SubCategoryDto.class)).collect(Collectors.toList());
-        return subCategoryDtos;
+
+        SubCategoryResponse response = new SubCategoryResponse();
+        response.setContent(subCategoryDtos);
+        response.setPageNumber(page.getNumber());
+        response.setPageSize(page.getSize());
+        response.setTotalPages(page.getTotalPages());
+        response.setLastPage(page.isLast());
+
+        return response;
     }
 
 

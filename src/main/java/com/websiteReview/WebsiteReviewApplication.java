@@ -16,7 +16,4 @@ public class WebsiteReviewApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(WebsiteReviewApplication.class, args);
 	}
-
-	
-
 }

@@ -12,7 +12,7 @@ import com.websiteReview.Model.User;
 
 public interface ReviewRepository extends JpaRepository<Review, Integer>{
     
-    public List<Review> findByUser(User user);
+    public Page<Review> findByUser(User user, Pageable pageable);
 
     @Query("SELECT r FROM Review r WHERE r.aboutReviewUser.organizationSize >= :minSize AND r.aboutReviewUser.organizationSize <= :maxSize")
     public Page<Review> findByOrganizationSizeRange(int minSize, int maxSize, Pageable pageable);

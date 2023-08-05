@@ -8,6 +8,8 @@ public class QuestionDto {
 
     private int questionId;
 
+    private String description;
+
     private Date date;
 
     private List<CommentDto> commentDtos = new ArrayList<>();
@@ -56,12 +58,21 @@ public class QuestionDto {
         this.userDto = userDto;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public QuestionDto() {
     }
 
-    public QuestionDto(int questionId, Date date, List<CommentDto> commentDtos, SoftwareDto softwareDto,
-            UserDto userDto) {
+    public QuestionDto(int questionId, String description, Date date, List<CommentDto> commentDtos,
+            SoftwareDto softwareDto, UserDto userDto) {
         this.questionId = questionId;
+        this.description = description;
         this.date = date;
         this.commentDtos = commentDtos;
         this.softwareDto = softwareDto;
@@ -70,8 +81,8 @@ public class QuestionDto {
 
     @Override
     public String toString() {
-        return "QuestionDto [questionId=" + questionId + ", date=" + date
-                + ", softwareDto=" + softwareDto + ", userDto=" + userDto + "]";
+        return "QuestionDto [questionId=" + questionId + ", description=" + description + ", date=" + date
+                + ", commentDtos=" + commentDtos + ", softwareDto=" + softwareDto + ", userDto=" + userDto + "]";
     }
 
 }

@@ -14,7 +14,6 @@ import com.websiteReview.Model.User;
 import com.websiteReview.Respository.RefreshTokenRepository;
 import com.websiteReview.Respository.UserRepository;
 
-
 @Service
 public class RefreshTokenService {
 
@@ -50,7 +49,7 @@ public class RefreshTokenService {
     public RefreshTokenDto verifyRefreshToken(String providedRefreshToken) {
         RefreshToken refreshToken = this.refreshTokenRepository.findByRefreshToken(providedRefreshToken)
                 .orElseThrow(() -> new ResourceNotFoundException("The expected refresh token is not found"));
-    
+
         if (refreshToken.getExpiry().compareTo(Instant.now()) < 0) {
             try {
                 this.refreshTokenRepository.delete(refreshToken);
@@ -59,9 +58,8 @@ public class RefreshTokenService {
             }
             throw new ResourceNotFoundException("The provided refresh token has been expired !!");
         }
-    
+
         return this.modelMapper.map(refreshToken, RefreshTokenDto.class);
     }
-    
-}
 
+}

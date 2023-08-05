@@ -6,6 +6,8 @@ public class CommentDto {
 
     private int commentId;
 
+    private String description;
+
     private Date date;
 
     private UserDto userDto;
@@ -44,11 +46,20 @@ public class CommentDto {
         this.questionDto = questionDto;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public CommentDto() {
     }
 
-    public CommentDto(int commentId, Date date, UserDto userDto, QuestionDto questionDto) {
+    public CommentDto(int commentId, String description, Date date, UserDto userDto, QuestionDto questionDto) {
         this.commentId = commentId;
+        this.description = description;
         this.date = date;
         this.userDto = userDto;
         this.questionDto = questionDto;
@@ -56,8 +67,8 @@ public class CommentDto {
 
     @Override
     public String toString() {
-        return "CommentDto [commentId=" + commentId + ", date=" + date + ", userDto=" + userDto + ", questionDto="
-                + questionDto + "]";
+        return "CommentDto [commentId=" + commentId + ", description=" + description + ", date=" + date + ", userDto="
+                + userDto + ", questionDto=" + questionDto + "]";
     }
 
 }

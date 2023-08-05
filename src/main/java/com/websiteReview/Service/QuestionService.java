@@ -1,42 +1,127 @@
 package com.websiteReview.Service;
 
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.websiteReview.Dtos.QuestionDto;
+import com.websiteReview.Exception.ResourceNotFoundException;
+import com.websiteReview.Helper.QuestionResponse;
+import com.websiteReview.Model.Question;
+import com.websiteReview.Model.Software;
+import com.websiteReview.Model.User;
 import com.websiteReview.Respository.QuestionRepository;
+import com.websiteReview.Respository.SoftwareRepository;
+import com.websiteReview.Respository.UserRepository;
 
 @Service
 public class QuestionService {
 
-    @Autowired
-    private QuestionRepository questionRepository;
+        @Autowired
+        private QuestionRepository questionRepository;
 
-    public QuestionDto createQuestion(QuestionDto questionDto, String username, int softwareId){
-        
-        return null;
-    }
+        @Autowired
+        private ModelMapper modelMapper;
 
-    public QuestionDto viewById(int questionId){
-        return null;
-    }
+        @Autowired
+        private SoftwareRepository softwareRepository;
 
-    public List<QuestionDto> viewBySoftware(int softwareId){
-        return null;
-    }
+        @Autowired
+        private UserRepository userRepository;
 
-    public List<QuestionDto> viewByUser(String username){
-        return null;
-    }
+        public QuestionDto create(QuestionDto questionDto, String username, int softwareId) {
+                Question question = this.modelMapper.map(questionDto, Question.class);
+                Software software = this.softwareRepository.findById(softwareId)
+                                .orElseThrow(() -> new ResourceNotFoundException("The expected software is not found"));
+                User user = this.userRepository.findByEmail(username)
+                                .orElseThrow(() -> new ResourceNotFoundException("The expected software is not found"));
 
-    public void deleteQuestion(int questionId){
+                question.setSoftware(software);
+                question.setUser(user);
+                question.setDate(new Date());
 
-    }
+                Question savedQuestion = this.questionRepository.save(question);
 
-    public QuestionDto updateQuestion(QuestionDto questionDto){
-        return null;
-    }
-    
+                return this.modelMapper.map(savedQuestion, QuestionDto.class);
+        }
+
+        public QuestionDto viewById(int questionId) {
+                Question question = this.questionRepository.findById(questionId)
+                                .orElseThrow(() -> new ResourceNotFoundException("The expected question is not found"));
+                return this.modelMapper.map(question, QuestionDto.class);
+        }
+
+        public QuestionResponse viewBySoftware(int softwareId, int pageNumber, int pageSize) {
+
+                Software software = this.softwareRepository.findById(softwareId)
+                                .orElseThrow(() -> new ResourceNotFoundException("The expected software is not found"));
+
+                Pageable pageable = PageRequest.of(pageNumber, pageSize);
+                Page<Question> page = this.questionRepository.findBySoftware(software, pageable);
+                List<Question> pageQuestion = page.getContent();
+
+                List<QuestionDto> pageQuestionDtos = pageQuestion.stream()
+                                .map(question -> this.modelMapper.map(question, QuestionDto.class))
+                                .collect(Collectors.toList());
+
+                QuestionResponse response = new QuestionResponse();
+                response.setContent(pageQuestionDtos);
+                response.setPageNumber(page.getNumber());
+                response.setPageSize(page.getSize());
+                response.setTotalPages(page.getTotalPages());
+                response.setLastPage(page.isLast());
+                return response;
+        }
+
+        public QuestionResponse viewByUser(String username, int pageNumber, int pageSize) {
+
+                User user = this.userRepository.findByEmail(username)
+                                .orElseThrow(() -> new ResourceNotFoundException("The expected user is not found"));
+
+                Pageable pageable = PageRequest.of(pageNumber, pageSize);
+                Page<Question> page = this.questionRepository.findByUser(user, pageable);
+                List<Question> pageQuestions = page.getContent();
+                List<QuestionDto> pageQuestionDtos = pageQuestions.stream()
+                                .map(question -> this.modelMapper.map(question, QuestionDto.class))
+                                .collect(Collectors.toList());
+
+                QuestionResponse response = new QuestionResponse();
+                response.setContent(pageQuestionDtos);
+                response.setPageNumber(page.getNumber());
+                response.setPageSize(page.getSize());
+                response.setTotalPages(page.getTotalPages());
+                response.setLastPage(page.isLast());
+                return response;
+        }
+
+        public void delete(int questionId) {
+                Question question = this.questionRepository.findById(questionId)
+                                .orElseThrow(() -> new ResourceNotFoundException("The expected question is not found"));
+                this.questionRepository.delete(question);
+        }
+
+        public QuestionDto update(QuestionDto questionDto, int questionId, String username) {
+                Question oldQuestion = this.questionRepository.findById(questionId)
+                                .orElseThrow(() -> new ResourceNotFoundException("The expected question is not found"));
+
+                User newUser = this.userRepository.findByEmail(username)
+                                .orElseThrow(() -> new ResourceNotFoundException("The expected user is not found"));
+                if (oldQuestion.getUser().equals(newUser)) {
+
+                        oldQuestion.setDescription(questionDto.getDescription());
+                        oldQuestion = this.questionRepository.save(oldQuestion);
+                } else {
+                        throw new ResourceNotFoundException("You are not allowed to perform this operation");
+                }
+
+                return this.modelMapper.map(oldQuestion, QuestionDto.class);
+        }
+
 }

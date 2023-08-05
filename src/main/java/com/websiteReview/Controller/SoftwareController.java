@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.websiteReview.Dtos.SoftwareDto;
+import com.websiteReview.Helper.AppConstants;
+import com.websiteReview.Helper.SoftwareResponse;
 import com.websiteReview.Service.FileUploadService;
 import com.websiteReview.Service.SoftwareService;
 
@@ -33,37 +35,38 @@ public class SoftwareController {
     private String path = "src/software/screenshots";
 
     private String videoPath = "src/software/videos";
-    
+
     @PostMapping("/create")
-    public ResponseEntity<SoftwareDto> create(@RequestBody SoftwareDto softwareDto){
-        return new ResponseEntity<SoftwareDto>(this.softwareService.createSoftware(softwareDto), HttpStatus.CREATED);
+    public ResponseEntity<SoftwareDto> create(@RequestBody SoftwareDto softwareDto) {
+        return new ResponseEntity<SoftwareDto>(this.softwareService.create(softwareDto), HttpStatus.CREATED);
     }
 
     @GetMapping("/viewById/{softwareId}")
-    public ResponseEntity<SoftwareDto> viewById(@PathVariable int softwareId){
-        return new ResponseEntity<SoftwareDto>(this.softwareService.getById(softwareId), HttpStatus.OK);
+    public ResponseEntity<SoftwareDto> viewById(@PathVariable int softwareId) {
+        return new ResponseEntity<SoftwareDto>(this.softwareService.viewById(softwareId), HttpStatus.OK);
     }
 
-    @GetMapping("/viewAllSoftwares")
-    public ResponseEntity<List<SoftwareDto>> viewAllSoftwares(){
-        return new ResponseEntity<List<SoftwareDto>>(this.softwareService.getAllSoftwares(), HttpStatus.OK);
+    @GetMapping("/viewAll")
+    public ResponseEntity<List<SoftwareDto>> viewAllSoftwares() {
+        return new ResponseEntity<List<SoftwareDto>>(this.softwareService.viewAll(), HttpStatus.OK);
     }
 
     @GetMapping("/delete/{softwareId}")
-    public ResponseEntity<String> delete(@PathVariable int softwareId){
-        this.softwareService.deleteSoftware(softwareId);
+    public ResponseEntity<String> delete(@PathVariable int softwareId) {
+        this.softwareService.delete(softwareId);
         return new ResponseEntity<String>("Successfully deleted...", HttpStatus.OK);
     }
 
     @PostMapping("/uploadFiles/{softwareId}")
-    public ResponseEntity<?> uploadScreenshots(@PathVariable int softwareId, @RequestParam("screenshots") List<MultipartFile> screenshots, @RequestParam("video") MultipartFile video){
+    public ResponseEntity<?> uploadScreenshots(@PathVariable int softwareId,
+            @RequestParam(value = "screenshots", required = false) List<MultipartFile> screenshots, @RequestParam(value = "video", required = false) MultipartFile video) {
 
-        SoftwareDto softwareDto = this.softwareService.getById(softwareId);
+        SoftwareDto softwareDto = this.softwareService.viewById(softwareId);
         List<String> screenshotNames = new ArrayList<>();
         String videoName = null;
 
         try {
-            
+
             screenshotNames = this.fileUploadService.uploadImages(path, screenshots);
             videoName = this.fileUploadService.uploadImage(videoPath, video);
             softwareDto.setScreenshots(screenshotNames);
@@ -78,6 +81,30 @@ public class SoftwareController {
             return new ResponseEntity<>(Map.of("Message", "Couldn't upload the screenshots or video....."),
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @GetMapping("/viewByRating/{rating}")
+    public ResponseEntity<SoftwareResponse> filterByRating(@PathVariable int rating,
+            @RequestParam(value = "pageNumber", defaultValue = AppConstants.pageNumberString, required = false) int pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = AppConstants.pageSizeString, required = false) int pageSize) {
+        
+                return new ResponseEntity<SoftwareResponse>(this.softwareService.viewByRating(rating, pageNumber, pageSize), HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping("/viewByCategory/{categoryId}")
+    public ResponseEntity<SoftwareResponse> filterByCategory(@PathVariable int categoryId,
+            @RequestParam(value = "pageNumber", defaultValue = AppConstants.pageNumberString, required = false) int pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = AppConstants.pageSizeString, required = false) int pageSize) {
+
+        return new ResponseEntity<SoftwareResponse>(this.softwareService.viewBySubCategory(categoryId, pageNumber, pageSize), HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping("/viewBySegment/{sizeId}")
+    public ResponseEntity<SoftwareResponse> filterBySegment(@PathVariable int sizeId,
+            @RequestParam(value = "pageNumber", defaultValue = AppConstants.pageNumberString, required = false) int pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = AppConstants.pageSizeString, required = false) int pageSize) {
+
+        return new ResponseEntity<SoftwareResponse>(this.softwareService.viewBySegment(sizeId, pageNumber, pageSize), HttpStatus.ACCEPTED);
     }
 
 }

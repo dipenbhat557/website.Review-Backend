@@ -13,7 +13,7 @@ import jakarta.persistence.OneToOne;
 
 @Entity
 public class Review {
-    //consists of the core information about the particular review
+    // consists of the core information about the particular review
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -39,7 +39,6 @@ public class Review {
     @OneToOne(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private AboutReviewProduct aboutReviewProduct;
-
 
     public int getReviewId() {
         return reviewId;
@@ -113,12 +112,8 @@ public class Review {
         this.aboutReviewProduct = aboutReviewProduct;
     }
 
-    
-
     public Review() {
     }
-
-    
 
     public Review(int reviewId, String title, String whatYouLike, String whatYouDislike, String userRole, double rating,
             User user, Software software, AboutReviewUser aboutReviewUser, AboutReviewProduct aboutReviewProduct) {
@@ -150,5 +145,4 @@ public class Review {
                 + aboutReviewProduct + "]";
     }
 
-    
 }

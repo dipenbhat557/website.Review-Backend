@@ -21,24 +21,27 @@ public class CompanySizeService {
     @Autowired
     private ModelMapper modelMapper;
 
-    public CompanySizeDto createCompanySize(CompanySizeDto companySizeDto){
+    public CompanySizeDto create(CompanySizeDto companySizeDto) {
         CompanySize companySize = this.modelMapper.map(companySizeDto, CompanySize.class);
         return this.modelMapper.map(companySize, CompanySizeDto.class);
     }
 
-    public CompanySizeDto viewSizeById(int sizeId){
-        CompanySize companySize = this.companySizeRepository.findById(sizeId).orElseThrow(() -> new ResourceNotFoundException("The expected company size is not found"));
+    public CompanySizeDto viewById(int sizeId) {
+        CompanySize companySize = this.companySizeRepository.findById(sizeId)
+                .orElseThrow(() -> new ResourceNotFoundException("The expected company size is not found"));
         return this.modelMapper.map(companySize, CompanySizeDto.class);
     }
 
-    public void deleteSize(int sizeId){
-        CompanySize companySize = this.companySizeRepository.findById(sizeId).orElseThrow(() -> new ResourceNotFoundException("The expected company size is not found"));
+    public void delete(int sizeId) {
+        CompanySize companySize = this.companySizeRepository.findById(sizeId)
+                .orElseThrow(() -> new ResourceNotFoundException("The expected company size is not found"));
         this.companySizeRepository.delete(companySize);
     }
 
-    public List<CompanySizeDto> viewAll(){
+    public List<CompanySizeDto> viewAll() {
         List<CompanySize> companySizes = this.companySizeRepository.findAll();
-        List<CompanySizeDto> companySizeDtos = companySizes.stream().map(size -> this.modelMapper.map(size, CompanySizeDto.class)).collect(Collectors.toList());
+        List<CompanySizeDto> companySizeDtos = companySizes.stream()
+                .map(size -> this.modelMapper.map(size, CompanySizeDto.class)).collect(Collectors.toList());
         return companySizeDtos;
     }
 }

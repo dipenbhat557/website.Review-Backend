@@ -46,12 +46,8 @@ public class RefreshToken {
         this.user = user;
     }
 
-    
-
     public RefreshToken() {
     }
-
-    
 
     public RefreshToken(int tokenId, String refreshToken, Instant expiry, User user) {
         this.tokenId = tokenId;
@@ -59,8 +55,6 @@ public class RefreshToken {
         this.expiry = expiry;
         this.user = user;
     }
-
-    
 
     public RefreshToken(String refreshToken, Instant expiry, User user) {
         this.refreshToken = refreshToken;
@@ -82,6 +76,4 @@ public class RefreshToken {
         this.tokenId = tokenId;
     }
 
-    
-    
 }

@@ -9,7 +9,7 @@ import jakarta.persistence.OneToOne;
 
 @Entity
 public class AboutReviewUser {
-    //consists of information about the user giving the review
+    // consists of information about the user giving the review
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,7 +22,7 @@ public class AboutReviewUser {
     private String previousVendor;
     @Column(length = 5000)
     private String reasonOfSwitch;
-    
+
     @OneToOne
     private Review review;
 
@@ -113,5 +113,4 @@ public class AboutReviewUser {
                 + ", review=" + review + "]";
     }
 
-    
 }

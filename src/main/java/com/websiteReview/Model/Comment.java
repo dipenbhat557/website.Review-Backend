@@ -1,6 +1,6 @@
 package com.websiteReview.Model;
 
-import java.sql.Date;
+import java.util.Date;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,6 +15,8 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int commentId;
+
+    private String description;
 
     private Date date;
 
@@ -56,11 +58,20 @@ public class Comment {
         this.question = question;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Comment() {
     }
 
-    public Comment(int commentId, Date date, User user, Question question) {
+    public Comment(int commentId, String description, Date date, User user, Question question) {
         this.commentId = commentId;
+        this.description = description;
         this.date = date;
         this.user = user;
         this.question = question;
@@ -68,7 +79,8 @@ public class Comment {
 
     @Override
     public String toString() {
-        return "Comment [commentId=" + commentId + ", date=" + date + ", user=" + user + ", question=" + question + "]";
+        return "Comment [commentId=" + commentId + ", description=" + description + ", date=" + date + ", user=" + user
+                + ", question=" + question + "]";
     }
 
 }

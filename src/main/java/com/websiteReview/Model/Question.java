@@ -20,6 +20,8 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int questionId;
 
+    private String description;
+
     private Date date;
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -71,11 +73,21 @@ public class Question {
         this.user = user;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Question() {
     }
 
-    public Question(int questionId, Date date, List<Comment> comments, Software software, User user) {
+    public Question(int questionId, String description, Date date, List<Comment> comments, Software software,
+            User user) {
         this.questionId = questionId;
+        this.description = description;
         this.date = date;
         this.comments = comments;
         this.software = software;
@@ -84,8 +96,8 @@ public class Question {
 
     @Override
     public String toString() {
-        return "Question [questionId=" + questionId + ", date=" + date + ", software="
-                + software + ", user=" + user + "]";
+        return "Question [questionId=" + questionId + ", description=" + description + ", date=" + date + ", comments="
+                + comments + ", software=" + software + ", user=" + user + "]";
     }
 
 }

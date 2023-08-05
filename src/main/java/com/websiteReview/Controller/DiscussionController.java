@@ -1,7 +1,6 @@
 package com.websiteReview.Controller;
 
 import java.security.Principal;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,10 +11,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.websiteReview.Dtos.CommentDto;
 import com.websiteReview.Dtos.QuestionDto;
+import com.websiteReview.Helper.AppConstants;
+import com.websiteReview.Helper.CommentResponse;
+import com.websiteReview.Helper.QuestionResponse;
 import com.websiteReview.Service.CommentService;
 import com.websiteReview.Service.QuestionService;
 
@@ -29,72 +32,91 @@ public class DiscussionController {
     @Autowired
     private CommentService commentService;
 
-    //question part
+    // question part
     @PostMapping("/question/create/{softwareId}")
     public ResponseEntity<QuestionDto> createQuestion(@RequestBody QuestionDto questionDto, Principal principal,
             @PathVariable int softwareId) {
-        QuestionDto savedQuestionDto = this.questionService.createQuestion(questionDto, principal.getName(),
+        QuestionDto savedQuestionDto = this.questionService.create(questionDto, principal.getName(),
                 softwareId);
         return new ResponseEntity<QuestionDto>(savedQuestionDto, HttpStatus.CREATED);
     }
 
     @GetMapping("/question/viewById/{questionId}")
-    public ResponseEntity<QuestionDto> viewQuestionById(@PathVariable int questionId){
+    public ResponseEntity<QuestionDto> viewQuestionById(@PathVariable int questionId) {
         return new ResponseEntity<QuestionDto>(this.questionService.viewById(questionId), HttpStatus.OK);
     }
 
     @GetMapping("/question/viewByUser")
-    public ResponseEntity<List<QuestionDto>> viewQuestionsByUser(Principal principal){
-        return new ResponseEntity<List<QuestionDto>>(this.questionService.viewByUser(principal.getName()), HttpStatus.OK);
+    public ResponseEntity<QuestionResponse> viewQuestionsByUser(Principal principal,
+            @RequestParam(value = "pageNumber", defaultValue = AppConstants.pageNumberString, required = false) int pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = AppConstants.pageSizeString, required = false) int pageSize) {
+        return new ResponseEntity<QuestionResponse>(
+                this.questionService.viewByUser(principal.getName(), pageNumber, pageSize),
+                HttpStatus.OK);
     }
 
     @GetMapping("/question/viewBySoftware/{softwareId}")
-    public ResponseEntity<List<QuestionDto>> viewQuestionsBySoftware(@PathVariable int softwareId){
-        return new ResponseEntity<List<QuestionDto>>(this.questionService.viewBySoftware(softwareId), HttpStatus.OK);
+    public ResponseEntity<QuestionResponse> viewQuestionsBySoftware(@PathVariable int softwareId,
+            @RequestParam(value = "pageNumber", defaultValue = AppConstants.pageNumberString, required = false) int pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = AppConstants.pageSizeString, required = false) int pageSize) {
+        return new ResponseEntity<QuestionResponse>(
+                this.questionService.viewBySoftware(softwareId, pageNumber, pageSize), HttpStatus.OK);
     }
 
     @GetMapping("/question/delete/{questionId}")
-    public ResponseEntity<String> deleteQuestion(@PathVariable int questionId){
-        this.questionService.deleteQuestion(questionId);
+    public ResponseEntity<String> deleteQuestion(@PathVariable int questionId) {
+        this.questionService.delete(questionId);
         return new ResponseEntity<String>("Successfully deleted question...", HttpStatus.OK);
     }
 
-    @PutMapping("/question/update")
-    public ResponseEntity<QuestionDto> updateQuestion(@RequestBody QuestionDto questionDto){
-        return new ResponseEntity<QuestionDto>(this.questionService.updateQuestion(questionDto), HttpStatus.OK);
+    @PutMapping("/question/update/{questionId}")
+    public ResponseEntity<QuestionDto> updateQuestion(@RequestBody QuestionDto questionDto,
+            @PathVariable int questionId, Principal principal) {
+        return new ResponseEntity<QuestionDto>(
+                this.questionService.update(questionDto, questionId, principal.getName()),
+                HttpStatus.OK);
     }
 
-
-    //comments started
+    // comments started
     @PostMapping("/comment/create/{questionId}")
-    public ResponseEntity<CommentDto> createComment(@RequestBody CommentDto commentDto, Principal principal, @PathVariable int questionId){
-        return new ResponseEntity<CommentDto>(this.commentService.createComment(commentDto, principal.getName(), questionId), HttpStatus.CREATED);
+    public ResponseEntity<CommentDto> createComment(@RequestBody CommentDto commentDto, Principal principal,
+            @PathVariable int questionId) {
+        return new ResponseEntity<CommentDto>(
+                this.commentService.create(commentDto, principal.getName(), questionId), HttpStatus.CREATED);
     }
 
     @GetMapping("/comment/viewById/{commentId}")
-    public ResponseEntity<CommentDto> viewCommentById(@PathVariable int commentId){
+    public ResponseEntity<CommentDto> viewCommentById(@PathVariable int commentId) {
         return new ResponseEntity<CommentDto>(this.commentService.viewById(commentId), HttpStatus.OK);
     }
 
     @GetMapping("/comment/viewByUser")
-    public ResponseEntity<List<CommentDto>> viewCommentsByUser(Principal principal){
-        return new ResponseEntity<List<CommentDto>>(this.commentService.viewByUser(principal.getName()), HttpStatus.OK);
+    public ResponseEntity<CommentResponse> viewCommentsByUser(Principal principal,
+            @RequestParam(value = "pageNumber", defaultValue = AppConstants.pageNumberString, required = false) int pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = AppConstants.pageSizeString, required = false) int pageSize) {
+        return new ResponseEntity<CommentResponse>(
+                this.commentService.viewByUser(principal.getName(), pageNumber, pageSize), HttpStatus.OK);
     }
 
     @GetMapping("/comment/viewByQuestion/{questionId}")
-    public ResponseEntity<List<CommentDto>> viewCommentsByQuestion(@PathVariable int questionId){
-        return new ResponseEntity<List<CommentDto>>(this.commentService.viewByQuestion(questionId), HttpStatus.OK);
+    public ResponseEntity<CommentResponse> viewCommentsByQuestion(@PathVariable int questionId,
+            @RequestParam(value = "pageNumber", defaultValue = AppConstants.pageNumberString, required = false) int pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = AppConstants.pageSizeString, required = false) int pageSize) {
+        return new ResponseEntity<CommentResponse>(this.commentService.viewByQuestion(questionId, pageNumber, pageSize),
+                HttpStatus.OK);
     }
 
     @GetMapping("/comment/delete/{commentId}")
-    public ResponseEntity<String> deleteComment(@PathVariable int commentId){
-        this.commentService.deleteComment(commentId);
+    public ResponseEntity<String> deleteComment(@PathVariable int commentId) {
+        this.commentService.delete(commentId);
         return new ResponseEntity<String>("Successfully deleted...", HttpStatus.OK);
     }
 
-    @PutMapping("/comment/update")
-    public ResponseEntity<CommentDto> updateComment(@RequestBody CommentDto commentDto){
-        return new ResponseEntity<CommentDto>(this.commentService.updateComment(commentDto), HttpStatus.OK);
+    @PutMapping("/comment/update/{commentId}")
+    public ResponseEntity<CommentDto> updateComment(@RequestBody CommentDto commentDto, @PathVariable int commentId,
+            Principal principal) {
+        return new ResponseEntity<CommentDto>(
+                this.commentService.update(commentId, commentDto, principal.getName()), HttpStatus.OK);
     }
 
 }
