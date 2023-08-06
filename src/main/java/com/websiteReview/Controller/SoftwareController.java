@@ -19,18 +19,18 @@ import org.springframework.web.multipart.MultipartFile;
 import com.websiteReview.Dtos.SoftwareDto;
 import com.websiteReview.Helper.AppConstants;
 import com.websiteReview.Helper.SoftwareResponse;
-import com.websiteReview.Service.FileUploadService;
-import com.websiteReview.Service.SoftwareService;
+import com.websiteReview.ServiceImpl.FileUploadServiceImpl;
+import com.websiteReview.ServiceImpl.SoftwareServiceImpl;
 
 @RestController
 @RequestMapping("/software")
 public class SoftwareController {
 
     @Autowired
-    private SoftwareService softwareService;
+    private SoftwareServiceImpl softwareService;
 
     @Autowired
-    private FileUploadService fileUploadService;
+    private FileUploadServiceImpl fileUploadService;
 
     private String path = "src/software/screenshots";
 

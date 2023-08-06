@@ -1,7 +1,5 @@
 package com.websiteReview.Controller;
 
-import java.util.Map;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,15 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +22,7 @@ import com.websiteReview.Helper.JwtResponse;
 import com.websiteReview.Helper.RefreshTokenRequest;
 import com.websiteReview.Model.User;
 import com.websiteReview.Security.JwtHelper;
-import com.websiteReview.Service.RefreshTokenService;
+import com.websiteReview.ServiceImpl.RefreshTokenServiceImpl;
 
 @RestController
 @RequestMapping("/auth")
@@ -47,7 +38,7 @@ public class AuthController {
     private JwtHelper jwtHelper;
 
     @Autowired
-    private RefreshTokenService refreshTokenService;
+    private RefreshTokenServiceImpl refreshTokenService;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -82,7 +73,7 @@ public class AuthController {
     public ResponseEntity<?> refreshJwtToken(@RequestBody RefreshTokenRequest request) {
 
         RefreshTokenDto refreshTokenDto = this.refreshTokenService.verifyRefreshToken(request.getRefreshToken());
-        UserDto userDto = refreshTokenDto.getUser();
+        UserDto userDto = refreshTokenDto.getUserDto();
         String token = this.jwtHelper.generateToken(this.modelMapper.map(userDto, User.class));
 
         JwtResponse jwtResponse = new JwtResponse(token, refreshTokenDto.getRefreshToken(),

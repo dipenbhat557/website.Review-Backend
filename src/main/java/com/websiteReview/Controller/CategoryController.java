@@ -17,18 +17,18 @@ import com.websiteReview.Dtos.CategoryDto;
 import com.websiteReview.Dtos.SubCategoryDto;
 import com.websiteReview.Helper.AppConstants;
 import com.websiteReview.Helper.SubCategoryResponse;
-import com.websiteReview.Service.CategoryService;
-import com.websiteReview.Service.SubCategoryService;
+import com.websiteReview.ServiceImpl.CategoryServiceImpl;
+import com.websiteReview.ServiceImpl.SubCategoryServiceImpl;
 
 @RestController
 @RequestMapping("/category")
 public class CategoryController {
 
     @Autowired
-    private CategoryService categoryService;
+    private CategoryServiceImpl categoryService;
 
     @Autowired
-    private SubCategoryService subCategoryService;
+    private SubCategoryServiceImpl subCategoryService;
 
     @PostMapping("/create")
     public ResponseEntity<CategoryDto> createCatgory(@RequestBody CategoryDto categoryDto) {

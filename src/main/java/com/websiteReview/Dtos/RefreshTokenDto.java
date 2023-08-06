@@ -10,7 +10,7 @@ public class RefreshTokenDto {
 
     private Instant expiry;
 
-    private UserDto user;
+    private UserDto userDto;
 
     public String getRefreshToken() {
         return refreshToken;
@@ -28,42 +28,34 @@ public class RefreshTokenDto {
         this.expiry = expiry;
     }
 
-    public UserDto getUser() {
-        return user;
+    public UserDto getUserDto() {
+        return userDto;
     }
 
-    public void setUser(UserDto user) {
-        this.user = user;
+    public void setUserDto(UserDto userDto) {
+        this.userDto = userDto;
     }
-
-    
 
     public RefreshTokenDto() {
     }
 
-    
-
-    public RefreshTokenDto(int tokenId, String refreshToken, Instant expiry, UserDto user) {
+    public RefreshTokenDto(int tokenId, String refreshToken, Instant expiry, UserDto userDto) {
         this.tokenId = tokenId;
         this.refreshToken = refreshToken;
         this.expiry = expiry;
-        this.user = user;
+        this.userDto = userDto;
     }
 
-    
-
-    
-
-    public RefreshTokenDto(String refreshToken, Instant expiry, UserDto user) {
+    public RefreshTokenDto(String refreshToken, Instant expiry, UserDto userDto) {
         this.refreshToken = refreshToken;
         this.expiry = expiry;
-        this.user = user;
+        this.userDto = userDto;
     }
 
     @Override
     public String toString() {
         return "RefreshToken [tokenId=" + tokenId + ", refreshToken=" + refreshToken + ", expiry=" + expiry + ", user="
-                + user + "]";
+                + userDto + "]";
     }
 
     public int getTokenId() {
@@ -74,6 +66,4 @@ public class RefreshTokenDto {
         this.tokenId = tokenId;
     }
 
-    
-    
 }

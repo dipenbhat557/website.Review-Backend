@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.websiteReview.Dtos.CompanySizeDto;
-import com.websiteReview.Service.CompanySizeService;
+import com.websiteReview.ServiceImpl.CompanySizeServiceImpl;
 
 @RestController
 @RequestMapping("company/size")
 public class CompanySizeController {
 
     @Autowired
-    private CompanySizeService companySizeService;
+    private CompanySizeServiceImpl companySizeService;
 
     @PostMapping("/create")
     public ResponseEntity<CompanySizeDto> createCompanySize(CompanySizeDto companySizeDto) {

@@ -3,59 +3,61 @@ package com.websiteReview.Dtos;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.websiteReview.Model.Software;
-
-
 public class SubCategoryDto {
 
     private int subCategoryId;
     private String title;
-    private List<CategoryDto> categories = new ArrayList<>();
+    private List<CategoryDto> categoryDtos = new ArrayList<>();
 
-    private List<Software> softwares = new ArrayList<>();
+    private List<SoftwareDto> softwareDtos = new ArrayList<>();
 
     public int getSubCategoryId() {
         return subCategoryId;
     }
+
     public void setSubCategoryId(int subCategoryId) {
         this.subCategoryId = subCategoryId;
     }
+
     public String getTitle() {
         return title;
     }
+
     public void setTitle(String title) {
         this.title = title;
     }
-    public List<CategoryDto> getCategories() {
-        return categories;
-    }
-    public void setCategories(List<CategoryDto> categories) {
-        this.categories = categories;
+
+    public List<CategoryDto> getCategoryDtos() {
+        return categoryDtos;
     }
 
-    
+    public void setCategoryDtos(List<CategoryDto> categoryDtos) {
+        this.categoryDtos = categoryDtos;
+    }
+
+    public List<SoftwareDto> getSoftwareDtos() {
+        return softwareDtos;
+    }
+
+    public void setSoftwareDtos(List<SoftwareDto> softwareDtos) {
+        this.softwareDtos = softwareDtos;
+    }
 
     public SubCategoryDto() {
     }
-    
-    public SubCategoryDto(int subCategoryId, String title, List<CategoryDto> categories, List<Software> softwares) {
+
+    public SubCategoryDto(int subCategoryId, String title, List<CategoryDto> categoryDtos,
+            List<SoftwareDto> softwareDtos) {
         this.subCategoryId = subCategoryId;
         this.title = title;
-        this.categories = categories;
-        this.softwares = softwares;
-    }
-    @Override
-    public String toString() {
-        return "SubCategoryDto [subCategoryId=" + subCategoryId + ", title=" + title + ", categories=" + categories
-                + "]";
-    }
-    public List<Software> getSoftwares() {
-        return softwares;
-    }
-    public void setSoftwares(List<Software> softwares) {
-        this.softwares = softwares;
+        this.categoryDtos = categoryDtos;
+        this.softwareDtos = softwareDtos;
     }
 
-    
-    
+    @Override
+    public String toString() {
+        return "SubCategoryDto [subCategoryId=" + subCategoryId + ", title=" + title + ", categories=" + categoryDtos
+                + "]";
+    }
+
 }

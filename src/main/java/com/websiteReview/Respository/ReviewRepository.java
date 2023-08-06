@@ -1,7 +1,5 @@
 package com.websiteReview.Respository;
 
-import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,8 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import com.websiteReview.Model.Review;
 import com.websiteReview.Model.User;
 
-public interface ReviewRepository extends JpaRepository<Review, Integer>{
-    
+public interface ReviewRepository extends JpaRepository<Review, Integer> {
+
     public Page<Review> findByUser(User user, Pageable pageable);
 
     @Query("SELECT r FROM Review r WHERE r.aboutReviewUser.organizationSize >= :minSize AND r.aboutReviewUser.organizationSize <= :maxSize")

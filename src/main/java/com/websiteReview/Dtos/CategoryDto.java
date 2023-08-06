@@ -7,6 +7,7 @@ public class CategoryDto {
 
     private int categoryId;
     private String title;
+    
     private List<SubCategoryDto> subCategoryDtos = new ArrayList<>();
     
     public int getCategoryId() {

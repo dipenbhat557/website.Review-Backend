@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.websiteReview.Dtos.PricingDto;
-import com.websiteReview.Service.PricingService;
+import com.websiteReview.ServiceImpl.PricingServiceImpl;
 
 @RestController
 @RequestMapping("/pricing")
 public class PricingController {
 
     @Autowired
-    private PricingService pricingService;
+    private PricingServiceImpl pricingService;
     
     @PostMapping("/create")
     public ResponseEntity<PricingDto> createPricing(@RequestBody PricingDto pricingDto){

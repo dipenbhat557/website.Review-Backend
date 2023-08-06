@@ -1,47 +1,16 @@
 package com.websiteReview.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
-
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import com.websiteReview.Dtos.CompanySizeDto;
-import com.websiteReview.Exception.ResourceNotFoundException;
-import com.websiteReview.Model.CompanySize;
-import com.websiteReview.Respository.CompanySizeRepository;
 
-@Service
-public class CompanySizeService {
+public interface CompanySizeService {
 
-    @Autowired
-    private CompanySizeRepository companySizeRepository;
+    public CompanySizeDto create(CompanySizeDto companySizeDto);
 
-    @Autowired
-    private ModelMapper modelMapper;
+    public CompanySizeDto viewById(int sizeId);
 
-    public CompanySizeDto create(CompanySizeDto companySizeDto) {
-        CompanySize companySize = this.modelMapper.map(companySizeDto, CompanySize.class);
-        return this.modelMapper.map(companySize, CompanySizeDto.class);
-    }
+    public void delete(int sizeId);
 
-    public CompanySizeDto viewById(int sizeId) {
-        CompanySize companySize = this.companySizeRepository.findById(sizeId)
-                .orElseThrow(() -> new ResourceNotFoundException("The expected company size is not found"));
-        return this.modelMapper.map(companySize, CompanySizeDto.class);
-    }
-
-    public void delete(int sizeId) {
-        CompanySize companySize = this.companySizeRepository.findById(sizeId)
-                .orElseThrow(() -> new ResourceNotFoundException("The expected company size is not found"));
-        this.companySizeRepository.delete(companySize);
-    }
-
-    public List<CompanySizeDto> viewAll() {
-        List<CompanySize> companySizes = this.companySizeRepository.findAll();
-        List<CompanySizeDto> companySizeDtos = companySizes.stream()
-                .map(size -> this.modelMapper.map(size, CompanySizeDto.class)).collect(Collectors.toList());
-        return companySizeDtos;
-    }
+    public List<CompanySizeDto> viewAll();
 }

@@ -1,7 +1,5 @@
 package com.websiteReview.Dtos;
 
-import com.websiteReview.Model.Review;
-
 public class AboutReviewProductDto {
     
     private int aboutProductId;
@@ -11,7 +9,8 @@ public class AboutReviewProductDto {
     private double easeOfUseRating;
     private double meetsRequirementRating;
     private double qualitySupportRating;
-    private Review review;
+    private ReviewDto reviewDto;
+
     public int getAboutProductId() {
         return aboutProductId;
     }
@@ -54,16 +53,16 @@ public class AboutReviewProductDto {
     public void setQualitySupportRating(double qualitySupportRating) {
         this.qualitySupportRating = qualitySupportRating;
     }
-    public Review getReview() {
-        return review;
+    public ReviewDto getReviewDto() {
+        return reviewDto;
     }
-    public void setReview(Review review) {
-        this.review = review;
+    public void setReviewDto(ReviewDto reviewDto) {
+        this.reviewDto = reviewDto;
     }
     public AboutReviewProductDto() {
     }
     public AboutReviewProductDto(int aboutProductId, String title, String purposeOfUse, double notionDirectionRating,
-            double easeOfUseRating, double meetsRequirementRating, double qualitySupportRating, Review review) {
+            double easeOfUseRating, double meetsRequirementRating, double qualitySupportRating, ReviewDto reviewDto) {
         this.aboutProductId = aboutProductId;
         this.title = title;
         this.purposeOfUse = purposeOfUse;
@@ -71,14 +70,14 @@ public class AboutReviewProductDto {
         this.easeOfUseRating = easeOfUseRating;
         this.meetsRequirementRating = meetsRequirementRating;
         this.qualitySupportRating = qualitySupportRating;
-        this.review = review;
+        this.reviewDto = reviewDto;
     }
     @Override
     public String toString() {
         return "AboutReviewProductDto [aboutProductId=" + aboutProductId + ", title=" + title + ", purposeOfUse="
                 + purposeOfUse + ", notionDirectionRating=" + notionDirectionRating + ", easeOfUseRating="
                 + easeOfUseRating + ", meetsRequirementRating=" + meetsRequirementRating + ", qualitySupportRating="
-                + qualitySupportRating + ", review=" + review + "]";
+                + qualitySupportRating + ", review=" + reviewDto + "]";
     }
 
     

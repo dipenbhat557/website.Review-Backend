@@ -1,7 +1,6 @@
 package com.websiteReview.Controller;
 
 import java.security.Principal;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,26 +22,26 @@ import com.websiteReview.Helper.AppConstants;
 import com.websiteReview.Helper.FilterByOrganizationSizeRequest;
 import com.websiteReview.Helper.FilterByPurposeRequest;
 import com.websiteReview.Helper.ReviewResponse;
-import com.websiteReview.Service.AboutReviewProductService;
-import com.websiteReview.Service.AboutReviewUserService;
-import com.websiteReview.Service.FileUploadService;
-import com.websiteReview.Service.ReviewService;
+import com.websiteReview.ServiceImpl.AboutReviewProductServiceImpl;
+import com.websiteReview.ServiceImpl.AboutReviewUserServiceImpl;
+import com.websiteReview.ServiceImpl.FileUploadServiceImpl;
+import com.websiteReview.ServiceImpl.ReviewServiceImpl;
 
 @RestController
 @RequestMapping("/review")
 public class ReviewController {
 
     @Autowired
-    private AboutReviewUserService aboutReviewUserService;
+    private AboutReviewUserServiceImpl aboutReviewUserService;
 
     @Autowired
-    private FileUploadService fileUploadService;
+    private FileUploadServiceImpl fileUploadService;
 
     @Autowired
-    private AboutReviewProductService aboutReviewProductService;
+    private AboutReviewProductServiceImpl aboutReviewProductService;
 
     @Autowired
-    private ReviewService reviewService;
+    private ReviewServiceImpl reviewService;
 
     private String imagePath = "src/review/currentUser/screenshot";
 

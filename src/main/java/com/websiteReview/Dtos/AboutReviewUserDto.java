@@ -1,7 +1,5 @@
 package com.websiteReview.Dtos;
 
-import com.websiteReview.Model.Review;
-
 public class AboutReviewUserDto {
 
     private int reviewUserId;
@@ -11,7 +9,8 @@ public class AboutReviewUserDto {
     private String screenshotName;
     private String previousVendor;
     private String reasonOfSwitch;
-    private Review review;
+    private ReviewDto reviewDto;
+
     public int getReviewUserId() {
         return reviewUserId;
     }
@@ -54,14 +53,14 @@ public class AboutReviewUserDto {
     public void setReasonOfSwitch(String reasonOfSwitch) {
         this.reasonOfSwitch = reasonOfSwitch;
     }
-    public Review getReview() {
-        return review;
+    public ReviewDto getReviewDto() {
+        return reviewDto;
     }
-    public void setReview(Review review) {
-        this.review = review;
+    public void setReviewDto(ReviewDto reviewDto) {
+        this.reviewDto = reviewDto;
     }
     public AboutReviewUserDto(int reviewUserId, int organizationSize, boolean currentUser, boolean switchFromAnother,
-            String screenshotName, String previousVendor, String reasonOfSwitch, Review review) {
+            String screenshotName, String previousVendor, String reasonOfSwitch, ReviewDto reviewDto) {
         this.reviewUserId = reviewUserId;
         this.organizationSize = organizationSize;
         this.currentUser = currentUser;
@@ -69,7 +68,7 @@ public class AboutReviewUserDto {
         this.screenshotName = screenshotName;
         this.previousVendor = previousVendor;
         this.reasonOfSwitch = reasonOfSwitch;
-        this.review = review;
+        this.reviewDto = reviewDto;
     }
     public AboutReviewUserDto() {
     }
@@ -78,7 +77,7 @@ public class AboutReviewUserDto {
         return "AboutReviewUserDto [reviewUserId=" + reviewUserId + ", organizationSize=" + organizationSize
                 + ", currentUser=" + currentUser + ", switchFromAnother=" + switchFromAnother + ", screenshotName="
                 + screenshotName + ", previousVendor=" + previousVendor + ", reasonOfSwitch=" + reasonOfSwitch
-                + ", review=" + review + "]";
+                + ", review=" + reviewDto + "]";
     }
 
     

@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.websiteReview.Dtos.UserDto;
-import com.websiteReview.Service.UserService;
+import com.websiteReview.ServiceImpl.UserServiceImpl;
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
 
 	@Autowired
-	private UserService userService;
+	private UserServiceImpl userService;
 	
 	@PostMapping("/create")
 	public ResponseEntity<UserDto> createUser(@RequestBody UserDto usertDto){

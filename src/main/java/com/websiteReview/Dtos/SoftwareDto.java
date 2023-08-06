@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.websiteReview.Model.CompanySize;
-
 public class SoftwareDto {
 
     private int softwareId;
@@ -29,10 +27,11 @@ public class SoftwareDto {
     private double easeOfUseRating;
     private double meetsRequirementRating;
     private double qualitySupportRating;
+
     private List<ReviewDto> reviewDtos = new ArrayList<>();
     private SubCategoryDto subCategoryDto;
     private List<PricingDto> pricingDtos;
-    private CompanySize companySize;
+    private CompanySizeDto companySizeDto;
 
     public int getSoftwareId() {
         return softwareId;
@@ -210,19 +209,31 @@ public class SoftwareDto {
         this.subCategoryDto = subCategoryDto;
     }
 
-    
+    public List<PricingDto> getPricingDtos() {
+        return pricingDtos;
+    }
+
+    public void setPricingDtos(List<PricingDto> pricingDtos) {
+        this.pricingDtos = pricingDtos;
+    }
+
+    public CompanySizeDto getCompanySizeDto() {
+        return companySizeDto;
+    }
+
+    public void setCompanySizeDto(CompanySizeDto companySizeDto) {
+        this.companySizeDto = companySizeDto;
+    }
 
     public SoftwareDto() {
     }
-
-    
 
     public SoftwareDto(int softwareId, String title, String description, String location, int yearFounded,
             String language, String differenceFromOthers, String profileImageName, String websiteLink, String twitterId,
             String linkedInId, Map<String, String> features, String videoName, List<String> screenshots,
             int noOfResponses, double rating, double notionDirectionRating, double easeOfUseRating,
             double meetsRequirementRating, double qualitySupportRating, List<ReviewDto> reviewDtos,
-            SubCategoryDto subCategoryDto, List<PricingDto> pricingDtos, CompanySize companySize) {
+            SubCategoryDto subCategoryDto, List<PricingDto> pricingDtos, CompanySizeDto companySizeDto) {
         this.softwareId = softwareId;
         this.title = title;
         this.description = description;
@@ -246,7 +257,7 @@ public class SoftwareDto {
         this.reviewDtos = reviewDtos;
         this.subCategoryDto = subCategoryDto;
         this.pricingDtos = pricingDtos;
-        this.companySize = companySize;
+        this.companySizeDto = companySizeDto;
     }
 
     @Override
@@ -260,22 +271,6 @@ public class SoftwareDto {
                 + notionDirectionRating + ", easeOfUseRating=" + easeOfUseRating + ", meetsRequirementRating="
                 + meetsRequirementRating + ", qualitySupportRating=" + qualitySupportRating + ", reviewDtos="
                 + reviewDtos + ", subCategoryDto=" + subCategoryDto + "]";
-    }
-
-    public List<PricingDto> getPricingDtos() {
-        return pricingDtos;
-    }
-
-    public void setPricingDtos(List<PricingDto> pricingDtos) {
-        this.pricingDtos = pricingDtos;
-    }
-
-    public CompanySize getCompanySize() {
-        return companySize;
-    }
-
-    public void setCompanySize(CompanySize companySize) {
-        this.companySize = companySize;
     }
 
 }

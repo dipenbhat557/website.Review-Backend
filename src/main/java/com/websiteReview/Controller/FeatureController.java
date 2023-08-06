@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.websiteReview.Dtos.FeaturesDto;
-import com.websiteReview.Service.FeatureService;
+import com.websiteReview.ServiceImpl.FeatureServiceImpl;
 
 @RestController
 @RequestMapping("/feature")
 public class FeatureController {
 
     @Autowired
-    private FeatureService featureService;
+    private FeatureServiceImpl featureService;
 
     @PostMapping("/create")
     public ResponseEntity<FeaturesDto> createFeatures(@RequestBody FeaturesDto featuresDto) {

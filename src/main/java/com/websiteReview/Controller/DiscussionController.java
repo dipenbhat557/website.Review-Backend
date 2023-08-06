@@ -19,18 +19,18 @@ import com.websiteReview.Dtos.QuestionDto;
 import com.websiteReview.Helper.AppConstants;
 import com.websiteReview.Helper.CommentResponse;
 import com.websiteReview.Helper.QuestionResponse;
-import com.websiteReview.Service.CommentService;
-import com.websiteReview.Service.QuestionService;
+import com.websiteReview.ServiceImpl.CommentServiceImpl;
+import com.websiteReview.ServiceImpl.QuestionServiceImpl;
 
 @RestController
 @RequestMapping("/discussion")
 public class DiscussionController {
 
     @Autowired
-    private QuestionService questionService;
+    private QuestionServiceImpl questionService;
 
     @Autowired
-    private CommentService commentService;
+    private CommentServiceImpl commentService;
 
     // question part
     @PostMapping("/question/create/{softwareId}")

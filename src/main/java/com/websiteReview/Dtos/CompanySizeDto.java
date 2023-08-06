@@ -3,15 +3,13 @@ package com.websiteReview.Dtos;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.websiteReview.Model.Software;
-
 public class CompanySizeDto {
 
     private int sizeId;
 
     private String title;
 
-    private List<Software> softwares = new ArrayList<>();
+    private List<SoftwareDto> softwareDtos = new ArrayList<>();
 
     public int getSizeId() {
         return sizeId;
@@ -29,18 +27,18 @@ public class CompanySizeDto {
         this.title = title;
     }
 
-    public List<Software> getSoftwares() {
-        return softwares;
+    public List<SoftwareDto> getSoftwareDtos() {
+        return softwareDtos;
     }
 
-    public void setSoftwares(List<Software> softwares) {
-        this.softwares = softwares;
+    public void setSoftwareDtos(List<SoftwareDto> softwareDtos) {
+        this.softwareDtos = softwareDtos;
     }
 
-    public CompanySizeDto(int sizeId, String title, List<Software> softwares) {
+    public CompanySizeDto(int sizeId, String title, List<SoftwareDto> softwareDtos) {
         this.sizeId = sizeId;
         this.title = title;
-        this.softwares = softwares;
+        this.softwareDtos = softwareDtos;
     }
 
     public CompanySizeDto() {
@@ -48,9 +46,7 @@ public class CompanySizeDto {
 
     @Override
     public String toString() {
-        return "CompanySizeDto [sizeId=" + sizeId + ", title=" + title + ", softwares=" + softwares + "]";
+        return "CompanySizeDto [sizeId=" + sizeId + ", title=" + title + ", softwares=" + softwareDtos + "]";
     }
 
-    
-    
 }
