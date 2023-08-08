@@ -29,6 +29,12 @@ public class SubCategoryServiceImpl implements SubCategoryService {
     @Autowired
     private SubCategoryRepository subCategoryRepository;
 
+    @Autowired
+    private DtoToModel DtoToModel;
+
+    @Autowired
+    private ModelToDto ModelToDto;
+
     @Override
     public SubCategoryDto create(SubCategoryDto subCategoryDto) {
         SubCategory subCategory = DtoToModel.subCategory(subCategoryDto);

@@ -35,6 +35,12 @@ public class CommentServiceImpl implements CommentService {
         @Autowired
         private UserRepository userRepository;
 
+        @Autowired
+        private DtoToModel DtoToModel;
+
+        @Autowired
+        private ModelToDto ModelToDto;
+
         @Override
         public CommentDto create(CommentDto commentDto, String username, int questionId) {
                 Question question = this.questionRepository.findById(questionId)

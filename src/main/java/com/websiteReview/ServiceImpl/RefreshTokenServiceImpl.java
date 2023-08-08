@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.websiteReview.Dtos.RefreshTokenDto;
 import com.websiteReview.Exception.ResourceNotFoundException;
+import com.websiteReview.Helper.DtoToModel;
 import com.websiteReview.Helper.ModelToDto;
 import com.websiteReview.Model.RefreshToken;
 import com.websiteReview.Model.User;
@@ -25,6 +26,9 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ModelToDto ModelToDto;
 
     @Override
     public RefreshTokenDto createRefreshToken(String username) {

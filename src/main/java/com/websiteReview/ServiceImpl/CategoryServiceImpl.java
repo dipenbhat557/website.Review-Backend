@@ -25,6 +25,12 @@ public class CategoryServiceImpl implements CategoryService {
     @Autowired
     private SubCategoryRepository subCategoryRepository;
 
+    @Autowired
+    private DtoToModel DtoToModel;
+
+    @Autowired
+    private ModelToDto ModelToDto;
+
     @Override
     public CategoryDto create(CategoryDto categoryDto) {
 

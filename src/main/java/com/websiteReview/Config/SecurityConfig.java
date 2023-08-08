@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpRequest;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -17,6 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.websiteReview.Security.JwtAuthenticationEntryPoint;
 import com.websiteReview.Security.JwtAuthenticationFilter;
@@ -26,7 +29,19 @@ import jakarta.servlet.Filter;
 // import com.websiteReview.Security.CustomerOAuth2UserService;
 
 @Configuration
+@EnableWebMvc
 public class SecurityConfig {
+
+    public static final String[] PUBLIC_URLS = {
+        "/user/create", 
+        "/auth/**", 
+        "/login/oauth2/code/**", 
+        "/v3/api-docs",
+        "/v2/api-docs",
+        "/swagger-resources/**",
+        "/swagger-ui/**",
+        "/webjars/**"
+    };
 
     @Autowired
     private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
@@ -54,18 +69,18 @@ public class SecurityConfig {
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers( "/user/create","/auth/**", "/login/oauth2/code/**")
+                        .requestMatchers(PUBLIC_URLS)
                         .permitAll()
+                        .requestMatchers(HttpMethod.GET).permitAll()
                         .anyRequest().authenticated())
                 // .oauth2Login(o -> o
-                //         .defaultSuccessUrl("/auth/oauth2LoginSuccess")
-                //         .userInfoEndpoint(u -> u
-                //                 .oidcUserService(this.oidcUserService())
-                //                 .userService(customerOAuth2UserService))
-                //                 .defaultSuccessUrl("/auth/oauth2LoginSuccess", true))
+                // .defaultSuccessUrl("/auth/oauth2LoginSuccess")
+                // .userInfoEndpoint(u -> u
+                // .oidcUserService(this.oidcUserService())
+                // .userService(customerOAuth2UserService))
+                // .defaultSuccessUrl("/auth/oauth2LoginSuccess", true))
                 // .formLogin(Customizer.withDefaults())
-                .exceptionHandling(ex ->
-                ex.authenticationEntryPoint(jwtAuthenticationEntryPoint))
+                .exceptionHandling(ex -> ex.authenticationEntryPoint(jwtAuthenticationEntryPoint))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
                 .logout(logout -> logout.permitAll());
@@ -109,8 +124,8 @@ public class SecurityConfig {
     }
 
     // private OidcUserService oidcUserService() {
-    //     OidcUserService oidcUserService = new OidcUserService();
-    //     return oidcUserService;
+    // OidcUserService oidcUserService = new OidcUserService();
+    // return oidcUserService;
     // }
 
 }

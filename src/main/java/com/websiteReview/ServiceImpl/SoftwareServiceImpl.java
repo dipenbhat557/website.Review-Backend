@@ -36,6 +36,12 @@ public class SoftwareServiceImpl implements SoftwareService {
         @Autowired
         private CompanySizeRepository companySizeRepository;
 
+        @Autowired
+        private DtoToModel DtoToModel;
+
+        @Autowired
+        private ModelToDto ModelToDto;
+
         @Override
         public SoftwareDto create(SoftwareDto softwareDto) {
                 Software software = DtoToModel.software(softwareDto);

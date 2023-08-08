@@ -35,6 +35,12 @@ public class QuestionServiceImpl implements QuestionService {
         @Autowired
         private UserRepository userRepository;
 
+        @Autowired
+        private DtoToModel DtoToModel;
+
+        @Autowired
+        private ModelToDto ModelToDto;
+
         @Override
         public QuestionDto create(QuestionDto questionDto, String username, int softwareId) {
                 Question question = DtoToModel.question(questionDto);

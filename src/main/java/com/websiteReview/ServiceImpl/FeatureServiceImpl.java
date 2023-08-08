@@ -20,6 +20,12 @@ public class FeatureServiceImpl implements FeatureService {
     @Autowired
     private FeatureRepository featureRepository;
 
+    @Autowired
+    private DtoToModel DtoToModel;
+
+    @Autowired
+    private ModelToDto ModelToDto;
+
     @Override
     public FeaturesDto create(FeaturesDto featuresDto) {
         Features features = DtoToModel.features(featuresDto);

@@ -24,6 +24,12 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private DtoToModel DtoToModel;
+
+    @Autowired
+    private ModelToDto ModelToDto;
+
     @Override
     public UserDto create(UserDto userDto) {
         userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));

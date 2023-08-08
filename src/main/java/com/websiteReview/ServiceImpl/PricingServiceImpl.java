@@ -25,6 +25,12 @@ public class PricingServiceImpl implements PricingService {
     @Autowired
     private SoftwareRepository softwareRepository;
 
+    @Autowired
+    private DtoToModel DtoToModel;
+
+    @Autowired
+    private ModelToDto ModelToDto;
+
     @Override
     public PricingDto create(PricingDto pricingDto) {
         Pricing pricing = DtoToModel.pricing(pricingDto);

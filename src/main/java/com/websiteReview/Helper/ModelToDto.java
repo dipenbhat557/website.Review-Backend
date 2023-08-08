@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.websiteReview.Dtos.AboutReviewProductDto;
 import com.websiteReview.Dtos.AboutReviewUserDto;
@@ -33,24 +34,25 @@ import com.websiteReview.Model.Software;
 import com.websiteReview.Model.SubCategory;
 import com.websiteReview.Model.User;
 
+@Component
 public class ModelToDto {
 
     @Autowired
-    private static ModelMapper modelMapper;
+    private ModelMapper modelMapper;
 
-    public static AboutReviewProductDto aboutReviewProductDto(AboutReviewProduct aboutReviewProduct) {
+    public AboutReviewProductDto aboutReviewProductDto(AboutReviewProduct aboutReviewProduct) {
         AboutReviewProductDto aboutReviewProductDto = modelMapper.map(aboutReviewProduct, AboutReviewProductDto.class);
         aboutReviewProductDto.setReviewDto(modelMapper.map(aboutReviewProduct.getReview(), ReviewDto.class));
         return aboutReviewProductDto;
     }
 
-    public static AboutReviewUserDto aboutReviewUserDto(AboutReviewUser aboutReviewUser) {
+    public AboutReviewUserDto aboutReviewUserDto(AboutReviewUser aboutReviewUser) {
         AboutReviewUserDto aboutReviewUserDto = modelMapper.map(aboutReviewUser, AboutReviewUserDto.class);
         aboutReviewUserDto.setReviewDto(modelMapper.map(aboutReviewUser.getReview(), ReviewDto.class));
         return aboutReviewUserDto;
     }
 
-    public static CategoryDto categoryDto(Category category) {
+    public CategoryDto categoryDto(Category category) {
         CategoryDto categoryDto = modelMapper.map(category, CategoryDto.class);
 
         List<SubCategory> subCategories = category.getSubCategories();
@@ -62,7 +64,7 @@ public class ModelToDto {
         return categoryDto;
     }
 
-    public static CommentDto commentDto(Comment comment) {
+    public CommentDto commentDto(Comment comment) {
         CommentDto commentDto = modelMapper.map(comment, CommentDto.class);
 
         Question question = comment.getQuestion();
@@ -73,7 +75,7 @@ public class ModelToDto {
         return commentDto;
     }
 
-    public static CompanySizeDto companySizeDto(CompanySize companySize) {
+    public CompanySizeDto companySizeDto(CompanySize companySize) {
         CompanySizeDto companySizeDto = modelMapper.map(companySize, CompanySizeDto.class);
 
         List<Software> softwares = companySize.getSoftwares();
@@ -84,12 +86,12 @@ public class ModelToDto {
         return companySizeDto;
     }
 
-    public static FeaturesDto featuresDto(Features features) {
+    public FeaturesDto featuresDto(Features features) {
         FeaturesDto featuresDto = modelMapper.map(features, FeaturesDto.class);
         return featuresDto;
     }
 
-    public static PricingDto pricingDto(Pricing pricing) {
+    public PricingDto pricingDto(Pricing pricing) {
         PricingDto pricingDto = modelMapper.map(pricing, PricingDto.class);
 
         Software software = pricing.getSoftware();
@@ -99,7 +101,7 @@ public class ModelToDto {
         return pricingDto;
     }
 
-    public static QuestionDto questionDto(Question question) {
+    public QuestionDto questionDto(Question question) {
         QuestionDto questionDto = modelMapper.map(question, QuestionDto.class);
 
         List<Comment> comments = question.getComments();
@@ -114,7 +116,7 @@ public class ModelToDto {
         return questionDto;
     }
 
-    public static RefreshTokenDto refreshTokenDto(RefreshToken refreshToken) {
+    public RefreshTokenDto refreshTokenDto(RefreshToken refreshToken) {
         RefreshTokenDto refreshTokenDto = modelMapper.map(refreshToken, RefreshTokenDto.class);
 
         User user = refreshToken.getUser();
@@ -123,7 +125,7 @@ public class ModelToDto {
         return refreshTokenDto;
     }
 
-    public static ReviewDto reviewDto(Review review) {
+    public ReviewDto reviewDto(Review review) {
         ReviewDto reviewDto = modelMapper.map(review, ReviewDto.class);
 
         Software software = review.getSoftware();
@@ -139,7 +141,7 @@ public class ModelToDto {
         return reviewDto;
     }
 
-    public static SoftwareDto software(Software software) {
+    public SoftwareDto software(Software software) {
         SoftwareDto softwareDto = modelMapper.map(software, SoftwareDto.class);
 
         List<Review> reviews = software.getReviews();
@@ -157,7 +159,7 @@ public class ModelToDto {
         return softwareDto;
     }
 
-    public static SubCategoryDto subCategoryDto(SubCategory subCategory) {
+    public SubCategoryDto subCategoryDto(SubCategory subCategory) {
         SubCategoryDto subCategoryDto = modelMapper.map(subCategory, SubCategoryDto.class);
 
         List<Category> categories = subCategory.getCategories();
@@ -171,7 +173,7 @@ public class ModelToDto {
         return subCategoryDto;
     }
 
-    public static UserDto userDto(User user) {
+    public UserDto userDto(User user) {
         UserDto userDto = modelMapper.map(user, UserDto.class);
         return userDto;
     }

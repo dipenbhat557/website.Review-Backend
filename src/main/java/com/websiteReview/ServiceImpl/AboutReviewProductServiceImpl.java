@@ -22,6 +22,12 @@ public class AboutReviewProductServiceImpl implements AboutReviewProductService 
     @Autowired
     private ReviewRepository reviewRepository;
 
+    @Autowired
+    private DtoToModel DtoToModel;
+
+    @Autowired
+    private ModelToDto ModelToDto;
+
     @Override
     public AboutReviewProductDto create(int reviewId, AboutReviewProductDto aboutReviewProductDto) {
         AboutReviewProduct aboutReviewProduct = DtoToModel.aboutReviewProduct(aboutReviewProductDto);

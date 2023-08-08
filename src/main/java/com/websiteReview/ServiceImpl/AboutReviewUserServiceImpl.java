@@ -20,7 +20,13 @@ public class AboutReviewUserServiceImpl implements AboutReviewUserService {
     private AboutReviewUserRepository aboutReviewUserRepository;
 
     @Autowired
-    private ReviewRepository reviewRepository;;
+    private ReviewRepository reviewRepository;
+
+    @Autowired
+    private DtoToModel DtoToModel;
+
+    @Autowired
+    private ModelToDto ModelToDto;
 
     @Override
     public AboutReviewUserDto create(int reviewId, AboutReviewUserDto aboutReviewUserDto) {

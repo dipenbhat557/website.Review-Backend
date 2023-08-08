@@ -19,6 +19,12 @@ public class CompanySizeServiceImpl implements CompanySizeService {
 
     @Autowired
     private CompanySizeRepository companySizeRepository;
+    
+    @Autowired
+    private DtoToModel DtoToModel;
+
+    @Autowired
+    private ModelToDto ModelToDto;
 
     @Override
     public CompanySizeDto create(CompanySizeDto companySizeDto) {

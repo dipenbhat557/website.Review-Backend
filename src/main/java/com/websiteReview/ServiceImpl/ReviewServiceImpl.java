@@ -35,6 +35,12 @@ public class ReviewServiceImpl implements ReviewService {
         @Autowired
         private SoftwareRepository softwareRepository;
 
+        @Autowired
+        private DtoToModel DtoToModel;
+
+        @Autowired
+        private ModelToDto ModelToDto;
+
         @Override
         public ReviewDto create(String username, ReviewDto reviewDto, int softwareId) {
                 User user = this.userRepository.findByEmail(username).orElseThrow(
