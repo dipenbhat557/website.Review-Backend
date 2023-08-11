@@ -1,5 +1,6 @@
 package com.websiteReview.Dtos;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class CommentDto {
@@ -8,7 +9,7 @@ public class CommentDto {
 
     private String description;
 
-    private Date date;
+    private LocalDateTime date;
 
     private UserDto userDto;
 
@@ -22,11 +23,11 @@ public class CommentDto {
         this.commentId = commentId;
     }
 
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
@@ -57,7 +58,7 @@ public class CommentDto {
     public CommentDto() {
     }
 
-    public CommentDto(int commentId, String description, Date date, UserDto userDto, QuestionDto questionDto) {
+    public CommentDto(int commentId, String description, LocalDateTime date, UserDto userDto, QuestionDto questionDto) {
         this.commentId = commentId;
         this.description = description;
         this.date = date;

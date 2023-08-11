@@ -3,10 +3,11 @@ package com.websiteReview.Service;
 import java.util.List;
 
 import com.websiteReview.Dtos.UserDto;
+import com.websiteReview.Helper.UserRequest;
 
 public interface UserService {
 
-    public UserDto create(UserDto userDto);
+    public UserDto create(UserRequest userRequest);
 
     public List<UserDto> viewAll();
 

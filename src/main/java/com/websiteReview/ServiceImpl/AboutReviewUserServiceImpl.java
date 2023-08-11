@@ -5,8 +5,10 @@ import org.springframework.stereotype.Service;
 
 import com.websiteReview.Dtos.AboutReviewUserDto;
 import com.websiteReview.Exception.ResourceNotFoundException;
+import com.websiteReview.Helper.AboutReviewUserRequest;
 import com.websiteReview.Helper.DtoToModel;
 import com.websiteReview.Helper.ModelToDto;
+import com.websiteReview.Model.AboutReviewProduct;
 import com.websiteReview.Model.AboutReviewUser;
 import com.websiteReview.Model.Review;
 import com.websiteReview.Respository.AboutReviewUserRepository;
@@ -29,8 +31,18 @@ public class AboutReviewUserServiceImpl implements AboutReviewUserService {
     private ModelToDto ModelToDto;
 
     @Override
-    public AboutReviewUserDto create(int reviewId, AboutReviewUserDto aboutReviewUserDto) {
-        AboutReviewUser aboutReviewUser = DtoToModel.aboutReviewUser(aboutReviewUserDto);
+    public AboutReviewUserDto create(int reviewId, AboutReviewUserRequest aboutReviewUserRequest) {
+        AboutReviewUser aboutReviewUser = new AboutReviewUser();
+
+        aboutReviewUser.setOrganizationSize(aboutReviewUserRequest.getOrganizationSize());
+        aboutReviewUser.setCurrentUser(aboutReviewUserRequest.isCurrentUser());
+        aboutReviewUser.setSwitchFromAnother(aboutReviewUserRequest.isSwitchFromAnother());
+        aboutReviewUser.setPreviousVendor(aboutReviewUserRequest.getPreviousVendor());
+        aboutReviewUser.setReasonOfSwitch(aboutReviewUserRequest.getReasonOfSwitch());
+
+        Review review = this.reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new ResourceNotFoundException("The expected review has not been found"));
+        aboutReviewUser.setReview(review);
 
         return ModelToDto.aboutReviewUserDto(this.aboutReviewUserRepository.save(aboutReviewUser));
     }
@@ -65,5 +77,11 @@ public class AboutReviewUserServiceImpl implements AboutReviewUserService {
 
         return ModelToDto.aboutReviewUserDto(this.aboutReviewUserRepository.save(oldUser));
     }
+
+    @Override
+        public void delete(int aboutReviewUserId){
+                AboutReviewUser aboutReviewUser = this.aboutReviewUserRepository.findById(aboutReviewUserId).orElseThrow(() -> new ResourceNotFoundException("The expected about review user is not found"));
+                this.aboutReviewUserRepository.delete(aboutReviewUser);
+        }
 
 }

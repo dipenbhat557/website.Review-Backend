@@ -141,8 +141,7 @@ public class Review {
     public String toString() {
         return "Review [reviewId=" + reviewId + ", title=" + title + ", whatYouLike=" + whatYouLike
                 + ", whatYouDislike=" + whatYouDislike + ", userRole=" + userRole + ", rating=" + rating + ", user="
-                + user + ", software=" + software + ", aboutReviewUser=" + aboutReviewUser + ", aboutReviewProduct="
-                + aboutReviewProduct + "]";
+                + user + ", software=" + software + "]";
     }
 
 }

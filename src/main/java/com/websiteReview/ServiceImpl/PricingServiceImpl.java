@@ -10,6 +10,7 @@ import com.websiteReview.Dtos.PricingDto;
 import com.websiteReview.Exception.ResourceNotFoundException;
 import com.websiteReview.Helper.DtoToModel;
 import com.websiteReview.Helper.ModelToDto;
+import com.websiteReview.Helper.PricingRequest;
 import com.websiteReview.Model.Pricing;
 import com.websiteReview.Model.Software;
 import com.websiteReview.Respository.PricingRepository;
@@ -32,9 +33,21 @@ public class PricingServiceImpl implements PricingService {
     private ModelToDto ModelToDto;
 
     @Override
-    public PricingDto create(PricingDto pricingDto) {
-        Pricing pricing = DtoToModel.pricing(pricingDto);
+    public PricingDto create(PricingRequest pricingRequest, int softwareId) {
+
+        Pricing pricing = new Pricing();
+        pricing.setTitle(pricingRequest.getTitle());
+        pricing.setPrice(pricingRequest.getPrice());
+        pricing.setFeatures(pricingRequest.getFeatures());
+
+        Software software = this.softwareRepository.findById(softwareId)
+                .orElseThrow(() -> new ResourceNotFoundException("The expected software is not found"));
+
+        pricing.setSoftware(software);
         pricing = this.pricingRepository.save(pricing);
+        // List<Pricing> pricings = software.getPricings();
+        // pricings.add(pricing);
+        // this.softwareRepository.save(software);
         return ModelToDto.pricingDto(pricing);
     }
 

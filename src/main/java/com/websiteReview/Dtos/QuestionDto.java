@@ -1,5 +1,6 @@
 package com.websiteReview.Dtos;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -10,7 +11,7 @@ public class QuestionDto {
 
     private String description;
 
-    private Date date;
+    private LocalDateTime date;
 
     private List<CommentDto> commentDtos = new ArrayList<>();
 
@@ -26,11 +27,11 @@ public class QuestionDto {
         this.questionId = questionId;
     }
 
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
@@ -69,7 +70,7 @@ public class QuestionDto {
     public QuestionDto() {
     }
 
-    public QuestionDto(int questionId, String description, Date date, List<CommentDto> commentDtos,
+    public QuestionDto(int questionId, String description, LocalDateTime date, List<CommentDto> commentDtos,
             SoftwareDto softwareDto, UserDto userDto) {
         this.questionId = questionId;
         this.description = description;

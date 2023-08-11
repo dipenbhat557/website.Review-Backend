@@ -5,7 +5,6 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpRequest;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -33,14 +32,14 @@ import jakarta.servlet.Filter;
 public class SecurityConfig {
 
     public static final String[] PUBLIC_URLS = {
-        "/user/create", 
-        "/auth/**", 
-        "/login/oauth2/code/**", 
-        "/v3/api-docs",
-        "/v2/api-docs",
-        "/swagger-resources/**",
-        "/swagger-ui/**",
-        "/webjars/**"
+            "/user/create",
+            "/auth/**",
+            "/login/oauth2/code/**",
+            "/v3/api-docs",
+            "/v2/api-docs",
+            "/swagger-resources/**",
+            "/swagger-ui/**",
+            "/webjars/**"
     };
 
     @Autowired

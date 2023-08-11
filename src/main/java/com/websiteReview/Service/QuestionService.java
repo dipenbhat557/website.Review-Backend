@@ -1,11 +1,12 @@
 package com.websiteReview.Service;
 
 import com.websiteReview.Dtos.QuestionDto;
+import com.websiteReview.Helper.QuestionRequest;
 import com.websiteReview.Helper.QuestionResponse;
 
 public interface QuestionService {
 
-        public QuestionDto create(QuestionDto questionDto, String username, int softwareId);
+        public QuestionDto create(QuestionRequest questionRequest, String username, int softwareId);
 
         public QuestionDto viewById(int questionId);
 

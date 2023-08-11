@@ -1,5 +1,6 @@
 package com.websiteReview.ServiceImpl;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,6 +15,7 @@ import com.websiteReview.Dtos.QuestionDto;
 import com.websiteReview.Exception.ResourceNotFoundException;
 import com.websiteReview.Helper.DtoToModel;
 import com.websiteReview.Helper.ModelToDto;
+import com.websiteReview.Helper.QuestionRequest;
 import com.websiteReview.Helper.QuestionResponse;
 import com.websiteReview.Model.Question;
 import com.websiteReview.Model.Software;
@@ -42,8 +44,9 @@ public class QuestionServiceImpl implements QuestionService {
         private ModelToDto ModelToDto;
 
         @Override
-        public QuestionDto create(QuestionDto questionDto, String username, int softwareId) {
-                Question question = DtoToModel.question(questionDto);
+        public QuestionDto create(QuestionRequest questionRequest, String username, int softwareId) {
+                Question question = new Question();
+                question.setDescription(questionRequest.getDescription());
                 Software software = this.softwareRepository.findById(softwareId)
                                 .orElseThrow(() -> new ResourceNotFoundException("The expected software is not found"));
                 User user = this.userRepository.findByEmail(username)
@@ -51,7 +54,7 @@ public class QuestionServiceImpl implements QuestionService {
 
                 question.setSoftware(software);
                 question.setUser(user);
-                question.setDate(new Date());
+                question.setDate(LocalDateTime.now());
 
                 Question savedQuestion = this.questionRepository.save(question);
 

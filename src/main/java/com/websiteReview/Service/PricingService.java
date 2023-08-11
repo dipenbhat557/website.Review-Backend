@@ -3,10 +3,11 @@ package com.websiteReview.Service;
 import java.util.List;
 
 import com.websiteReview.Dtos.PricingDto;
+import com.websiteReview.Helper.PricingRequest;
 
 public interface PricingService {
 
-    public PricingDto create(PricingDto pricingDto);
+    public PricingDto create(PricingRequest pricingRequest, int softwareId);
 
     public PricingDto viewById(int pricingId);
 

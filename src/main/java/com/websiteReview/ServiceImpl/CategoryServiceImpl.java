@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.websiteReview.Dtos.CategoryDto;
 import com.websiteReview.Exception.ResourceNotFoundException;
+import com.websiteReview.Helper.CategoryRequest;
 import com.websiteReview.Helper.DtoToModel;
 import com.websiteReview.Helper.ModelToDto;
 import com.websiteReview.Model.Category;
@@ -32,11 +33,12 @@ public class CategoryServiceImpl implements CategoryService {
     private ModelToDto ModelToDto;
 
     @Override
-    public CategoryDto create(CategoryDto categoryDto) {
+    public CategoryDto create(CategoryRequest categoryRequest) {
 
-        Category category = DtoToModel.category(categoryDto);
+        Category category = new Category();
+        category.setTitle(categoryRequest.getTitle());
 
-        categoryDto = ModelToDto.categoryDto(this.categoryRepository.save(category));
+        CategoryDto categoryDto = ModelToDto.categoryDto(this.categoryRepository.save(category));
 
         return categoryDto;
     }

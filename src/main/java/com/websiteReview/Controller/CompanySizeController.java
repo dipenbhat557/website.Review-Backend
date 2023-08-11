@@ -5,25 +5,28 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.websiteReview.Dtos.CompanySizeDto;
+import com.websiteReview.Helper.CompanySizeRequest;
 import com.websiteReview.ServiceImpl.CompanySizeServiceImpl;
 
 @RestController
-@RequestMapping("company/size")
+@RequestMapping("/company/size")
 public class CompanySizeController {
 
     @Autowired
     private CompanySizeServiceImpl companySizeService;
 
     @PostMapping("/create")
-    public ResponseEntity<CompanySizeDto> createCompanySize(CompanySizeDto companySizeDto) {
-        return new ResponseEntity<CompanySizeDto>(this.companySizeService.create(companySizeDto),
+    public ResponseEntity<CompanySizeDto> createCompanySize(@RequestBody CompanySizeRequest companySizeRequest) {
+        return new ResponseEntity<CompanySizeDto>(this.companySizeService.create(companySizeRequest),
                 HttpStatus.CREATED);
     }
 
@@ -32,7 +35,7 @@ public class CompanySizeController {
         return new ResponseEntity<CompanySizeDto>(this.companySizeService.viewById(sizeId), HttpStatus.OK);
     }
 
-    @GetMapping("/delete/{sizeId}")
+    @DeleteMapping("/delete/{sizeId}")
     public ResponseEntity<String> deleteSize(@PathVariable int sizeId) {
         this.companySizeService.delete(sizeId);
         return new ResponseEntity<String>("Deleted Successfully", HttpStatus.OK);

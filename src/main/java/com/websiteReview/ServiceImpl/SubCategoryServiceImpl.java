@@ -1,5 +1,6 @@
 package com.websiteReview.ServiceImpl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,6 +14,7 @@ import com.websiteReview.Dtos.SubCategoryDto;
 import com.websiteReview.Exception.ResourceNotFoundException;
 import com.websiteReview.Helper.DtoToModel;
 import com.websiteReview.Helper.ModelToDto;
+import com.websiteReview.Helper.SubCategoryRequest;
 import com.websiteReview.Helper.SubCategoryResponse;
 import com.websiteReview.Model.Category;
 import com.websiteReview.Model.SubCategory;
@@ -36,8 +38,22 @@ public class SubCategoryServiceImpl implements SubCategoryService {
     private ModelToDto ModelToDto;
 
     @Override
-    public SubCategoryDto create(SubCategoryDto subCategoryDto) {
-        SubCategory subCategory = DtoToModel.subCategory(subCategoryDto);
+    public SubCategoryDto create(SubCategoryRequest subCategoryRequest) {
+
+        SubCategory subCategory = new SubCategory();
+        subCategory.setTitle(subCategoryRequest.getTitle());
+
+        List<Category> categories = new ArrayList<>();
+        for (Category category : subCategoryRequest.getCategories()) {
+            List<SubCategory> subCategories = category.getSubCategories(); 
+            subCategories.add(subCategory);
+            category.setSubCategories(subCategories);
+            this.categoryRepository.save(category);
+
+            categories.add(category);
+        }
+        subCategory.setCategories(categories);
+
         subCategory = this.subCategoryRepository.save(subCategory);
         return ModelToDto.subCategoryDto(subCategory);
     }

@@ -56,7 +56,7 @@ public class CompanySize {
 
     @Override
     public String toString() {
-        return "CompanySize [sizeId=" + sizeId + ", title=" + title + ", softwares=" + softwares + "]";
+        return "CompanySize [sizeId=" + sizeId + ", title=" + title + "]";
     }
 
 }

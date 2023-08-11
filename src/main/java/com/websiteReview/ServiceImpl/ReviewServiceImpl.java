@@ -13,6 +13,7 @@ import com.websiteReview.Dtos.ReviewDto;
 import com.websiteReview.Exception.ResourceNotFoundException;
 import com.websiteReview.Helper.DtoToModel;
 import com.websiteReview.Helper.ModelToDto;
+import com.websiteReview.Helper.ReviewRequest;
 import com.websiteReview.Helper.ReviewResponse;
 import com.websiteReview.Model.AboutReviewProduct;
 import com.websiteReview.Model.Review;
@@ -42,46 +43,36 @@ public class ReviewServiceImpl implements ReviewService {
         private ModelToDto ModelToDto;
 
         @Override
-        public ReviewDto create(String username, ReviewDto reviewDto, int softwareId) {
+        public ReviewDto create(String username, ReviewRequest reviewRequest, int softwareId) {
                 User user = this.userRepository.findByEmail(username).orElseThrow(
                                 () -> new ResourceNotFoundException(
                                                 "The expected user is not found while setting to review"));
-
-                AboutReviewProduct aboutReviewProduct = DtoToModel
-                                .aboutReviewProduct(reviewDto.getAboutReviewProductDto());
 
                 Software software = this.softwareRepository.findById(softwareId)
                                 .orElseThrow(() -> new ResourceNotFoundException("The expected software is not found"));
 
                 int noOfResponses = software.getNoOfResponses();
                 double rating = software.getRating();
-                double notionDirectionRating = software.getNotionDirectionRating();
-                double easeOfUseRating = software.getEaseOfUseRating();
-                double meetsRequirementRating = software.getMeetsRequirementRating();
-                double qualitySupportRating = software.getQualitySupportRating();
 
                 software.setNoOfResponses(noOfResponses + 1);
-                software.setRating((rating * noOfResponses + reviewDto.getRating()) / software.getNoOfResponses());
-                software.setNotionDirectionRating(
-                                (notionDirectionRating * noOfResponses + aboutReviewProduct.getNotionDirectionRating())
-                                                / software.getNoOfResponses());
-                software.setEaseOfUseRating((easeOfUseRating * noOfResponses + aboutReviewProduct.getEaseOfUseRating())
-                                / software.getNoOfResponses());
-                software.setMeetsRequirementRating(
-                                (meetsRequirementRating * noOfResponses
-                                                + aboutReviewProduct.getMeetsRequirementRating())
-                                                / software.getNoOfResponses());
-                software.setQualitySupportRating(
-                                (qualitySupportRating * noOfResponses + aboutReviewProduct.getQualitySupportRating())
-                                                / software.getNoOfResponses());
-                this.softwareRepository.save(software);
+                software.setRating((rating * noOfResponses + reviewRequest.getRating()) / software.getNoOfResponses());
 
-                Review review = DtoToModel.review(reviewDto);
+                Review review = new Review();
+                review.setTitle(reviewRequest.getTitle());
+                review.setWhatYouLike(reviewRequest.getWhatYouLike());
+                review.setWhatYouDislike(reviewRequest.getWhatYouDislike());
+                review.setUserRole(reviewRequest.getUserRole());
+
                 review.setUser(user);
-                review.setRating(review.getRating() / 2);
+                review.setRating(reviewRequest.getRating() / 2);
                 review.setSoftware(software);
 
-                ReviewDto savedReviewDto = ModelToDto.reviewDto(review);
+                // List<Review> reviews = software.getReviews();
+                // reviews.add(review);
+
+                this.softwareRepository.save(software);
+
+                ReviewDto savedReviewDto = ModelToDto.reviewDto(this.reviewRepository.save(review));
 
                 return savedReviewDto;
         }
@@ -95,7 +86,7 @@ public class ReviewServiceImpl implements ReviewService {
         }
 
         @Override
-        public ReviewResponse viewByUser(String username, int pageSize, int pageNumber) {
+        public ReviewResponse viewByUser(String username,int pageNumber, int pageSize ) {
                 User user = this.userRepository.findByEmail(username)
                                 .orElseThrow(() -> new ResourceNotFoundException(
                                                 "The expected user is not found while getting review by user"));
@@ -124,6 +115,17 @@ public class ReviewServiceImpl implements ReviewService {
                                 .orElseThrow(() -> new ResourceNotFoundException(
                                                 "The expected review is not found while deleting..."));
                 this.reviewRepository.delete(review);
+
+                AboutReviewProduct aboutReviewProduct = review.getAboutReviewProduct();
+
+                Software software = review.getSoftware();
+                software.setRating(software.getRating() * software.getNoOfResponses() - review.getRating());
+                software.setEaseOfUseRating(software.getEaseOfUseRating() * software.getNoOfResponses() - aboutReviewProduct.getEaseOfUseRating());
+                software.setMeetsRequirementRating(software.getMeetsRequirementRating() * software.getNoOfResponses() - aboutReviewProduct.getMeetsRequirementRating());
+                software.setNotionDirectionRating(software.getNotionDirectionRating() * software.getNoOfResponses() - aboutReviewProduct.getNotionDirectionRating());
+                software.setQualitySupportRating(software.getQualitySupportRating() * software.getNoOfResponses() - aboutReviewProduct.getQualitySupportRating());
+                software.setNoOfResponses(software.getNoOfResponses() - 1);
+                this.softwareRepository.save(software);
         }
 
         @Override
@@ -207,4 +209,24 @@ public class ReviewServiceImpl implements ReviewService {
                 return response;
         }
 
+        @Override
+        public ReviewResponse viewAll(int pageNumber, int pageSize) {
+
+                Pageable pageable = PageRequest.of(pageNumber, pageSize);
+                Page<Review> page = this.reviewRepository.findAll(pageable);
+                List<Review> reviews = page.getContent();
+
+                List<ReviewDto> reviewsDtos = reviews.stream()
+                                .map(review -> ModelToDto.reviewDto(review))
+                                .collect(Collectors.toList());
+
+                ReviewResponse response = new ReviewResponse();
+                response.setContent(reviewsDtos);
+                response.setPageNumber(page.getNumber());
+                response.setPageSize(page.getSize());
+                response.setTotalPages(page.getTotalPages());
+                response.setLastPage(page.isLast());
+
+                return response;
+        }
 }

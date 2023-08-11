@@ -15,6 +15,7 @@ public class Pricing {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int pricingId;
+    private String title;
     private List<String> features = new ArrayList<>();
     private double price;
 
@@ -57,8 +58,9 @@ public class Pricing {
 
     }
 
-    public Pricing(int pricingId, List<String> features, double price, Software software) {
+    public Pricing(int pricingId, String title, List<String> features, double price, Software software) {
         this.pricingId = pricingId;
+        this.title = title;
         this.features = features;
         this.price = price;
         this.software = software;
@@ -66,8 +68,16 @@ public class Pricing {
 
     @Override
     public String toString() {
-        return "Pricing [pricingId=" + pricingId + ", features=" + features + ", price=" + price + ", software="
-                + software + "]";
+        return "Pricing [pricingId=" + pricingId + ", title=" + title + ", features=" + features + ", price=" + price
+                + ", software=" + software + "]";
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
 }

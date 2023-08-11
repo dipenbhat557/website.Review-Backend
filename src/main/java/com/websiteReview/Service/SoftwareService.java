@@ -3,11 +3,12 @@ package com.websiteReview.Service;
 import java.util.List;
 
 import com.websiteReview.Dtos.SoftwareDto;
+import com.websiteReview.Helper.SoftwareRequest;
 import com.websiteReview.Helper.SoftwareResponse;
 
 public interface SoftwareService {
 
-        public SoftwareDto create(SoftwareDto softwareDto);
+        public SoftwareDto create(SoftwareRequest softwareRequest, int subCategoryId);
 
         public SoftwareDto viewById(int softwareId);
 

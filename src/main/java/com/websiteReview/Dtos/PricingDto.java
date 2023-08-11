@@ -8,6 +8,7 @@ import jakarta.persistence.ManyToOne;
 public class PricingDto {
 
     private int pricingId;
+    private String title;
     private List<String> features = new ArrayList<>();
     private double price;
 
@@ -46,8 +47,9 @@ public class PricingDto {
         this.softwareDto = softwareDto;
     }
 
-    public PricingDto(int pricingId, List<String> features, double price, SoftwareDto softwareDto) {
+    public PricingDto(int pricingId, String title, List<String> features, double price, SoftwareDto softwareDto) {
         this.pricingId = pricingId;
+        this.title = title;
         this.features = features;
         this.price = price;
         this.softwareDto = softwareDto;
@@ -58,10 +60,16 @@ public class PricingDto {
 
     @Override
     public String toString() {
-        return "PricingDto [pricingId=" + pricingId + ", features=" + features + ", price=" + price + ", softwareDto="
-                + softwareDto + "]";
+        return "PricingDto [pricingId=" + pricingId + ", title=" + title + ", features=" + features + ", price=" + price
+                + ", softwareDto=" + softwareDto + "]";
     }
 
-    
-    
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
 }

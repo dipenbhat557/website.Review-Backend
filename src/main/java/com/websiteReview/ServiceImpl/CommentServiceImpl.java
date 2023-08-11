@@ -1,5 +1,6 @@
 package com.websiteReview.ServiceImpl;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.websiteReview.Dtos.CommentDto;
 import com.websiteReview.Exception.ResourceNotFoundException;
+import com.websiteReview.Helper.CommentRequest;
 import com.websiteReview.Helper.CommentResponse;
 import com.websiteReview.Helper.DtoToModel;
 import com.websiteReview.Helper.ModelToDto;
@@ -42,21 +44,22 @@ public class CommentServiceImpl implements CommentService {
         private ModelToDto ModelToDto;
 
         @Override
-        public CommentDto create(CommentDto commentDto, String username, int questionId) {
+        public CommentDto create(CommentRequest commentRequest, String username, int questionId) {
                 Question question = this.questionRepository.findById(questionId)
                                 .orElseThrow(() -> new ResourceNotFoundException("The expected comment is not found"));
 
                 User user = this.userRepository.findByEmail(username)
                                 .orElseThrow(() -> new ResourceNotFoundException("The expected user is not found"));
 
-                Comment comment = DtoToModel.comment(commentDto);
-                comment.setDate(new Date());
+                Comment comment = new Comment();
+                comment.setDescription(commentRequest.getDescription());
+                comment.setDate(LocalDateTime.now());
                 comment.setQuestion(question);
                 comment.setUser(user);
 
                 comment = this.commentRepository.save(comment);
 
-                commentDto = ModelToDto.commentDto(comment);
+                CommentDto commentDto = ModelToDto.commentDto(comment);
 
                 return commentDto;
         }

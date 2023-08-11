@@ -1,7 +1,7 @@
 package com.websiteReview.Model;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -22,7 +22,7 @@ public class Question {
 
     private String description;
 
-    private Date date;
+    private LocalDateTime date;
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
@@ -41,11 +41,11 @@ public class Question {
         this.questionId = questionId;
     }
 
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
@@ -84,7 +84,7 @@ public class Question {
     public Question() {
     }
 
-    public Question(int questionId, String description, Date date, List<Comment> comments, Software software,
+    public Question(int questionId, String description, LocalDateTime date, List<Comment> comments, Software software,
             User user) {
         this.questionId = questionId;
         this.description = description;
@@ -96,8 +96,7 @@ public class Question {
 
     @Override
     public String toString() {
-        return "Question [questionId=" + questionId + ", description=" + description + ", date=" + date + ", comments="
-                + comments + ", software=" + software + ", user=" + user + "]";
+        return "Question [questionId=" + questionId + ", description=" + description + ", date=" + date  + ", software=" + software + ", user=" + user + "]";
     }
 
 }

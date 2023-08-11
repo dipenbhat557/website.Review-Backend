@@ -1,17 +1,20 @@
 package com.websiteReview.Service;
 
 import com.websiteReview.Dtos.ReviewDto;
+import com.websiteReview.Helper.ReviewRequest;
 import com.websiteReview.Helper.ReviewResponse;
 
 public interface ReviewService {
 
-        public ReviewDto create(String username, ReviewDto reviewDto, int softwareId);
+        public ReviewDto create(String username, ReviewRequest reviewRequest, int softwareId);
 
         public ReviewDto viewById(int reviewId);
 
-        public ReviewResponse viewByUser(String username, int pageSize, int pageNumber);
+        public ReviewResponse viewByUser(String username, int pageNumber, int pageSize);
 
         public void delete(int reviewId);
+
+        public ReviewResponse viewAll(int pageNumber, int pageSize);
 
         public ReviewResponse filterReviewsByOrganizationSize(int minSize, int maxSize, int pageNumber, int pageSize);
 

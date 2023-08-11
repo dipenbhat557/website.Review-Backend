@@ -12,7 +12,6 @@ import com.websiteReview.Dtos.AboutReviewUserDto;
 import com.websiteReview.Dtos.CategoryDto;
 import com.websiteReview.Dtos.CommentDto;
 import com.websiteReview.Dtos.CompanySizeDto;
-import com.websiteReview.Dtos.FeaturesDto;
 import com.websiteReview.Dtos.PricingDto;
 import com.websiteReview.Dtos.QuestionDto;
 import com.websiteReview.Dtos.RefreshTokenDto;
@@ -25,7 +24,6 @@ import com.websiteReview.Model.AboutReviewUser;
 import com.websiteReview.Model.Category;
 import com.websiteReview.Model.Comment;
 import com.websiteReview.Model.CompanySize;
-import com.websiteReview.Model.Features;
 import com.websiteReview.Model.Pricing;
 import com.websiteReview.Model.Question;
 import com.websiteReview.Model.RefreshToken;
@@ -86,11 +84,6 @@ public class ModelToDto {
         return companySizeDto;
     }
 
-    public FeaturesDto featuresDto(Features features) {
-        FeaturesDto featuresDto = modelMapper.map(features, FeaturesDto.class);
-        return featuresDto;
-    }
-
     public PricingDto pricingDto(Pricing pricing) {
         PricingDto pricingDto = modelMapper.map(pricing, PricingDto.class);
 
@@ -134,8 +127,14 @@ public class ModelToDto {
         User user = review.getUser();
 
         reviewDto.setSoftwareDto(modelMapper.map(software, SoftwareDto.class));
-        reviewDto.setAboutReviewProductDto(modelMapper.map(aboutReviewProduct, AboutReviewProductDto.class));
-        reviewDto.setAboutReviewUserDto(modelMapper.map(aboutReviewUser, AboutReviewUserDto.class));
+        if (aboutReviewProduct != null) {
+            reviewDto.setAboutReviewProductDto(modelMapper.map(aboutReviewProduct, AboutReviewProductDto.class));
+        }
+
+        if (aboutReviewUser != null) {
+            reviewDto.setAboutReviewUserDto(modelMapper.map(aboutReviewUser, AboutReviewUserDto.class));
+        }
+
         reviewDto.setUserDto(modelMapper.map(user, UserDto.class));
 
         return reviewDto;
@@ -148,6 +147,7 @@ public class ModelToDto {
         SubCategory subCategory = software.getSubCategory();
         List<Pricing> pricings = software.getPricings();
         CompanySize companySize = software.getCompanySize();
+        List<Question> questions = software.getQuestions();
 
         softwareDto.setReviewDtos(
                 reviews.stream().map(review -> modelMapper.map(review, ReviewDto.class)).collect(Collectors.toList()));
@@ -155,6 +155,8 @@ public class ModelToDto {
         softwareDto.setPricingDtos(pricings.stream().map(pricing -> modelMapper.map(pricing, PricingDto.class))
                 .collect(Collectors.toList()));
         softwareDto.setCompanySizeDto(modelMapper.map(companySize, CompanySizeDto.class));
+        softwareDto.setQuestionDtos(questions.stream().map(question -> modelMapper.map(question, QuestionDto.class))
+                .collect(Collectors.toList()));
 
         return softwareDto;
     }

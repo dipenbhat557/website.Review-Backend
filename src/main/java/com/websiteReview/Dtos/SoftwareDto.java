@@ -30,8 +30,9 @@ public class SoftwareDto {
 
     private List<ReviewDto> reviewDtos = new ArrayList<>();
     private SubCategoryDto subCategoryDto;
-    private List<PricingDto> pricingDtos;
+    private List<PricingDto> pricingDtos = new ArrayList<>();
     private CompanySizeDto companySizeDto;
+    private List<QuestionDto> questionDtos = new ArrayList<>();
 
     public int getSoftwareId() {
         return softwareId;
@@ -233,7 +234,8 @@ public class SoftwareDto {
             String linkedInId, Map<String, String> features, String videoName, List<String> screenshots,
             int noOfResponses, double rating, double notionDirectionRating, double easeOfUseRating,
             double meetsRequirementRating, double qualitySupportRating, List<ReviewDto> reviewDtos,
-            SubCategoryDto subCategoryDto, List<PricingDto> pricingDtos, CompanySizeDto companySizeDto) {
+            SubCategoryDto subCategoryDto, List<PricingDto> pricingDtos, CompanySizeDto companySizeDto,
+            List<QuestionDto> questionDtos) {
         this.softwareId = softwareId;
         this.title = title;
         this.description = description;
@@ -258,6 +260,7 @@ public class SoftwareDto {
         this.subCategoryDto = subCategoryDto;
         this.pricingDtos = pricingDtos;
         this.companySizeDto = companySizeDto;
+        this.questionDtos = questionDtos;
     }
 
     @Override
@@ -270,7 +273,16 @@ public class SoftwareDto {
                 + ", noOfResponses=" + noOfResponses + ", rating=" + rating + ", notionDirectionRating="
                 + notionDirectionRating + ", easeOfUseRating=" + easeOfUseRating + ", meetsRequirementRating="
                 + meetsRequirementRating + ", qualitySupportRating=" + qualitySupportRating + ", reviewDtos="
-                + reviewDtos + ", subCategoryDto=" + subCategoryDto + "]";
+                + reviewDtos + ", subCategoryDto=" + subCategoryDto + ", pricingDtos=" + pricingDtos
+                + ", companySizeDto=" + companySizeDto + ", questionDtos=" + questionDtos + "]";
+    }
+
+    public List<QuestionDto> getQuestionDtos() {
+        return questionDtos;
+    }
+
+    public void setQuestionDtos(List<QuestionDto> questionDtos) {
+        this.questionDtos = questionDtos;
     }
 
 }

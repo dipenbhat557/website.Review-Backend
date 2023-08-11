@@ -12,7 +12,6 @@ import com.websiteReview.Dtos.AboutReviewUserDto;
 import com.websiteReview.Dtos.CategoryDto;
 import com.websiteReview.Dtos.CommentDto;
 import com.websiteReview.Dtos.CompanySizeDto;
-import com.websiteReview.Dtos.FeaturesDto;
 import com.websiteReview.Dtos.PricingDto;
 import com.websiteReview.Dtos.QuestionDto;
 import com.websiteReview.Dtos.RefreshTokenDto;
@@ -25,7 +24,6 @@ import com.websiteReview.Model.AboutReviewUser;
 import com.websiteReview.Model.Category;
 import com.websiteReview.Model.Comment;
 import com.websiteReview.Model.CompanySize;
-import com.websiteReview.Model.Features;
 import com.websiteReview.Model.Pricing;
 import com.websiteReview.Model.Question;
 import com.websiteReview.Model.RefreshToken;
@@ -86,11 +84,6 @@ public class DtoToModel {
         return companySize;
     }
 
-    public Features features(FeaturesDto featuresDto) {
-        Features features = modelMapper.map(featuresDto, Features.class);
-        return features;
-    }
-
     public Pricing pricing(PricingDto pricingDto) {
         Pricing pricing = modelMapper.map(pricingDto, Pricing.class);
 
@@ -148,6 +141,7 @@ public class DtoToModel {
         SubCategoryDto subCategoryDto = softwareDto.getSubCategoryDto();
         List<PricingDto> pricingDtos = softwareDto.getPricingDtos();
         CompanySizeDto companySizeDto = softwareDto.getCompanySizeDto();
+        List<QuestionDto> questionDtos = softwareDto.getQuestionDtos();
 
         software.setReviews(
                 reviewDtos.stream().map(reviewDto -> modelMapper.map(reviewDto, Review.class))
@@ -156,6 +150,8 @@ public class DtoToModel {
         software.setPricings(pricingDtos.stream().map(pricingDto -> modelMapper.map(pricingDto, Pricing.class))
                 .collect(Collectors.toList()));
         software.setCompanySize(modelMapper.map(companySizeDto, CompanySize.class));
+        software.setQuestions(questionDtos.stream().map(questionDto -> modelMapper.map(questionDto, Question.class))
+                .collect(Collectors.toList()));
 
         return software;
     }

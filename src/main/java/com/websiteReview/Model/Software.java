@@ -63,6 +63,9 @@ public class Software {
     @ManyToOne
     private CompanySize companySize;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "software", orphanRemoval = true)
+    private List<Question> questions = new ArrayList<>();
+
     public int getSoftwareId() {
         return softwareId;
     }
@@ -247,7 +250,7 @@ public class Software {
             String linkedInId, Map<String, String> features, String videoName, List<String> screenshots,
             int noOfResponses, double rating, double notionDirectionRating, double easeOfUseRating,
             double meetsRequirementRating, double qualitySupportRating, List<Review> reviews, SubCategory subCategory,
-            List<Pricing> pricings, CompanySize companySize) {
+            List<Pricing> pricings, CompanySize companySize, List<Question> questions) {
         this.softwareId = softwareId;
         this.title = title;
         this.description = description;
@@ -272,6 +275,7 @@ public class Software {
         this.subCategory = subCategory;
         this.pricings = pricings;
         this.companySize = companySize;
+        this.questions = questions;
     }
 
     @Override
@@ -283,8 +287,9 @@ public class Software {
                 + ", features=" + features + ", videoName=" + videoName + ", screenshots=" + screenshots
                 + ", noOfResponses=" + noOfResponses + ", rating=" + rating + ", notionDirectionRating="
                 + notionDirectionRating + ", easeOfUseRating=" + easeOfUseRating + ", meetsRequirementRating="
-                + meetsRequirementRating + ", qualitySupportRating=" + qualitySupportRating + ", reviews=" + reviews
-                + ", subCategory=" + subCategory + "]";
+                + meetsRequirementRating + ", qualitySupportRating=" + qualitySupportRating
+                + ", subCategory=" + subCategory  + ", companySize=" + companySize
+                + "]";
     }
 
     public List<Pricing> getPricings() {
@@ -301,6 +306,14 @@ public class Software {
 
     public void setCompanySize(CompanySize companySize) {
         this.companySize = companySize;
+    }
+
+    public List<Question> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(List<Question> questions) {
+        this.questions = questions;
     }
 
 }

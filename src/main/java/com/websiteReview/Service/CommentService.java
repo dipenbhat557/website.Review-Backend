@@ -1,11 +1,12 @@
 package com.websiteReview.Service;
 
 import com.websiteReview.Dtos.CommentDto;
+import com.websiteReview.Helper.CommentRequest;
 import com.websiteReview.Helper.CommentResponse;
 
 public interface CommentService {
 
-    public CommentDto create(CommentDto commentDto, String username, int questionId);
+    public CommentDto create(CommentRequest commentRequest, String username, int questionId);
 
     public CommentDto viewById(int commentId);
 

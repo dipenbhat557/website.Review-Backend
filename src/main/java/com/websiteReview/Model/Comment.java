@@ -1,5 +1,6 @@
 package com.websiteReview.Model;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import jakarta.persistence.Entity;
@@ -18,7 +19,7 @@ public class Comment {
 
     private String description;
 
-    private Date date;
+    private LocalDateTime date;
 
     @OneToOne
     private User user;
@@ -34,11 +35,11 @@ public class Comment {
         this.commentId = commentId;
     }
 
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
@@ -69,7 +70,7 @@ public class Comment {
     public Comment() {
     }
 
-    public Comment(int commentId, String description, Date date, User user, Question question) {
+    public Comment(int commentId, String description, LocalDateTime date, User user, Question question) {
         this.commentId = commentId;
         this.description = description;
         this.date = date;

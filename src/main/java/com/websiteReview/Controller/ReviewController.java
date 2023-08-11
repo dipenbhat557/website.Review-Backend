@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,9 +19,12 @@ import org.springframework.web.multipart.MultipartFile;
 import com.websiteReview.Dtos.AboutReviewProductDto;
 import com.websiteReview.Dtos.AboutReviewUserDto;
 import com.websiteReview.Dtos.ReviewDto;
+import com.websiteReview.Helper.AboutReviewProductRequest;
+import com.websiteReview.Helper.AboutReviewUserRequest;
 import com.websiteReview.Helper.AppConstants;
 import com.websiteReview.Helper.FilterByOrganizationSizeRequest;
 import com.websiteReview.Helper.FilterByPurposeRequest;
+import com.websiteReview.Helper.ReviewRequest;
 import com.websiteReview.Helper.ReviewResponse;
 import com.websiteReview.ServiceImpl.AboutReviewProductServiceImpl;
 import com.websiteReview.ServiceImpl.AboutReviewUserServiceImpl;
@@ -47,11 +51,11 @@ public class ReviewController {
 
     // creating review
     @PostMapping("/create/{softwareId}")
-    public ResponseEntity<ReviewDto> createReview(@RequestBody ReviewDto reviewDto, Principal principal,
+    public ResponseEntity<ReviewDto> createReview(@RequestBody ReviewRequest reviewRequest, Principal principal,
             @PathVariable int softwareId) {
         System.out.println("Inside creation of review");
         System.out.println(principal.getName());
-        return new ResponseEntity<ReviewDto>(this.reviewService.create(principal.getName(), reviewDto, softwareId),
+        return new ResponseEntity<ReviewDto>(this.reviewService.create(principal.getName(), reviewRequest, softwareId),
                 HttpStatus.CREATED);
     }
 
@@ -67,14 +71,22 @@ public class ReviewController {
             @RequestParam(value = "pageSize", defaultValue = AppConstants.pageSizeString, required = false) int pageSize,
             @RequestParam(value = "pageNumber", defaultValue = AppConstants.pageNumberString, required = false) int pageNumber) {
         return new ResponseEntity<ReviewResponse>(
-                this.reviewService.viewByUser(principal.getName(), pageSize, pageNumber), HttpStatus.OK);
+                this.reviewService.viewByUser(principal.getName(), pageNumber,  pageSize), HttpStatus.OK);
     }
 
     // deleting the review
-    @GetMapping("/delete/{reviewId}")
+    @DeleteMapping("/delete/{reviewId}")
     public ResponseEntity<String> delete(@PathVariable int reviewId) {
         this.reviewService.delete(reviewId);
         return new ResponseEntity<String>("Successffully deleted...", HttpStatus.OK);
+    }
+
+    @GetMapping("/viewAll")
+    public ResponseEntity<ReviewResponse> viewAll(
+            @RequestParam(value = "pageSize", defaultValue = AppConstants.pageSizeString, required = false) int pageSize,
+            @RequestParam(value = "pageNumber", defaultValue = AppConstants.pageNumberString, required = false) int pageNumber) {
+        return new ResponseEntity<ReviewResponse>(
+                this.reviewService.viewAll( pageNumber, pageSize), HttpStatus.OK);
     }
 
     // filtering reviews by organizationSize
@@ -129,9 +141,9 @@ public class ReviewController {
     //
     @PostMapping("/product/create/{reviewId}")
     public ResponseEntity<AboutReviewProductDto> createAboutProduct(@PathVariable int reviewId,
-            @RequestBody AboutReviewProductDto aboutReviewProductDto) {
+            @RequestBody AboutReviewProductRequest aboutReviewProductRequest) {
         return new ResponseEntity<AboutReviewProductDto>(
-                this.aboutReviewProductService.create(reviewId, aboutReviewProductDto), HttpStatus.CREATED);
+                this.aboutReviewProductService.create(reviewId, aboutReviewProductRequest), HttpStatus.CREATED);
     }
 
     // getting the product details using review id
@@ -148,6 +160,12 @@ public class ReviewController {
                 HttpStatus.OK);
     }
 
+    @DeleteMapping("/product/delete/{aboutReviewProductId}")
+    public ResponseEntity<String> deleteAboutReviewProduct(@PathVariable int aboutReviewProductId) {
+        this.aboutReviewProductService.delete(aboutReviewProductId);
+        return new ResponseEntity<String>("Deleted successfully..", HttpStatus.OK);
+    }
+
     //
     //
     //
@@ -156,8 +174,9 @@ public class ReviewController {
     //
     @PostMapping("/user/create/{reviewId}")
     public ResponseEntity<AboutReviewUserDto> createAboutReviewUser(@PathVariable int reviewId,
-            @RequestBody AboutReviewUserDto aboutReviewUserDto) {
-        return new ResponseEntity<AboutReviewUserDto>(this.aboutReviewUserService.create(reviewId, aboutReviewUserDto),
+            @RequestBody AboutReviewUserRequest aboutReviewUserRequest) {
+        return new ResponseEntity<AboutReviewUserDto>(
+                this.aboutReviewUserService.create(reviewId, aboutReviewUserRequest),
                 HttpStatus.CREATED);
     }
 
@@ -173,6 +192,13 @@ public class ReviewController {
     public ResponseEntity<AboutReviewUserDto> viewUserById(@PathVariable int userId) {
         return new ResponseEntity<AboutReviewUserDto>(this.aboutReviewUserService.viewById(userId), HttpStatus.OK);
     }
+
+    @DeleteMapping("/user/delete/{aboutReviewUserId}")
+    public ResponseEntity<String> deleteAboutReviewUser(@PathVariable int aboutReviewUserId) {
+        this.aboutReviewUserService.delete(aboutReviewUserId);
+        return new ResponseEntity<String>("Deleted successfully..", HttpStatus.OK);
+    }
+
 
     // uploading the screenshot for confirmation of user as a current user of the
     // notion

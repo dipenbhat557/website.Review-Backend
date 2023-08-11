@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.websiteReview.Dtos.CategoryDto;
 import com.websiteReview.Dtos.SubCategoryDto;
 import com.websiteReview.Helper.AppConstants;
+import com.websiteReview.Helper.CategoryRequest;
+import com.websiteReview.Helper.SubCategoryRequest;
 import com.websiteReview.Helper.SubCategoryResponse;
 import com.websiteReview.ServiceImpl.CategoryServiceImpl;
 import com.websiteReview.ServiceImpl.SubCategoryServiceImpl;
@@ -31,8 +34,8 @@ public class CategoryController {
     private SubCategoryServiceImpl subCategoryService;
 
     @PostMapping("/create")
-    public ResponseEntity<CategoryDto> createCatgory(@RequestBody CategoryDto categoryDto) {
-        return new ResponseEntity<CategoryDto>(this.categoryService.create(categoryDto), HttpStatus.CREATED);
+    public ResponseEntity<CategoryDto> createCatgory(@RequestBody CategoryRequest categoryRequest) {
+        return new ResponseEntity<CategoryDto>(this.categoryService.create(categoryRequest), HttpStatus.CREATED);
     }
 
     @GetMapping("/viewById/{categoryId}")
@@ -45,7 +48,7 @@ public class CategoryController {
         return new ResponseEntity<List<CategoryDto>>(this.categoryService.viewAll(), HttpStatus.OK);
     }
 
-    @GetMapping("/delete/{categoryId}")
+    @DeleteMapping("/delete/{categoryId}")
     public ResponseEntity<String> deleteCategory(@PathVariable int categoryId) {
         this.categoryService.delete(categoryId);
         return new ResponseEntity<String>("Message deleted successfully.......", HttpStatus.OK);
@@ -57,10 +60,10 @@ public class CategoryController {
                 HttpStatus.ACCEPTED);
     }
 
-    //sub category started
+    // sub category started
     @PostMapping("/sub/create")
-    public ResponseEntity<SubCategoryDto> createSubCategory(@RequestBody SubCategoryDto subCategoryDto) {
-        return new ResponseEntity<SubCategoryDto>(this.subCategoryService.create(subCategoryDto),
+    public ResponseEntity<SubCategoryDto> createSubCategory(@RequestBody SubCategoryRequest subCategoryRequest) {
+        return new ResponseEntity<SubCategoryDto>(this.subCategoryService.create(subCategoryRequest),
                 HttpStatus.CREATED);
     }
 
@@ -76,15 +79,18 @@ public class CategoryController {
                 HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/sub/delete/{subCategoryId}")
+    @DeleteMapping("/sub/delete/{subCategoryId}")
     public ResponseEntity<String> deleteSubCategory(@PathVariable int subCategoryId) {
         this.subCategoryService.delete(subCategoryId);
         return new ResponseEntity<String>("Successfully deleted......", HttpStatus.OK);
     }
 
     @GetMapping("/sub/viewByCategory/{categoryId}")
-    public ResponseEntity<SubCategoryResponse> viewAllCategoriesByCategory(@PathVariable int categoryId, @RequestParam(value = "pageSize", defaultValue = AppConstants.pageSizeString, required = false) int pageSize, @RequestParam(value = "pageNumber", defaultValue = AppConstants.pageNumberString, required = false) int pageNumber) {
-        return new ResponseEntity<SubCategoryResponse>(this.subCategoryService.viewByCategory(categoryId, pageSize, pageNumber),
+    public ResponseEntity<SubCategoryResponse> viewAllCategoriesByCategory(@PathVariable int categoryId,
+            @RequestParam(value = "pageSize", defaultValue = AppConstants.pageSizeString, required = false) int pageSize,
+            @RequestParam(value = "pageNumber", defaultValue = AppConstants.pageNumberString, required = false) int pageNumber) {
+        return new ResponseEntity<SubCategoryResponse>(
+                this.subCategoryService.viewByCategory(categoryId, pageSize, pageNumber),
                 HttpStatus.OK);
     }
 

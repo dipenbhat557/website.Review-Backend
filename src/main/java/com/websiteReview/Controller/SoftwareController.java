@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.websiteReview.Dtos.SoftwareDto;
 import com.websiteReview.Helper.AppConstants;
+import com.websiteReview.Helper.SoftwareRequest;
 import com.websiteReview.Helper.SoftwareResponse;
 import com.websiteReview.ServiceImpl.FileUploadServiceImpl;
 import com.websiteReview.ServiceImpl.SoftwareServiceImpl;
@@ -36,9 +38,11 @@ public class SoftwareController {
 
     private String videoPath = "src/software/videos";
 
-    @PostMapping("/create")
-    public ResponseEntity<SoftwareDto> create(@RequestBody SoftwareDto softwareDto) {
-        return new ResponseEntity<SoftwareDto>(this.softwareService.create(softwareDto), HttpStatus.CREATED);
+    @PostMapping("/create/{subCategoryId}")
+    public ResponseEntity<SoftwareDto> create(@RequestBody SoftwareRequest softwareRequest,
+            @PathVariable int subCategoryId) {
+        return new ResponseEntity<SoftwareDto>(this.softwareService.create(softwareRequest, subCategoryId),
+                HttpStatus.CREATED);
     }
 
     @GetMapping("/viewById/{softwareId}")
@@ -51,7 +55,7 @@ public class SoftwareController {
         return new ResponseEntity<List<SoftwareDto>>(this.softwareService.viewAll(), HttpStatus.OK);
     }
 
-    @GetMapping("/delete/{softwareId}")
+    @DeleteMapping("/delete/{softwareId}")
     public ResponseEntity<String> delete(@PathVariable int softwareId) {
         this.softwareService.delete(softwareId);
         return new ResponseEntity<String>("Successfully deleted...", HttpStatus.OK);
@@ -59,18 +63,23 @@ public class SoftwareController {
 
     @PostMapping("/uploadFiles/{softwareId}")
     public ResponseEntity<?> uploadScreenshots(@PathVariable int softwareId,
-            @RequestParam(value = "screenshots", required = false) List<MultipartFile> screenshots, @RequestParam(value = "video", required = false) MultipartFile video) {
+            @RequestParam(value = "profileImage", required = false) MultipartFile profileImage,
+            @RequestParam(value = "screenshots", required = false) List<MultipartFile> screenshots,
+            @RequestParam(value = "video", required = false) MultipartFile video) {
 
         SoftwareDto softwareDto = this.softwareService.viewById(softwareId);
         List<String> screenshotNames = new ArrayList<>();
         String videoName = null;
+        String profileImageName = null;
 
         try {
 
             screenshotNames = this.fileUploadService.uploadImages(path, screenshots);
             videoName = this.fileUploadService.uploadImage(videoPath, video);
+            profileImageName = this.fileUploadService.uploadImage(path, profileImage);
             softwareDto.setScreenshots(screenshotNames);
             softwareDto.setVideoName(videoName);
+            softwareDto.setProfileImageName(profileImageName);
 
             SoftwareDto updatedSoftwareDto = this.softwareService.update(softwareId, softwareDto);
 
@@ -87,8 +96,9 @@ public class SoftwareController {
     public ResponseEntity<SoftwareResponse> filterByRating(@PathVariable int rating,
             @RequestParam(value = "pageNumber", defaultValue = AppConstants.pageNumberString, required = false) int pageNumber,
             @RequestParam(value = "pageSize", defaultValue = AppConstants.pageSizeString, required = false) int pageSize) {
-        
-                return new ResponseEntity<SoftwareResponse>(this.softwareService.viewByRating(rating, pageNumber, pageSize), HttpStatus.ACCEPTED);
+
+        return new ResponseEntity<SoftwareResponse>(this.softwareService.viewByRating(rating, pageNumber, pageSize),
+                HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/viewByCategory/{categoryId}")
@@ -96,7 +106,8 @@ public class SoftwareController {
             @RequestParam(value = "pageNumber", defaultValue = AppConstants.pageNumberString, required = false) int pageNumber,
             @RequestParam(value = "pageSize", defaultValue = AppConstants.pageSizeString, required = false) int pageSize) {
 
-        return new ResponseEntity<SoftwareResponse>(this.softwareService.viewBySubCategory(categoryId, pageNumber, pageSize), HttpStatus.ACCEPTED);
+        return new ResponseEntity<SoftwareResponse>(
+                this.softwareService.viewBySubCategory(categoryId, pageNumber, pageSize), HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/viewBySegment/{sizeId}")
@@ -104,7 +115,8 @@ public class SoftwareController {
             @RequestParam(value = "pageNumber", defaultValue = AppConstants.pageNumberString, required = false) int pageNumber,
             @RequestParam(value = "pageSize", defaultValue = AppConstants.pageSizeString, required = false) int pageSize) {
 
-        return new ResponseEntity<SoftwareResponse>(this.softwareService.viewBySegment(sizeId, pageNumber, pageSize), HttpStatus.ACCEPTED);
+        return new ResponseEntity<SoftwareResponse>(this.softwareService.viewBySegment(sizeId, pageNumber, pageSize),
+                HttpStatus.ACCEPTED);
     }
 
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.websiteReview.Dtos.CompanySizeDto;
 import com.websiteReview.Exception.ResourceNotFoundException;
+import com.websiteReview.Helper.CompanySizeRequest;
 import com.websiteReview.Helper.DtoToModel;
 import com.websiteReview.Helper.ModelToDto;
 import com.websiteReview.Model.CompanySize;
@@ -19,7 +20,7 @@ public class CompanySizeServiceImpl implements CompanySizeService {
 
     @Autowired
     private CompanySizeRepository companySizeRepository;
-    
+
     @Autowired
     private DtoToModel DtoToModel;
 
@@ -27,8 +28,9 @@ public class CompanySizeServiceImpl implements CompanySizeService {
     private ModelToDto ModelToDto;
 
     @Override
-    public CompanySizeDto create(CompanySizeDto companySizeDto) {
-        CompanySize companySize = DtoToModel.companySize(companySizeDto);
+    public CompanySizeDto create(CompanySizeRequest companySizeRequest) {
+        CompanySize companySize = new CompanySize();
+        companySize.setTitle(companySizeRequest.getTitle());
         companySize = this.companySizeRepository.save(companySize);
         return ModelToDto.companySizeDto(companySize);
     }

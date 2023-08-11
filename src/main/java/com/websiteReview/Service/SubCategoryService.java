@@ -3,11 +3,12 @@ package com.websiteReview.Service;
 import java.util.List;
 
 import com.websiteReview.Dtos.SubCategoryDto;
+import com.websiteReview.Helper.SubCategoryRequest;
 import com.websiteReview.Helper.SubCategoryResponse;
 
 public interface SubCategoryService {
 
-    public SubCategoryDto create(SubCategoryDto subCategoryDto);
+    public SubCategoryDto create(SubCategoryRequest subCategoryRequest);
 
     public SubCategoryDto viewById(int subCategoryId);
 

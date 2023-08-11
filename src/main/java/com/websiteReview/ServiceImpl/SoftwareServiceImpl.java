@@ -14,6 +14,7 @@ import com.websiteReview.Dtos.SoftwareDto;
 import com.websiteReview.Exception.ResourceNotFoundException;
 import com.websiteReview.Helper.DtoToModel;
 import com.websiteReview.Helper.ModelToDto;
+import com.websiteReview.Helper.SoftwareRequest;
 import com.websiteReview.Helper.SoftwareResponse;
 import com.websiteReview.Model.CompanySize;
 import com.websiteReview.Model.Review;
@@ -43,8 +44,27 @@ public class SoftwareServiceImpl implements SoftwareService {
         private ModelToDto ModelToDto;
 
         @Override
-        public SoftwareDto create(SoftwareDto softwareDto) {
-                Software software = DtoToModel.software(softwareDto);
+        public SoftwareDto create(SoftwareRequest softwareRequest, int subCategoryId) {
+                Software software = new Software();
+                software.setTitle(softwareRequest.getTitle());
+                software.setDescription(softwareRequest.getDescription());
+                software.setLocation(softwareRequest.getLocation());
+                software.setYearFounded(softwareRequest.getYearFounded());
+                software.setLanguage(softwareRequest.getLanguage());
+                software.setDifferenceFromOthers(softwareRequest.getDifferenceFromOthers());
+                software.setWebsiteLink(softwareRequest.getWebsiteLink());
+                software.setTwitterId(softwareRequest.getTwitterId());
+                software.setLinkedInId(softwareRequest.getLinkedInId());
+                software.setFeatures(softwareRequest.getFeatures());
+
+                SubCategory subCategory = this.subCategoryRepository.findById(subCategoryId)
+                                .orElseThrow(() -> new ResourceNotFoundException("The expected resource is not found"));
+                software.setSubCategory(subCategory);
+
+                int companySizeId = softwareRequest.getCompanySizeId();
+                CompanySize companySize = this.companySizeRepository.findById(companySizeId).orElseThrow(
+                                () -> new ResourceNotFoundException("The expected company size is not found"));
+                software.setCompanySize(companySize);
 
                 software = this.softwareRepository.save(software);
 
@@ -168,13 +188,6 @@ public class SoftwareServiceImpl implements SoftwareService {
                 oldSoftware.setEaseOfUseRating(softwareDto.getEaseOfUseRating());
                 oldSoftware.setMeetsRequirementRating(softwareDto.getMeetsRequirementRating());
                 oldSoftware.setQualitySupportRating(softwareDto.getQualitySupportRating());
-
-                List<ReviewDto> reviewDtos = softwareDto.getReviewDtos();
-                List<Review> reviews = reviewDtos.stream()
-                                .map(reviewDto -> DtoToModel.review(reviewDto))
-                                .collect(Collectors.toList());
-
-                oldSoftware.setReviews(reviews);
 
                 return ModelToDto.software(this.softwareRepository.save(oldSoftware));
         }
