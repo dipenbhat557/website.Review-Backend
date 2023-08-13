@@ -172,7 +172,7 @@ public class ReviewServiceImpl implements ReviewService {
         @Override
         public ReviewResponse viewByPurpose(String purpose, int pageNumber, int pageSize) {
                 Pageable pageable = PageRequest.of(pageNumber, pageSize);
-                Page<Review> page = this.reviewRepository.findByPurposeOfUse(purpose, pageable);
+                Page<Review> page = this.reviewRepository.findByPurposeOfUseIgnoreCase(purpose, pageable);
                 List<Review> pageReview = page.getContent();
 
                 List<ReviewDto> pageReviewDtos = pageReview.stream()

@@ -1,7 +1,12 @@
 package com.websiteReview.ServiceImpl;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
+
+import javax.xml.crypto.KeySelector.Purpose;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,6 +21,7 @@ import com.websiteReview.Helper.DtoToModel;
 import com.websiteReview.Helper.ModelToDto;
 import com.websiteReview.Helper.SoftwareRequest;
 import com.websiteReview.Helper.SoftwareResponse;
+import com.websiteReview.Model.Category;
 import com.websiteReview.Model.CompanySize;
 import com.websiteReview.Model.Review;
 import com.websiteReview.Model.Software;
@@ -92,6 +98,24 @@ public class SoftwareServiceImpl implements SoftwareService {
                 this.softwareRepository.delete(this.softwareRepository.findById(softwareId).orElseThrow(
                                 () -> new ResourceNotFoundException(
                                                 "The expected resource is not found while trying to delete it")));
+        }
+
+        @Override
+        public List<String> viewAllPurposes(int softwareId) {
+                Software software = this.softwareRepository.findById(softwareId)
+                                .orElseThrow(() -> new ResourceNotFoundException("The expected software is not found"));
+
+                SubCategory subCategory = software.getSubCategory();
+                List<Category> categories = subCategory.getCategories();
+
+                Set<String> uniquePurposes = new HashSet<>(); // Use a Set to ensure non-repetitive purposes
+
+                categories.forEach(category -> {
+                        List<String> categoryPurposes = category.getPurposes();
+                        categoryPurposes.forEach(purpose -> uniquePurposes.add(purpose));
+                });
+
+                return new ArrayList<>(uniquePurposes); // Convert Set to List
         }
 
         @Override
@@ -192,4 +216,23 @@ public class SoftwareServiceImpl implements SoftwareService {
                 return ModelToDto.software(this.softwareRepository.save(oldSoftware));
         }
 
+        public SoftwareResponse search(String query, int pageNumber, int pageSize) {
+
+                Pageable pageable = PageRequest.of(pageNumber, pageSize);
+                Page<Software> page = this.softwareRepository.findByTitleContainingIgnoreCase(query, pageable);
+                List<Software> pageSoftwares = page.getContent();
+
+                List<SoftwareDto> pageSoftwareDtos = pageSoftwares.stream()
+                                .map(software -> ModelToDto.software(software))
+                                .collect(Collectors.toList());
+
+                SoftwareResponse response = new SoftwareResponse();
+                response.setContent(pageSoftwareDtos);
+                response.setPageNumber(page.getNumber());
+                response.setPageSize(page.getSize());
+                response.setTotalPages(page.getTotalPages());
+                response.setLastPage(page.isLast());
+
+                return response;
+        }
 }

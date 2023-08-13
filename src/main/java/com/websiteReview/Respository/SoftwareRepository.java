@@ -17,5 +17,7 @@ public interface SoftwareRepository extends JpaRepository<Software, Integer>{
     public Page<Software> findBySubCategory(SubCategory subCategory, Pageable pageable);
 
     public Page<Software> findByCompanySize(CompanySize companySize, Pageable pageable);
+
+    public Page<Software> findByTitleContainingIgnoreCase(String title, Pageable pageable);
     
 }

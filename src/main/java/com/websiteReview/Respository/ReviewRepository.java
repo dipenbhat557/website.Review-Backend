@@ -18,8 +18,8 @@ public interface ReviewRepository extends JpaRepository<Review, Integer> {
     @Query("SELECT r FROM Review r WHERE r.rating >= :minRating AND r.rating < :maxRating")
     public Page<Review> findByRatingRange(int minRating, int maxRating, Pageable pageable);
 
-    @Query("SELECT r FROM Review r WHERE r.aboutReviewProduct.purposeOfUse = :purpose")
-    public Page<Review> findByPurposeOfUse(String purpose, Pageable pageable);
+    @Query("SELECT r FROM Review r WHERE LOWER(r.aboutReviewProduct.purposeOfUse) = LOWER(:purpose)")
+    public Page<Review> findByPurposeOfUseIgnoreCase(String purpose, Pageable pageable);
 
     public Page<Review> findByUserRole(String userRole, Pageable pageable);
 }

@@ -16,6 +16,8 @@ public interface SoftwareService {
 
         public void delete(int softwareId);
 
+        public List<String> viewAllPurposes(int softwareId);
+
         public SoftwareResponse viewByRating(int rating, int pageNumber, int pageSize);
 
         public SoftwareResponse viewBySubCategory(int subCategoryId, int pageNumber, int pageSize);
@@ -23,5 +25,7 @@ public interface SoftwareService {
         public SoftwareResponse viewBySegment(int sizeId, int pageNumber, int pageSize);
 
         public SoftwareDto update(int softwareId, SoftwareDto softwareDto);
+
+        public SoftwareResponse search(String query, int pageNumber, int pageSize);
 
 }

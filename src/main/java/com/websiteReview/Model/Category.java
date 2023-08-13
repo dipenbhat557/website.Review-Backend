@@ -19,6 +19,7 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int categoryId;
     private String title;
+    private List<String> purposes = new ArrayList<>();
 
     @ManyToMany(mappedBy = "categories", cascade = CascadeType.ALL)
     @JsonIgnore
@@ -43,15 +44,17 @@ public class Category {
     public Category() {
     }
 
-    public Category(int categoryId, String title, List<SubCategory> subCategories) {
+    public Category(int categoryId, String title, List<String> purposes, List<SubCategory> subCategories) {
         this.categoryId = categoryId;
         this.title = title;
+        this.purposes = purposes;
         this.subCategories = subCategories;
     }
 
     @Override
     public String toString() {
-        return "Category [categoryId=" + categoryId + ", title=" + title + "]";
+        return "Category [categoryId=" + categoryId + ", title=" + title + ", purposes=" + purposes + ", subCategories="
+                + subCategories + "]";
     }
 
     public List<SubCategory> getSubCategories() {
@@ -60,6 +63,14 @@ public class Category {
 
     public void setSubCategories(List<SubCategory> subCategories) {
         this.subCategories = subCategories;
+    }
+
+    public List<String> getPurposes() {
+        return purposes;
+    }
+
+    public void setPurposes(List<String> purposes) {
+        this.purposes = purposes;
     }
 
 }

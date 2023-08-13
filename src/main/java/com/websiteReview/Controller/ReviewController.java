@@ -1,6 +1,7 @@
 package com.websiteReview.Controller;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,7 @@ import com.websiteReview.ServiceImpl.AboutReviewProductServiceImpl;
 import com.websiteReview.ServiceImpl.AboutReviewUserServiceImpl;
 import com.websiteReview.ServiceImpl.FileUploadServiceImpl;
 import com.websiteReview.ServiceImpl.ReviewServiceImpl;
+import com.websiteReview.ServiceImpl.SoftwareServiceImpl;
 
 @RestController
 @RequestMapping("/review")
@@ -46,6 +48,9 @@ public class ReviewController {
 
     @Autowired
     private ReviewServiceImpl reviewService;
+
+    @Autowired
+    private SoftwareServiceImpl softwareService;
 
     private String imagePath = "src/review/currentUser/screenshot";
 
@@ -71,7 +76,7 @@ public class ReviewController {
             @RequestParam(value = "pageSize", defaultValue = AppConstants.pageSizeString, required = false) int pageSize,
             @RequestParam(value = "pageNumber", defaultValue = AppConstants.pageNumberString, required = false) int pageNumber) {
         return new ResponseEntity<ReviewResponse>(
-                this.reviewService.viewByUser(principal.getName(), pageNumber,  pageSize), HttpStatus.OK);
+                this.reviewService.viewByUser(principal.getName(), pageNumber, pageSize), HttpStatus.OK);
     }
 
     // deleting the review
@@ -86,7 +91,7 @@ public class ReviewController {
             @RequestParam(value = "pageSize", defaultValue = AppConstants.pageSizeString, required = false) int pageSize,
             @RequestParam(value = "pageNumber", defaultValue = AppConstants.pageNumberString, required = false) int pageNumber) {
         return new ResponseEntity<ReviewResponse>(
-                this.reviewService.viewAll( pageNumber, pageSize), HttpStatus.OK);
+                this.reviewService.viewAll(pageNumber, pageSize), HttpStatus.OK);
     }
 
     // filtering reviews by organizationSize
@@ -199,7 +204,6 @@ public class ReviewController {
         return new ResponseEntity<String>("Deleted successfully..", HttpStatus.OK);
     }
 
-
     // uploading the screenshot for confirmation of user as a current user of the
     // notion
     @PostMapping("/uploadScreenshot/{reviewUserId}")
@@ -222,5 +226,10 @@ public class ReviewController {
             return new ResponseEntity<>(Map.of("Message", "Couldn't upload the image....."),
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @GetMapping("/viewPurposes/{softwareId}")
+    public ResponseEntity<List<String>> viewPurposes(@PathVariable int softwareId) {
+        return new ResponseEntity<List<String>>(this.softwareService.viewAllPurposes(softwareId), HttpStatus.OK);
     }
 }

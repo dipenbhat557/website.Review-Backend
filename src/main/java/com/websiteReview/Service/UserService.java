@@ -15,6 +15,8 @@ public interface UserService {
 
     public void delete(String email);
 
+    public UserDto viewByEmail(String email);
+
     public UserDto update(UserDto userDto, int userId);
 
 }

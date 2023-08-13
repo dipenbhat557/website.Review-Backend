@@ -57,6 +57,11 @@ public class UserServiceImpl implements UserService {
         return ModelToDto.userDto(user);
     }
 
+    public UserDto viewByEmail(String email){
+        User user = this.userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("The expected user is not found"));
+        return ModelToDto.userDto(user);
+    }
+
     @Override
     public void delete(String email) {
         User user = this.userRepository.findByEmail(email)
