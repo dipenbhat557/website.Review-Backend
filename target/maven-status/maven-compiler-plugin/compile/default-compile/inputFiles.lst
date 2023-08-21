@@ -42,6 +42,7 @@ D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Helper\CategoryRe
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\ServiceImpl\PricingServiceImpl.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Service\CategoryService.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Model\Comment.java
+D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Controller\ForgotPasswordController.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Respository\CompanySizeRepository.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Service\AboutReviewUserService.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\ServiceImpl\CategoryServiceImpl.java
@@ -61,6 +62,7 @@ D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Security\Customer
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Helper\AboutReviewUserRequest.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Dtos\CompanySizeDto.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Dtos\PricingDto.java
+D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Service\EmailService.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Helper\SoftwareResponse.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\ServiceImpl\AboutReviewProductServiceImpl.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Helper\DtoToModel.java
@@ -68,9 +70,11 @@ D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Respository\Quest
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Dtos\UserDto.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Controller\CompanySizeController.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Model\Pricing.java
+D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Controller\SearchController.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Helper\SubCategoryResponse.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Helper\ReviewResponse.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Respository\CategoryRepository.java
+D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\ServiceImpl\EmailServiceImpl.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Security\JwtAuthenticationEntryPoint.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Controller\DiscussionController.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Dtos\ReviewDto.java

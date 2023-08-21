@@ -1,5 +1,6 @@
 com\websiteReview\Model\RefreshToken.class
 com\websiteReview\Helper\QuestionRequest.class
+com\websiteReview\Controller\SearchController.class
 com\websiteReview\Helper\DtoToModel.class
 com\websiteReview\Service\FileUploadService.class
 com\websiteReview\Helper\CategoryRequest.class
@@ -19,6 +20,7 @@ com\websiteReview\Helper\JwtResponse.class
 com\websiteReview\Controller\SoftwareController.class
 com\websiteReview\Helper\AppConstants.class
 com\websiteReview\Helper\RefreshTokenRequest.class
+com\websiteReview\ServiceImpl\EmailServiceImpl$1.class
 com\websiteReview\Model\Question.class
 com\websiteReview\Helper\PricingRequest.class
 com\websiteReview\Config\CustomUserDetailsService.class
@@ -35,6 +37,7 @@ com\websiteReview\ServiceImpl\AboutReviewUserServiceImpl.class
 com\websiteReview\Helper\FilterByPurposeRequest.class
 com\websiteReview\Service\RefreshTokenService.class
 com\websiteReview\Helper\ReviewRequest.class
+com\websiteReview\Controller\ForgotPasswordController.class
 com\websiteReview\Respository\CategoryRepository.class
 com\websiteReview\Dtos\UserDto.class
 com\websiteReview\Helper\CommentRequest.class
@@ -71,6 +74,7 @@ com\websiteReview\Dtos\SubCategoryDto.class
 com\websiteReview\Helper\QuestionResponse.class
 com\websiteReview\Model\AboutReviewProduct.class
 com\websiteReview\Respository\QuestionRepository.class
+com\websiteReview\Service\EmailService.class
 com\websiteReview\Security\CustomerOAuth2UserService.class
 com\websiteReview\Helper\JwtRequest.class
 com\websiteReview\Helper\CommentResponse.class
@@ -94,6 +98,7 @@ com\websiteReview\Controller\UserController.class
 com\websiteReview\Respository\UserRepository.class
 com\websiteReview\ServiceImpl\QuestionServiceImpl.class
 com\websiteReview\Security\JwtHelper.class
+com\websiteReview\ServiceImpl\EmailServiceImpl.class
 com\websiteReview\Security\CustomerOAuth2User.class
 com\websiteReview\Service\UserService.class
 com\websiteReview\ServiceImpl\RefreshTokenServiceImpl.class

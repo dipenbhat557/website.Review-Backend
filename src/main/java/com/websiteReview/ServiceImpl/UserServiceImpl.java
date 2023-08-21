@@ -34,6 +34,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto create(UserRequest userRequest) {
         User user = new User();
+        user.setEmail(userRequest.getEmail());
         user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         user = this.userRepository.save(user);
 
@@ -57,8 +58,9 @@ public class UserServiceImpl implements UserService {
         return ModelToDto.userDto(user);
     }
 
-    public UserDto viewByEmail(String email){
-        User user = this.userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("The expected user is not found"));
+    public UserDto viewByEmail(String email) {
+        User user = this.userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("The expected user is not found"));
         return ModelToDto.userDto(user);
     }
 
