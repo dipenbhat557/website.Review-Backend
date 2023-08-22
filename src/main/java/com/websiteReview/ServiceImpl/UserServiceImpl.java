@@ -75,8 +75,13 @@ public class UserServiceImpl implements UserService {
     public UserDto update(UserDto userDto, int userId) {
         User oldUser = this.userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("The requested user is not found while updating"));
+
         // setting new password into oldUser
         oldUser.setPassword(userDto.getPassword());
+
+        if (userDto.getImageUrl() != null) {
+            oldUser.setImageUrl(userDto.getImageUrl());
+        }
 
         this.userRepository.save(oldUser);
 

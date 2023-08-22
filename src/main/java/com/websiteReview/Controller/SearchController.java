@@ -13,6 +13,9 @@ import com.websiteReview.Helper.AppConstants;
 import com.websiteReview.Helper.SoftwareResponse;
 import com.websiteReview.ServiceImpl.SoftwareServiceImpl;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 @RestController
 @RequestMapping("/search")
 public class SearchController {
@@ -21,6 +24,7 @@ public class SearchController {
     private SoftwareServiceImpl softwareService;
 
     @GetMapping("/{query}")
+    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<SoftwareResponse> search(@PathVariable String query,
             @RequestParam(value = "pageNumber", defaultValue = AppConstants.pageNumberString, required = false) int pageNumber,
             @RequestParam(value = "pageSize", defaultValue = AppConstants.pageSizeString, required = false) int pageSize) {

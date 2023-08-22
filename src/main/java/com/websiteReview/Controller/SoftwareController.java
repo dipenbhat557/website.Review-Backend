@@ -24,6 +24,9 @@ import com.websiteReview.Helper.SoftwareResponse;
 import com.websiteReview.ServiceImpl.FileUploadServiceImpl;
 import com.websiteReview.ServiceImpl.SoftwareServiceImpl;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 @RestController
 @RequestMapping("/software")
 public class SoftwareController {
@@ -39,6 +42,7 @@ public class SoftwareController {
     private String videoPath = "src/software/videos";
 
     @PostMapping("/create/{subCategoryId}")
+    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<SoftwareDto> create(@RequestBody SoftwareRequest softwareRequest,
             @PathVariable int subCategoryId) {
         return new ResponseEntity<SoftwareDto>(this.softwareService.create(softwareRequest, subCategoryId),
@@ -46,22 +50,26 @@ public class SoftwareController {
     }
 
     @GetMapping("/viewById/{softwareId}")
+    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<SoftwareDto> viewById(@PathVariable int softwareId) {
         return new ResponseEntity<SoftwareDto>(this.softwareService.viewById(softwareId), HttpStatus.OK);
     }
 
     @GetMapping("/viewAll")
+    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<List<SoftwareDto>> viewAllSoftwares() {
         return new ResponseEntity<List<SoftwareDto>>(this.softwareService.viewAll(), HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{softwareId}")
+    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<String> delete(@PathVariable int softwareId) {
         this.softwareService.delete(softwareId);
         return new ResponseEntity<String>("Successfully deleted...", HttpStatus.OK);
     }
 
     @PostMapping("/uploadFiles/{softwareId}")
+    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<?> uploadScreenshots(@PathVariable int softwareId,
             @RequestParam(value = "profileImage", required = false) MultipartFile profileImage,
             @RequestParam(value = "screenshots", required = false) List<MultipartFile> screenshots,
@@ -93,6 +101,7 @@ public class SoftwareController {
     }
 
     @GetMapping("/viewByRating/{rating}")
+    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<SoftwareResponse> filterByRating(@PathVariable int rating,
             @RequestParam(value = "pageNumber", defaultValue = AppConstants.pageNumberString, required = false) int pageNumber,
             @RequestParam(value = "pageSize", defaultValue = AppConstants.pageSizeString, required = false) int pageSize) {
@@ -102,6 +111,7 @@ public class SoftwareController {
     }
 
     @GetMapping("/viewByCategory/{categoryId}")
+    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<SoftwareResponse> filterByCategory(@PathVariable int categoryId,
             @RequestParam(value = "pageNumber", defaultValue = AppConstants.pageNumberString, required = false) int pageNumber,
             @RequestParam(value = "pageSize", defaultValue = AppConstants.pageSizeString, required = false) int pageSize) {
@@ -111,6 +121,7 @@ public class SoftwareController {
     }
 
     @GetMapping("/viewBySegment/{sizeId}")
+    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<SoftwareResponse> filterBySegment(@PathVariable int sizeId,
             @RequestParam(value = "pageNumber", defaultValue = AppConstants.pageNumberString, required = false) int pageNumber,
             @RequestParam(value = "pageSize", defaultValue = AppConstants.pageSizeString, required = false) int pageSize) {

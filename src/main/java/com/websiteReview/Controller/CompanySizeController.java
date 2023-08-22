@@ -17,6 +17,9 @@ import com.websiteReview.Dtos.CompanySizeDto;
 import com.websiteReview.Helper.CompanySizeRequest;
 import com.websiteReview.ServiceImpl.CompanySizeServiceImpl;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 @RestController
 @RequestMapping("/company/size")
 public class CompanySizeController {
@@ -24,6 +27,7 @@ public class CompanySizeController {
     @Autowired
     private CompanySizeServiceImpl companySizeService;
 
+    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     @PostMapping("/create")
     public ResponseEntity<CompanySizeDto> createCompanySize(@RequestBody CompanySizeRequest companySizeRequest) {
         return new ResponseEntity<CompanySizeDto>(this.companySizeService.create(companySizeRequest),
@@ -31,17 +35,20 @@ public class CompanySizeController {
     }
 
     @GetMapping("/viewById/{sizeId}")
+    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<CompanySizeDto> viewById(@PathVariable int sizeId) {
         return new ResponseEntity<CompanySizeDto>(this.companySizeService.viewById(sizeId), HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{sizeId}")
+    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<String> deleteSize(@PathVariable int sizeId) {
         this.companySizeService.delete(sizeId);
         return new ResponseEntity<String>("Deleted Successfully", HttpStatus.OK);
     }
 
     @GetMapping("/viewAll")
+    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<List<CompanySizeDto>> viewAllSizes() {
         return new ResponseEntity<List<CompanySizeDto>>(this.companySizeService.viewAll(), HttpStatus.OK);
     }

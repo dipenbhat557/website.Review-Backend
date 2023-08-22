@@ -17,30 +17,39 @@ import com.websiteReview.Dtos.PricingDto;
 import com.websiteReview.Helper.PricingRequest;
 import com.websiteReview.ServiceImpl.PricingServiceImpl;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 @RestController
 @RequestMapping("/pricing")
 public class PricingController {
 
     @Autowired
     private PricingServiceImpl pricingService;
-    
+
     @PostMapping("/create/{softwareId}")
-    public ResponseEntity<PricingDto> createPricing(@RequestBody PricingRequest pricingRequest,@PathVariable int softwareId){
-        return new ResponseEntity<PricingDto>(this.pricingService.create(pricingRequest,softwareId), HttpStatus.CREATED);
+    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
+    public ResponseEntity<PricingDto> createPricing(@RequestBody PricingRequest pricingRequest,
+            @PathVariable int softwareId) {
+        return new ResponseEntity<PricingDto>(this.pricingService.create(pricingRequest, softwareId),
+                HttpStatus.CREATED);
     }
 
     @GetMapping("/getById/{pricingId}")
-    public ResponseEntity<PricingDto> getById(@PathVariable int pricingId){
+    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
+    public ResponseEntity<PricingDto> getById(@PathVariable int pricingId) {
         return new ResponseEntity<PricingDto>(this.pricingService.viewById(pricingId), HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/getBySoftware/{softwareId}")
-    public ResponseEntity<List<PricingDto>> getBySoftware(@PathVariable int softwareId){
+    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
+    public ResponseEntity<List<PricingDto>> getBySoftware(@PathVariable int softwareId) {
         return new ResponseEntity<List<PricingDto>>(this.pricingService.viewBySoftware(softwareId), HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{pricingId}")
-    public ResponseEntity<String> deletePricing(@PathVariable int pricingId){
+    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
+    public ResponseEntity<String> deletePricing(@PathVariable int pricingId) {
         this.pricingService.delete(pricingId);
         return new ResponseEntity<String>("Deleted Successfully......", HttpStatus.OK);
     }

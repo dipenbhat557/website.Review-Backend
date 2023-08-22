@@ -1,4 +1,6 @@
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Helper\SubCategoryRequest.java
+D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Security\oauth2\user\OAuth2UserInfoFactory.java
+D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Helper\SignUpRequest.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Model\CompanySize.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Security\JwtHelper.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Config\SecurityConfig.java
@@ -18,8 +20,11 @@ D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\WebsiteReviewAppl
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\ServiceImpl\AboutReviewUserServiceImpl.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Service\UserService.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\ServiceImpl\CompanySizeServiceImpl.java
+D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Exception\OAuth2AuthenticationProcessingException.java
+D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Model\AuthProvider.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Helper\AppConstants.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Controller\ReviewController.java
+D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Security\oauth2\HttpCookieOAuth2AuthorizationRequestRepository.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Model\User.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Respository\AboutReviewProductRepository.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Respository\CommentRepository.java
@@ -46,6 +51,7 @@ D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Controller\Forgot
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Respository\CompanySizeRepository.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Service\AboutReviewUserService.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\ServiceImpl\CategoryServiceImpl.java
+D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Security\UserPrincipal.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Exception\ResourceNotFoundException.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Helper\ReviewRequest.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\ServiceImpl\UserServiceImpl.java
@@ -58,10 +64,11 @@ D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Model\Category.ja
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Helper\QuestionResponse.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\ServiceImpl\SoftwareServiceImpl.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Helper\ModelToDto.java
-D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Security\CustomerOAuth2User.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Helper\AboutReviewUserRequest.java
+D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Security\oauth2\CustomOAuth2UserService.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Dtos\CompanySizeDto.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Dtos\PricingDto.java
+D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Security\oauth2\user\GoogleOAuth2UserInfo.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Service\EmailService.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Helper\SoftwareResponse.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\ServiceImpl\AboutReviewProductServiceImpl.java
@@ -76,6 +83,7 @@ D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Helper\ReviewResp
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Respository\CategoryRepository.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\ServiceImpl\EmailServiceImpl.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Security\JwtAuthenticationEntryPoint.java
+D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Config\AppProperties.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Controller\DiscussionController.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Dtos\ReviewDto.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Controller\AuthController.java
@@ -90,15 +98,20 @@ D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Security\JwtAuthe
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Exception\GlobalException.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Helper\FilterByOrganizationSizeRequest.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Model\AboutReviewProduct.java
+D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Security\oauth2\OAuth2AuthenticationFailureHandler.java
+D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Security\oauth2\user\LinkedInOAuth2UserInfo.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Service\RefreshTokenService.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Helper\RefreshTokenRequest.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Respository\SoftwareRepository.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Model\Question.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Helper\AboutReviewProductRequest.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Model\Software.java
-D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Security\CustomerOAuth2UserService.java
+D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Security\CurrentUser.java
+D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Security\oauth2\OAuth2AuthenticationSuccessHandler.java
+D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Security\oauth2\user\OAuth2UserInfo.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Helper\CommentRequest.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\ServiceImpl\RefreshTokenServiceImpl.java
+D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\util\CookieUtils.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Respository\UserRepository.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Model\RefreshToken.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Config\CustomUserDetailsService.java
@@ -108,3 +121,4 @@ D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Dtos\CategoryDto.
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Dtos\RefreshTokenDto.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Helper\JwtResponse.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Service\SoftwareService.java
+D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Exception\BadRequestException.java

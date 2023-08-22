@@ -33,6 +33,9 @@ import com.websiteReview.ServiceImpl.FileUploadServiceImpl;
 import com.websiteReview.ServiceImpl.ReviewServiceImpl;
 import com.websiteReview.ServiceImpl.SoftwareServiceImpl;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 @RestController
 @RequestMapping("/review")
 public class ReviewController {
@@ -56,6 +59,7 @@ public class ReviewController {
 
     // creating review
     @PostMapping("/create/{softwareId}")
+    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<ReviewDto> createReview(@RequestBody ReviewRequest reviewRequest, Principal principal,
             @PathVariable int softwareId) {
         System.out.println("Inside creation of review");
@@ -66,12 +70,14 @@ public class ReviewController {
 
     // getting review by id
     @GetMapping("/viewById/{reviewId}")
+    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<ReviewDto> viewById(@PathVariable int reviewId) {
         return new ResponseEntity<ReviewDto>(this.reviewService.viewById(reviewId), HttpStatus.OK);
     }
 
     // getting review by user
     @GetMapping("/viewByUser")
+    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<ReviewResponse> viewByUser(Principal principal,
             @RequestParam(value = "pageSize", defaultValue = AppConstants.pageSizeString, required = false) int pageSize,
             @RequestParam(value = "pageNumber", defaultValue = AppConstants.pageNumberString, required = false) int pageNumber) {
@@ -81,12 +87,14 @@ public class ReviewController {
 
     // deleting the review
     @DeleteMapping("/delete/{reviewId}")
+    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<String> delete(@PathVariable int reviewId) {
         this.reviewService.delete(reviewId);
         return new ResponseEntity<String>("Successffully deleted...", HttpStatus.OK);
     }
 
     @GetMapping("/viewAll")
+    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<ReviewResponse> viewAll(
             @RequestParam(value = "pageSize", defaultValue = AppConstants.pageSizeString, required = false) int pageSize,
             @RequestParam(value = "pageNumber", defaultValue = AppConstants.pageNumberString, required = false) int pageNumber) {
@@ -96,6 +104,7 @@ public class ReviewController {
 
     // filtering reviews by organizationSize
     @PostMapping("/filterBySize")
+    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<ReviewResponse> filterBySize(@RequestBody FilterByOrganizationSizeRequest request,
             @RequestParam(value = "pageNumber", defaultValue = AppConstants.pageNumberString, required = false) int pageNumber,
             @RequestParam(value = "pageSize", defaultValue = AppConstants.pageSizeString, required = false) int pageSize) {
@@ -106,6 +115,7 @@ public class ReviewController {
 
     // filtering by rating
     @GetMapping("/filterByRating/{rating}")
+    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<ReviewResponse> filterByRating(@PathVariable int rating,
             @RequestParam(value = "pageNumber", defaultValue = AppConstants.pageNumberString, required = false) int pageNumber,
             @RequestParam(value = "pageSize", defaultValue = AppConstants.pageSizeString, required = false) int pageSize) {
@@ -117,6 +127,7 @@ public class ReviewController {
 
     // filtering by purpose
     @PostMapping("/filterByPurpose")
+    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<ReviewResponse> filterByPurpose(@RequestBody FilterByPurposeRequest request,
             @RequestParam(value = "pageNumber", defaultValue = AppConstants.pageNumberString, required = false) int pageNumber,
             @RequestParam(value = "pageSize", defaultValue = AppConstants.pageSizeString, required = false) int pageSize) {
@@ -128,6 +139,7 @@ public class ReviewController {
 
     // filtering by user role
     @GetMapping("/filterByUserRole/{userRole}")
+    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<ReviewResponse> filterByUserRole(@PathVariable String userRole,
             @RequestParam(value = "pageNumber", defaultValue = AppConstants.pageNumberString, required = false) int pageNumber,
             @RequestParam(value = "pageSize", defaultValue = AppConstants.pageSizeString, required = false) int pageSize) {
@@ -145,6 +157,7 @@ public class ReviewController {
     //
     //
     @PostMapping("/product/create/{reviewId}")
+    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<AboutReviewProductDto> createAboutProduct(@PathVariable int reviewId,
             @RequestBody AboutReviewProductRequest aboutReviewProductRequest) {
         return new ResponseEntity<AboutReviewProductDto>(
@@ -153,6 +166,7 @@ public class ReviewController {
 
     // getting the product details using review id
     @GetMapping("/product/viewByReview/{reviewId}")
+    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<AboutReviewProductDto> viewProductByReview(@PathVariable int reviewId) {
         return new ResponseEntity<AboutReviewProductDto>(this.aboutReviewProductService.viewByReview(reviewId),
                 HttpStatus.OK);
@@ -160,12 +174,14 @@ public class ReviewController {
 
     // getting the product details using review product id
     @GetMapping("/product/viewById/{productId}")
+    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<AboutReviewProductDto> viewProductById(@PathVariable int productId) {
         return new ResponseEntity<AboutReviewProductDto>(this.aboutReviewProductService.viewById(productId),
                 HttpStatus.OK);
     }
 
     @DeleteMapping("/product/delete/{aboutReviewProductId}")
+    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<String> deleteAboutReviewProduct(@PathVariable int aboutReviewProductId) {
         this.aboutReviewProductService.delete(aboutReviewProductId);
         return new ResponseEntity<String>("Deleted successfully..", HttpStatus.OK);
@@ -178,6 +194,7 @@ public class ReviewController {
     //
     //
     @PostMapping("/user/create/{reviewId}")
+    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<AboutReviewUserDto> createAboutReviewUser(@PathVariable int reviewId,
             @RequestBody AboutReviewUserRequest aboutReviewUserRequest) {
         return new ResponseEntity<AboutReviewUserDto>(
@@ -187,6 +204,7 @@ public class ReviewController {
 
     // viewing the user details writing the review using review id
     @GetMapping("/user/viewByReview/{reviewId}")
+    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<AboutReviewUserDto> viewByReview(@PathVariable int reviewId) {
         return new ResponseEntity<AboutReviewUserDto>(this.aboutReviewUserService.viewByReview(reviewId),
                 HttpStatus.OK);
@@ -194,11 +212,13 @@ public class ReviewController {
 
     // getting the user details using review user id
     @GetMapping("/user/viewById/{userId}")
+    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<AboutReviewUserDto> viewUserById(@PathVariable int userId) {
         return new ResponseEntity<AboutReviewUserDto>(this.aboutReviewUserService.viewById(userId), HttpStatus.OK);
     }
 
     @DeleteMapping("/user/delete/{aboutReviewUserId}")
+    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<String> deleteAboutReviewUser(@PathVariable int aboutReviewUserId) {
         this.aboutReviewUserService.delete(aboutReviewUserId);
         return new ResponseEntity<String>("Deleted successfully..", HttpStatus.OK);
@@ -207,6 +227,7 @@ public class ReviewController {
     // uploading the screenshot for confirmation of user as a current user of the
     // notion
     @PostMapping("/uploadScreenshot/{reviewUserId}")
+    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<?> uploadScreenshotProof(@PathVariable int reviewUserId,
             @RequestParam("screenshot") MultipartFile file) {
         AboutReviewUserDto aboutReviewUserDto = this.aboutReviewUserService.viewById(reviewUserId);
@@ -229,6 +250,7 @@ public class ReviewController {
     }
 
     @GetMapping("/viewPurposes/{softwareId}")
+    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<List<String>> viewPurposes(@PathVariable int softwareId) {
         return new ResponseEntity<List<String>>(this.softwareService.viewAllPurposes(softwareId), HttpStatus.OK);
     }

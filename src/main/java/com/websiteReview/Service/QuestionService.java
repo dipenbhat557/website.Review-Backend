@@ -16,6 +16,6 @@ public interface QuestionService {
 
         public void delete(int questionId);
 
-        public QuestionDto update(QuestionDto questionDto, int questionId, String username);
+        public QuestionDto update(QuestionRequest questionRequest, int questionId, String username);
 
 }

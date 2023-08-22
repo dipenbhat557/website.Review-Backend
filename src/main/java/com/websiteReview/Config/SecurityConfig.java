@@ -4,9 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -22,8 +24,10 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.websiteReview.Security.JwtAuthenticationEntryPoint;
 import com.websiteReview.Security.JwtAuthenticationFilter;
-
-import jakarta.servlet.Filter;
+import com.websiteReview.Security.oauth2.CustomOAuth2UserService;
+import com.websiteReview.Security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
+import com.websiteReview.Security.oauth2.OAuth2AuthenticationFailureHandler;
+import com.websiteReview.Security.oauth2.OAuth2AuthenticationSuccessHandler;
 
 // import com.websiteReview.Security.CustomerOAuth2UserService;
 
@@ -39,7 +43,10 @@ public class SecurityConfig {
             "/v2/api-docs",
             "/swagger-resources/**",
             "/swagger-ui/**",
-            "/webjars/**"
+            "/webjars/**",
+            "/",
+            "/error",
+            "/favicon.ico"
     };
 
     @Autowired
@@ -51,8 +58,22 @@ public class SecurityConfig {
     @Autowired
     private UserDetailsService userDetailsService;
 
-    // @Autowired
-    // private CustomerOAuth2UserService customerOAuth2UserService;
+    @Autowired
+    private CustomOAuth2UserService customOAuth2UserService;
+
+    @Autowired
+    private OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
+
+    @Autowired
+    private OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
+
+    @Autowired
+    private HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
+
+    @Bean
+    public HttpCookieOAuth2AuthorizationRequestRepository cookieAuthorizationRequestRepository() {
+        return new HttpCookieOAuth2AuthorizationRequestRepository();
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -66,24 +87,34 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
+
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(PUBLIC_URLS)
                         .permitAll()
                         .requestMatchers(HttpMethod.GET).permitAll()
                         .anyRequest().authenticated())
-                // .oauth2Login(o -> o
-                // .defaultSuccessUrl("/auth/oauth2LoginSuccess")
-                // .userInfoEndpoint(u -> u
-                // .oidcUserService(this.oidcUserService())
-                // .userService(customerOAuth2UserService))
-                // .defaultSuccessUrl("/auth/oauth2LoginSuccess", true))
-                // .formLogin(Customizer.withDefaults())
+                .oauth2Login(o -> o
+                        .authorizationEndpoint(e -> e
+                                .baseUri("/oauth2/authorize")
+                                .authorizationRequestRepository(
+                                        cookieAuthorizationRequestRepository()))
+                        .redirectionEndpoint(r -> r
+                                .baseUri("/oauth2/callback/*"))
+                        .userInfoEndpoint(u -> u
+                                .userService(customOAuth2UserService))
+                        .successHandler(oAuth2AuthenticationSuccessHandler)
+                        .failureHandler(oAuth2AuthenticationFailureHandler))
+
+                .formLogin(Customizer.withDefaults())
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(jwtAuthenticationEntryPoint))
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
                 .logout(logout -> logout.permitAll());
 
+        // http.addFilterBefore(new InterceptorFilter(),
+        // UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
@@ -99,32 +130,18 @@ public class SecurityConfig {
 
     // registering CORS filter
     @Bean
-    public FilterRegistrationBean<Filter> corsFilter() {
+    public FilterRegistrationBean<CorsFilter> corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration configuration = new CorsConfiguration();
+        CorsConfiguration config = new CorsConfiguration();
+        config.addAllowedOrigin("http://localhost:3000"); // Add your frontend origin here
+        config.addAllowedMethod("*");
+        config.addAllowedHeader("*");
+        source.registerCorsConfiguration("/**", config);
 
-        configuration.setAllowCredentials(true);
-        configuration.addAllowedOrigin("*");
-        configuration.addAllowedHeader("Authorization");
-        configuration.addAllowedHeader("Context-Type");
-        configuration.addAllowedHeader("Accept");
-        configuration.addAllowedMethod("POST");
-        configuration.addAllowedMethod("GET");
-        configuration.addAllowedMethod("DELETE");
-        configuration.addAllowedMethod("PUT");
-        configuration.addAllowedMethod("OPTIONS");
-        configuration.setMaxAge(3600L);
-        source.registerCorsConfiguration("/**", configuration);
-        FilterRegistrationBean<Filter> bean = new FilterRegistrationBean<Filter>(new CorsFilter(source));
-        bean.addUrlPatterns("/secured/**");
-        bean.setOrder(-110);
-
+        // Create the FilterRegistrationBean for CorsFilter
+        FilterRegistrationBean<CorsFilter> bean = new FilterRegistrationBean<>(new CorsFilter(source));
+        bean.setOrder(Ordered.HIGHEST_PRECEDENCE); // Set the desired order
         return bean;
     }
-
-    // private OidcUserService oidcUserService() {
-    // OidcUserService oidcUserService = new OidcUserService();
-    // return oidcUserService;
-    // }
 
 }

@@ -121,7 +121,7 @@ public class QuestionServiceImpl implements QuestionService {
         }
 
         @Override
-        public QuestionDto update(QuestionDto questionDto, int questionId, String username) {
+        public QuestionDto update(QuestionRequest questionRequest, int questionId, String username) {
                 Question oldQuestion = this.questionRepository.findById(questionId)
                                 .orElseThrow(() -> new ResourceNotFoundException("The expected question is not found"));
 
@@ -129,7 +129,7 @@ public class QuestionServiceImpl implements QuestionService {
                                 .orElseThrow(() -> new ResourceNotFoundException("The expected user is not found"));
                 if (oldQuestion.getUser().equals(newUser)) {
 
-                        oldQuestion.setDescription(questionDto.getDescription());
+                        oldQuestion.setDescription(questionRequest.getDescription());
                         oldQuestion = this.questionRepository.save(oldQuestion);
                 } else {
                         throw new ResourceNotFoundException("You are not allowed to perform this operation");

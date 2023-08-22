@@ -119,7 +119,7 @@ public class CommentServiceImpl implements CommentService {
         }
 
         @Override
-        public CommentDto update(int commentId, CommentDto commentDto, String username) {
+        public CommentDto update(int commentId, CommentRequest commentRequest, String username) {
                 User user = this.userRepository.findByEmail(username)
                                 .orElseThrow(() -> new ResourceNotFoundException("The expected user is not found"));
 
@@ -128,14 +128,14 @@ public class CommentServiceImpl implements CommentService {
                 User oldUser = comment.getUser();
 
                 if (user.equals(oldUser)) {
-                        comment.setDescription(commentDto.getDescription());
+                        comment.setDescription(commentRequest.getDescription());
                         comment = this.commentRepository.save(comment);
                 } else {
                         throw new ResourceNotFoundException(
                                         "You are not provided with the permission to perform this action");
                 }
 
-                commentDto = ModelToDto.commentDto(comment);
+                CommentDto commentDto = ModelToDto.commentDto(comment);
 
                 return commentDto;
         }

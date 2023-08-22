@@ -14,7 +14,7 @@ public interface CommentService {
 
     public CommentResponse viewByQuestion(int questionId, int pageNumber, int pageSize);
 
-    public CommentDto update(int commentId, CommentDto commentDto, String username);
+    public CommentDto update(int commentId, CommentRequest commentRequest, String username);
 
     public void delete(int commentId);
 
