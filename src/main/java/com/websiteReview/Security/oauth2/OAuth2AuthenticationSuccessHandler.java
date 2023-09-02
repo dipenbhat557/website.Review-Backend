@@ -68,12 +68,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         System.out.println(redirectUri);
 
-        // String nonce = generateNonce();
-        // httpCookieOAuth2AuthorizationRequestRepository.saveNonce(request, response,
-        // nonce);
-
-        // System.out.println(nonce);
-
         String targetUrl = redirectUri.orElse(getDefaultTargetUrl());
 
         System.out.println("This is targeturl" + targetUrl);
@@ -83,13 +77,8 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         System.out.println(token);
 
-        String nonce = generateNonce(); // Generate a new nonce
-        httpCookieOAuth2AuthorizationRequestRepository.saveNonce(request, response, nonce);
-        System.out.println(nonce);
-
         return UriComponentsBuilder.fromUriString(targetUrl)
                 .queryParam("token", token)
-                .queryParam("nonce", nonce) // Include the generated nonce
                 .build().toUriString();
     }
 
@@ -115,9 +104,4 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 });
     }
 
-    String generateNonce() {
-        byte[] nonceBytes = new byte[16]; // 16 bytes = 128 bits
-        new SecureRandom().nextBytes(nonceBytes);
-        return Base64.getUrlEncoder().withoutPadding().encodeToString(nonceBytes);
-    }
 }

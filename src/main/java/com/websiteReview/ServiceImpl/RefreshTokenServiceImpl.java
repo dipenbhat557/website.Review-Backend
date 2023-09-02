@@ -35,9 +35,13 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         User user = this.userRepository.findByEmail(username).orElseThrow(
                 () -> new ResourceNotFoundException("The expected user while generating refresh token is not found"));
 
+        System.out.println(user);
+
         RefreshToken refreshToken = user.getRefreshToken();
+        System.out.println(refreshToken);
 
         if (refreshToken == null) {
+            System.out.println(user.getClass());
             refreshToken = new RefreshToken(UUID.randomUUID().toString(),
                     Instant.now().plusMillis(refreshTokenValidity), user);
         } else {

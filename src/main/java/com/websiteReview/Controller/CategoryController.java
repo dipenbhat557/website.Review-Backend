@@ -36,75 +36,36 @@ public class CategoryController {
     @Autowired
     private SubCategoryServiceImpl subCategoryService;
 
-    @PostMapping("/create")
+    @PostMapping
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<CategoryDto> createCatgory(@RequestBody CategoryRequest categoryRequest) {
         return new ResponseEntity<CategoryDto>(this.categoryService.create(categoryRequest), HttpStatus.CREATED);
     }
 
-    @GetMapping("/viewById/{categoryId}")
+    @GetMapping("/{categoryId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<CategoryDto> getById(@PathVariable int categoryId) {
         return new ResponseEntity<>(this.categoryService.viewById(categoryId), HttpStatus.OK);
     }
 
-    @GetMapping("/viewAll")
+    @GetMapping
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<List<CategoryDto>> getAllCategories() {
         return new ResponseEntity<List<CategoryDto>>(this.categoryService.viewAll(), HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete/{categoryId}")
+    @DeleteMapping("/{categoryId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<String> deleteCategory(@PathVariable int categoryId) {
         this.categoryService.delete(categoryId);
         return new ResponseEntity<String>("Message deleted successfully.......", HttpStatus.OK);
     }
 
-    @GetMapping("/viewBySubCategory/{subCategoryId}")
+    @GetMapping("/subCategory/{subCategoryId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<List<CategoryDto>> viewBySubCategories(@PathVariable int subCategoryId) {
         return new ResponseEntity<List<CategoryDto>>(this.categoryService.viewBySubCategories(subCategoryId),
                 HttpStatus.ACCEPTED);
-    }
-
-    // sub category started
-    @PostMapping("/sub/create/{categoryId}")
-    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
-    public ResponseEntity<SubCategoryDto> createSubCategory(@RequestBody SubCategoryRequest subCategoryRequest) {
-        return new ResponseEntity<SubCategoryDto>(this.subCategoryService.create(subCategoryRequest),
-                HttpStatus.CREATED);
-    }
-
-    @GetMapping("/sub/viewById/{subCategoryId}")
-    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
-    public ResponseEntity<SubCategoryDto> viewBySubCategoryId(@PathVariable int subCategoryId) {
-        return new ResponseEntity<SubCategoryDto>(this.subCategoryService.viewById(subCategoryId),
-                HttpStatus.OK);
-    }
-
-    @GetMapping("/sub/viewAll")
-    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
-    public ResponseEntity<List<SubCategoryDto>> viewAllSubCategories() {
-        return new ResponseEntity<List<SubCategoryDto>>(this.subCategoryService.viewAll(),
-                HttpStatus.ACCEPTED);
-    }
-
-    @DeleteMapping("/sub/delete/{subCategoryId}")
-    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
-    public ResponseEntity<String> deleteSubCategory(@PathVariable int subCategoryId) {
-        this.subCategoryService.delete(subCategoryId);
-        return new ResponseEntity<String>("Successfully deleted......", HttpStatus.OK);
-    }
-
-    @GetMapping("/sub/viewByCategory/{categoryId}")
-    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
-    public ResponseEntity<SubCategoryResponse> viewAllCategoriesByCategory(@PathVariable int categoryId,
-            @RequestParam(value = "pageSize", defaultValue = AppConstants.pageSizeString, required = false) int pageSize,
-            @RequestParam(value = "pageNumber", defaultValue = AppConstants.pageNumberString, required = false) int pageNumber) {
-        return new ResponseEntity<SubCategoryResponse>(
-                this.subCategoryService.viewByCategory(categoryId, pageSize, pageNumber),
-                HttpStatus.OK);
     }
 
 }

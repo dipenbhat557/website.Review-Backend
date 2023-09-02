@@ -12,6 +12,7 @@ import com.websiteReview.Exception.ResourceNotFoundException;
 import com.websiteReview.Helper.DtoToModel;
 import com.websiteReview.Helper.ModelToDto;
 import com.websiteReview.Helper.UserRequest;
+import com.websiteReview.Model.AuthProvider;
 import com.websiteReview.Model.User;
 import com.websiteReview.Respository.UserRepository;
 import com.websiteReview.Service.UserService;
@@ -34,9 +35,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto create(UserRequest userRequest) {
         User user = new User();
+        System.out.println(userRequest);
+        user.setName(userRequest.getName());
         user.setEmail(userRequest.getEmail());
         user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        user.setProvider(AuthProvider.local);
+        System.out.println(user);
         user = this.userRepository.save(user);
+        System.out.println(user);
 
         UserDto userDto = ModelToDto.userDto(user);
 

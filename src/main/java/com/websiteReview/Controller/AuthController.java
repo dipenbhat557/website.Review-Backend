@@ -75,12 +75,16 @@ public class AuthController {
         UserDetails userDetails = this.userDetailsService.loadUserByUsername(request.getUsername());
 
         String token = this.jwtHelper.generateToken(userDetails);
+        System.out.println(userDetails.getUsername());
         RefreshTokenDto refreshTokenDto = this.refreshTokenService.createRefreshToken(userDetails.getUsername());
 
         JwtResponse jwtResponse = new JwtResponse();
         jwtResponse.setToken(token);
         jwtResponse.setRefreshToken(refreshTokenDto.getRefreshToken());
-        jwtResponse.setUser((User) userDetails);
+
+        User user = this.userRepository.findByEmail(userDetails.getUsername())
+                .orElseThrow(() -> new ResourceNotFoundException("The expected user is not found"));
+        jwtResponse.setUser(user);
 
         return new ResponseEntity<JwtResponse>(jwtResponse, HttpStatus.ACCEPTED);
     }
@@ -124,10 +128,6 @@ public class AuthController {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         User result = userRepository.save(user);
-
-        // URI location = ServletUriComponentsBuilder
-        // .fromCurrentContextPath().path("/user/me")
-        // .buildAndExpand(result.getId()).toUri();
 
         return new ResponseEntity<>("Registered Successfully", HttpStatus.CREATED);
     }

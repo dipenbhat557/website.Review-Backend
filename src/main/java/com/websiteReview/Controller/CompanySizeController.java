@@ -28,26 +28,26 @@ public class CompanySizeController {
     private CompanySizeServiceImpl companySizeService;
 
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<CompanySizeDto> createCompanySize(@RequestBody CompanySizeRequest companySizeRequest) {
         return new ResponseEntity<CompanySizeDto>(this.companySizeService.create(companySizeRequest),
                 HttpStatus.CREATED);
     }
 
-    @GetMapping("/viewById/{sizeId}")
+    @GetMapping("/{sizeId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<CompanySizeDto> viewById(@PathVariable int sizeId) {
         return new ResponseEntity<CompanySizeDto>(this.companySizeService.viewById(sizeId), HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete/{sizeId}")
+    @DeleteMapping("/{sizeId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<String> deleteSize(@PathVariable int sizeId) {
         this.companySizeService.delete(sizeId);
         return new ResponseEntity<String>("Deleted Successfully", HttpStatus.OK);
     }
 
-    @GetMapping("/viewAll")
+    @GetMapping
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<List<CompanySizeDto>> viewAllSizes() {
         return new ResponseEntity<List<CompanySizeDto>>(this.companySizeService.viewAll(), HttpStatus.OK);

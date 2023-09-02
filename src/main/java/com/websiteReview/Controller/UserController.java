@@ -26,7 +26,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 @CrossOrigin(origins = "http://localhost:3000")
 public class UserController {
 
@@ -38,24 +38,26 @@ public class UserController {
 
 	private String path = "src/user/profiles";
 
-	@PostMapping("/create")
-	public ResponseEntity<UserDto> createUser(@RequestBody UserRequest userRequest) {
-		return new ResponseEntity<UserDto>(this.userService.create(userRequest), HttpStatus.CREATED);
-	}
+	// @PostMapping("/create")
+	// public ResponseEntity<UserDto> createUser(@RequestBody UserRequest
+	// userRequest) {
+	// return new ResponseEntity<UserDto>(this.userService.create(userRequest),
+	// HttpStatus.CREATED);
+	// }
 
-	@GetMapping("/viewAll")
+	@GetMapping
 	@Operation(security = { @SecurityRequirement(name = "BearerJWT") })
 	public ResponseEntity<List<UserDto>> getAllUsers() {
 		return new ResponseEntity<List<UserDto>>(this.userService.viewAll(), HttpStatus.OK);
 	}
 
-	@GetMapping("/viewById/{userId}")
+	@GetMapping("/{userId}")
 	@Operation(security = { @SecurityRequirement(name = "BearerJWT") })
 	public ResponseEntity<UserDto> getUserById(@PathVariable int userId) {
 		return new ResponseEntity<UserDto>(this.userService.viewById(userId), HttpStatus.ACCEPTED);
 	}
 
-	@DeleteMapping("/delete/{userId}")
+	@DeleteMapping("/{userId}")
 	@Operation(security = { @SecurityRequirement(name = "BearerJWT") })
 	public ResponseEntity<String> deleteUser(@PathVariable int userId) {
 		UserDto userDto = this.userService.viewById(userId);
@@ -70,7 +72,7 @@ public class UserController {
 		return new ResponseEntity<UserDto>(this.userService.viewById(userPrincipal.getId()), HttpStatus.OK);
 	}
 
-	@PostMapping("/changeProfile/{userId}")
+	@PostMapping("/profile/{userId}")
 	public ResponseEntity<UserDto> changeProfile(@PathVariable int userId, @RequestBody MultipartFile file) {
 		UserDto user = this.userService.viewById(userId);
 

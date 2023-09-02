@@ -140,8 +140,8 @@ public class User {
     @Override
     public String toString() {
         return "User [userId=" + userId + ", name=" + name + ", email=" + email + ", imageUrl=" + imageUrl
-                + ", emailVerified=" + emailVerified + ", password=" + password + ", provider=" + provider
-                + ", providerId=" + providerId + ", refreshToken=" + refreshToken + ", reviews=" + reviews + "]";
+                + ", emailVerified=" + emailVerified + ", provider=" + provider
+                + ", providerId=" + providerId + ", reviews=" + reviews + "]";
     }
 
     public User() {

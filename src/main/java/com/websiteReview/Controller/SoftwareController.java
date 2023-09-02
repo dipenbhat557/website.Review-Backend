@@ -41,7 +41,7 @@ public class SoftwareController {
 
     private String videoPath = "src/software/videos";
 
-    @PostMapping("/create/{subCategoryId}")
+    @PostMapping("/{subCategoryId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<SoftwareDto> create(@RequestBody SoftwareRequest softwareRequest,
             @PathVariable int subCategoryId) {
@@ -49,19 +49,19 @@ public class SoftwareController {
                 HttpStatus.CREATED);
     }
 
-    @GetMapping("/viewById/{softwareId}")
+    @GetMapping("/{softwareId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<SoftwareDto> viewById(@PathVariable int softwareId) {
         return new ResponseEntity<SoftwareDto>(this.softwareService.viewById(softwareId), HttpStatus.OK);
     }
 
-    @GetMapping("/viewAll")
+    @GetMapping
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<List<SoftwareDto>> viewAllSoftwares() {
         return new ResponseEntity<List<SoftwareDto>>(this.softwareService.viewAll(), HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete/{softwareId}")
+    @DeleteMapping("/{softwareId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<String> delete(@PathVariable int softwareId) {
         this.softwareService.delete(softwareId);
@@ -100,7 +100,7 @@ public class SoftwareController {
         }
     }
 
-    @GetMapping("/viewByRating/{rating}")
+    @GetMapping("/filterByRating/{rating}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<SoftwareResponse> filterByRating(@PathVariable int rating,
             @RequestParam(value = "pageNumber", defaultValue = AppConstants.pageNumberString, required = false) int pageNumber,
@@ -110,7 +110,7 @@ public class SoftwareController {
                 HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/viewByCategory/{categoryId}")
+    @GetMapping("/filterByCategory/{categoryId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<SoftwareResponse> filterByCategory(@PathVariable int categoryId,
             @RequestParam(value = "pageNumber", defaultValue = AppConstants.pageNumberString, required = false) int pageNumber,
@@ -120,7 +120,7 @@ public class SoftwareController {
                 this.softwareService.viewBySubCategory(categoryId, pageNumber, pageSize), HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/viewBySegment/{sizeId}")
+    @GetMapping("/filterBySegment/{sizeId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<SoftwareResponse> filterBySegment(@PathVariable int sizeId,
             @RequestParam(value = "pageNumber", defaultValue = AppConstants.pageNumberString, required = false) int pageNumber,

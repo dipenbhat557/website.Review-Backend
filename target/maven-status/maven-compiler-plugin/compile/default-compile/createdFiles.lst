@@ -10,6 +10,7 @@ com\websiteReview\Helper\AboutReviewProductRequest.class
 com\websiteReview\Security\JwtAuthenticationFilter.class
 com\websiteReview\Helper\MapToJsonConverter.class
 com\websiteReview\Config\AppProperties$Auth.class
+com\websiteReview\Controller\DiscussionCommentController.class
 com\websiteReview\Dtos\AboutReviewProductDto.class
 com\websiteReview\Respository\RefreshTokenRepository.class
 com\websiteReview\Config\SpringDocConfig.class
@@ -64,11 +65,11 @@ com\websiteReview\Helper\ReviewResponse.class
 com\websiteReview\Helper\CompanySizeRequest.class
 com\websiteReview\WebsiteReviewApplication.class
 com\websiteReview\Respository\PricingRepository.class
+com\websiteReview\Controller\DiscussionQuestionController.class
 com\websiteReview\Controller\AuthController.class
 com\websiteReview\ServiceImpl\SubCategoryServiceImpl.class
 com\websiteReview\Helper\SubCategoryResponse.class
 com\websiteReview\ServiceImpl\UserServiceImpl.class
-com\websiteReview\Controller\DiscussionController.class
 com\websiteReview\Respository\CommentRepository.class
 com\websiteReview\Dtos\SoftwareDto.class
 com\websiteReview\ServiceImpl\FileUploadServiceImpl.class
@@ -79,11 +80,14 @@ com\websiteReview\Model\User.class
 com\websiteReview\Service\CompanySizeService.class
 com\websiteReview\Controller\CompanySizeController.class
 com\websiteReview\Exception\ResourceNotFoundException.class
+com\websiteReview\Controller\ReviewProductController.class
 com\websiteReview\Dtos\CategoryDto.class
 com\websiteReview\ServiceImpl\CategoryServiceImpl.class
 com\websiteReview\Security\oauth2\OAuth2AuthenticationFailureHandler.class
 com\websiteReview\Model\CompanySize.class
 com\websiteReview\ServiceImpl\ReviewServiceImpl.class
+com\websiteReview\Controller\SubCategoryController.class
+com\websiteReview\Controller\ReviewUserController.class
 com\websiteReview\Dtos\SubCategoryDto.class
 com\websiteReview\Helper\QuestionResponse.class
 com\websiteReview\Model\AboutReviewProduct.class

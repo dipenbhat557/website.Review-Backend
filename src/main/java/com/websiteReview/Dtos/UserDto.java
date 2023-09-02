@@ -126,7 +126,7 @@ public class UserDto {
     @Override
     public String toString() {
         return "UserDto [userId=" + userId + ", name=" + name + ", email=" + email + ", imageUrl=" + imageUrl
-                + ", emailVerified=" + emailVerified + ", password=" + password + ", provider=" + provider
+                + ", emailVerified=" + emailVerified + ", provider=" + provider
                 + ", providerId=" + providerId + ", refreshTokenDto=" + refreshTokenDto + ", reviewDtos=" + reviewDtos
                 + "]";
     }

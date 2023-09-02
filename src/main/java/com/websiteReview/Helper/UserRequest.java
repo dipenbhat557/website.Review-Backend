@@ -2,6 +2,7 @@ package com.websiteReview.Helper;
 
 public class UserRequest {
 
+    private String name;
     private String email;
     private String password;
 
@@ -24,14 +25,23 @@ public class UserRequest {
     public UserRequest() {
     }
 
-    public UserRequest(String email, String password) {
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public UserRequest(String name, String email, String password) {
+        this.name = name;
         this.email = email;
         this.password = password;
     }
 
     @Override
     public String toString() {
-        return "UserRequest [email=" + email + ", password=" + password + "]";
+        return "UserRequest [name=" + name + ", email=" + email + ", password=" + password + "]";
     }
 
 }

@@ -27,7 +27,7 @@ public class PricingController {
     @Autowired
     private PricingServiceImpl pricingService;
 
-    @PostMapping("/create/{softwareId}")
+    @PostMapping("/{softwareId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<PricingDto> createPricing(@RequestBody PricingRequest pricingRequest,
             @PathVariable int softwareId) {
@@ -35,19 +35,19 @@ public class PricingController {
                 HttpStatus.CREATED);
     }
 
-    @GetMapping("/getById/{pricingId}")
+    @GetMapping("/{pricingId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<PricingDto> getById(@PathVariable int pricingId) {
         return new ResponseEntity<PricingDto>(this.pricingService.viewById(pricingId), HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/getBySoftware/{softwareId}")
+    @GetMapping("/software/{softwareId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<List<PricingDto>> getBySoftware(@PathVariable int softwareId) {
         return new ResponseEntity<List<PricingDto>>(this.pricingService.viewBySoftware(softwareId), HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete/{pricingId}")
+    @DeleteMapping("/{pricingId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<String> deletePricing(@PathVariable int pricingId) {
         this.pricingService.delete(pricingId);

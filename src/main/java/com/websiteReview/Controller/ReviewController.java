@@ -37,7 +37,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @RestController
-@RequestMapping("/review")
+@RequestMapping("/reviews")
 public class ReviewController {
 
     @Autowired
@@ -58,7 +58,7 @@ public class ReviewController {
     private String imagePath = "src/review/currentUser/screenshot";
 
     // creating review
-    @PostMapping("/create/{softwareId}")
+    @PostMapping("/{softwareId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<ReviewDto> createReview(@RequestBody ReviewRequest reviewRequest, Principal principal,
             @PathVariable int softwareId) {
@@ -69,14 +69,14 @@ public class ReviewController {
     }
 
     // getting review by id
-    @GetMapping("/viewById/{reviewId}")
+    @GetMapping("/{reviewId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<ReviewDto> viewById(@PathVariable int reviewId) {
         return new ResponseEntity<ReviewDto>(this.reviewService.viewById(reviewId), HttpStatus.OK);
     }
 
     // getting review by user
-    @GetMapping("/viewByUser")
+    @GetMapping("/user")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<ReviewResponse> viewByUser(Principal principal,
             @RequestParam(value = "pageSize", defaultValue = AppConstants.pageSizeString, required = false) int pageSize,
@@ -86,14 +86,14 @@ public class ReviewController {
     }
 
     // deleting the review
-    @DeleteMapping("/delete/{reviewId}")
+    @DeleteMapping("/{reviewId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<String> delete(@PathVariable int reviewId) {
         this.reviewService.delete(reviewId);
         return new ResponseEntity<String>("Successffully deleted...", HttpStatus.OK);
     }
 
-    @GetMapping("/viewAll")
+    @GetMapping
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<ReviewResponse> viewAll(
             @RequestParam(value = "pageSize", defaultValue = AppConstants.pageSizeString, required = false) int pageSize,
@@ -147,111 +147,5 @@ public class ReviewController {
         ReviewResponse response = this.reviewService.viewByUserRole(userRole, pageNumber, pageSize);
 
         return new ResponseEntity<ReviewResponse>(response, HttpStatus.OK);
-    }
-
-    //
-    //
-    //
-    // creating the details about the product while writing review
-    //
-    //
-    //
-    @PostMapping("/product/create/{reviewId}")
-    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
-    public ResponseEntity<AboutReviewProductDto> createAboutProduct(@PathVariable int reviewId,
-            @RequestBody AboutReviewProductRequest aboutReviewProductRequest) {
-        return new ResponseEntity<AboutReviewProductDto>(
-                this.aboutReviewProductService.create(reviewId, aboutReviewProductRequest), HttpStatus.CREATED);
-    }
-
-    // getting the product details using review id
-    @GetMapping("/product/viewByReview/{reviewId}")
-    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
-    public ResponseEntity<AboutReviewProductDto> viewProductByReview(@PathVariable int reviewId) {
-        return new ResponseEntity<AboutReviewProductDto>(this.aboutReviewProductService.viewByReview(reviewId),
-                HttpStatus.OK);
-    }
-
-    // getting the product details using review product id
-    @GetMapping("/product/viewById/{productId}")
-    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
-    public ResponseEntity<AboutReviewProductDto> viewProductById(@PathVariable int productId) {
-        return new ResponseEntity<AboutReviewProductDto>(this.aboutReviewProductService.viewById(productId),
-                HttpStatus.OK);
-    }
-
-    @DeleteMapping("/product/delete/{aboutReviewProductId}")
-    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
-    public ResponseEntity<String> deleteAboutReviewProduct(@PathVariable int aboutReviewProductId) {
-        this.aboutReviewProductService.delete(aboutReviewProductId);
-        return new ResponseEntity<String>("Deleted successfully..", HttpStatus.OK);
-    }
-
-    //
-    //
-    //
-    // creating about user writing the review
-    //
-    //
-    @PostMapping("/user/create/{reviewId}")
-    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
-    public ResponseEntity<AboutReviewUserDto> createAboutReviewUser(@PathVariable int reviewId,
-            @RequestBody AboutReviewUserRequest aboutReviewUserRequest) {
-        return new ResponseEntity<AboutReviewUserDto>(
-                this.aboutReviewUserService.create(reviewId, aboutReviewUserRequest),
-                HttpStatus.CREATED);
-    }
-
-    // viewing the user details writing the review using review id
-    @GetMapping("/user/viewByReview/{reviewId}")
-    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
-    public ResponseEntity<AboutReviewUserDto> viewByReview(@PathVariable int reviewId) {
-        return new ResponseEntity<AboutReviewUserDto>(this.aboutReviewUserService.viewByReview(reviewId),
-                HttpStatus.OK);
-    }
-
-    // getting the user details using review user id
-    @GetMapping("/user/viewById/{userId}")
-    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
-    public ResponseEntity<AboutReviewUserDto> viewUserById(@PathVariable int userId) {
-        return new ResponseEntity<AboutReviewUserDto>(this.aboutReviewUserService.viewById(userId), HttpStatus.OK);
-    }
-
-    @DeleteMapping("/user/delete/{aboutReviewUserId}")
-    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
-    public ResponseEntity<String> deleteAboutReviewUser(@PathVariable int aboutReviewUserId) {
-        this.aboutReviewUserService.delete(aboutReviewUserId);
-        return new ResponseEntity<String>("Deleted successfully..", HttpStatus.OK);
-    }
-
-    // uploading the screenshot for confirmation of user as a current user of the
-    // notion
-    @PostMapping("/uploadScreenshot/{reviewUserId}")
-    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
-    public ResponseEntity<?> uploadScreenshotProof(@PathVariable int reviewUserId,
-            @RequestParam("screenshot") MultipartFile file) {
-        AboutReviewUserDto aboutReviewUserDto = this.aboutReviewUserService.viewById(reviewUserId);
-        String imageName = null;
-
-        try {
-
-            imageName = this.fileUploadService.uploadImage(imagePath, file);
-            aboutReviewUserDto.setScreenshotName(imageName);
-
-            AboutReviewUserDto updatedUser = this.aboutReviewUserService.update(reviewUserId, aboutReviewUserDto);
-
-            return new ResponseEntity<>(updatedUser, HttpStatus.OK);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(Map.of("Message", "Couldn't upload the image....."),
-                    HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @GetMapping("/viewPurposes/{softwareId}")
-    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
-    public ResponseEntity<List<String>> viewPurposes(@PathVariable int softwareId) {
-        return new ResponseEntity<List<String>>(this.softwareService.viewAllPurposes(softwareId), HttpStatus.OK);
     }
 }

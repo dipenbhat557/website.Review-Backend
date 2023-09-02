@@ -52,7 +52,8 @@ public class ForgotPasswordController {
         // UserDto user = this.userService.viewByEmail(forgotEmail);
 
         // if (user == null) {
-        //     return new ResponseEntity<String>("User with the mentioned email is not found", HttpStatus.NOT_FOUND);
+        // return new ResponseEntity<String>("User with the mentioned email is not
+        // found", HttpStatus.NOT_FOUND);
         // }
 
         boolean flag = this.emailService.sendEmail(subject, message, to);
@@ -79,6 +80,7 @@ public class ForgotPasswordController {
 
         if (myOtp == OTP) {
             session.removeAttribute("OTP");
+            session.setAttribute("OTPVerified", true);
             return new ResponseEntity<String>("Verification complete....", HttpStatus.OK);
         } else {
             return new ResponseEntity<String>("You have entered wrond OTP !!", HttpStatus.NOT_ACCEPTABLE);
@@ -86,14 +88,33 @@ public class ForgotPasswordController {
     }
 
     @PostMapping("/changePassword")
-    public ResponseEntity<UserDto> changePassword(@RequestParam("newPassword") String newPassword, HttpSession session) {
+    public ResponseEntity<String> changePassword(@RequestParam("newPassword") String newPassword, HttpSession session) {
 
         String email = (String) session.getAttribute("email");
-        session.removeAttribute("email");
+
+        if (email == null) {
+            return new ResponseEntity<String>("Unauthorized", HttpStatus.UNAUTHORIZED);
+        }
+
+        // Check if OTP has been verified
+        if (!session.getAttribute("OTPVerified").equals(true)) {
+            return new ResponseEntity<String>("OTP verification required", HttpStatus.UNAUTHORIZED);
+        }
+
         UserDto user = this.userService.viewByEmail(email);
+        if (user == null) {
+            return new ResponseEntity<String>("User not found", HttpStatus.NOT_FOUND);
+        }
+
+        // Update the user's password
         user.setPassword(this.passwordEncoder.encode(newPassword));
+        this.userService.update(user, user.getUserId());
 
-        return new ResponseEntity<UserDto>(this.userService.update(user, user.getUserId()), HttpStatus.OK);
+        // Clear session attributes
+        session.removeAttribute("email");
+        session.removeAttribute("OTPVerified");
 
+        return new ResponseEntity<String>("Password changed successfully", HttpStatus.OK);
     }
+
 }

@@ -9,6 +9,7 @@ D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Respository\About
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Helper\MapToJsonConverter.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Service\SubCategoryService.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Helper\QuestionRequest.java
+D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Controller\ReviewProductController.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Helper\CompanySizeRequest.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Dtos\AboutReviewUserDto.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Dtos\CommentDto.java
@@ -19,6 +20,7 @@ D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\ServiceImpl\Quest
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\WebsiteReviewApplication.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\ServiceImpl\AboutReviewUserServiceImpl.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Service\UserService.java
+D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Controller\DiscussionQuestionController.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\ServiceImpl\CompanySizeServiceImpl.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Exception\OAuth2AuthenticationProcessingException.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Model\AuthProvider.java
@@ -42,6 +44,7 @@ D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Service\QuestionS
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\ServiceImpl\SubCategoryServiceImpl.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\ServiceImpl\CommentServiceImpl.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Helper\PricingRequest.java
+D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Controller\ReviewUserController.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\ServiceImpl\FileUploadServiceImpl.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Helper\CategoryRequest.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\ServiceImpl\PricingServiceImpl.java
@@ -61,6 +64,7 @@ D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Service\FileUploa
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Respository\ReviewRepository.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Service\CommentService.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Model\Category.java
+D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Controller\SubCategoryController.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Helper\QuestionResponse.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\ServiceImpl\SoftwareServiceImpl.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Helper\ModelToDto.java
@@ -84,7 +88,6 @@ D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Respository\Categ
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\ServiceImpl\EmailServiceImpl.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Security\JwtAuthenticationEntryPoint.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Config\AppProperties.java
-D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Controller\DiscussionController.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Dtos\ReviewDto.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Controller\AuthController.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Service\ReviewService.java
@@ -113,6 +116,7 @@ D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Helper\CommentReq
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\ServiceImpl\RefreshTokenServiceImpl.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\util\CookieUtils.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Respository\UserRepository.java
+D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Controller\DiscussionCommentController.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Model\RefreshToken.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Config\CustomUserDetailsService.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Dtos\QuestionDto.java
