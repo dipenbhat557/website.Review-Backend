@@ -9,10 +9,10 @@ public class ReviewDto {
     private String userRole;
     private double rating;
 
-    private UserDto userDto;
+    private int userId;
     private AboutReviewUserDto aboutReviewUserDto;
     private AboutReviewProductDto aboutReviewProductDto;
-    private SoftwareDto softwareDto;
+    private int softwareId;
 
     public int getReviewId() {
         return reviewId;
@@ -62,14 +62,6 @@ public class ReviewDto {
         this.rating = rating;
     }
 
-    public UserDto getUserDto() {
-        return userDto;
-    }
-
-    public void setUserDto(UserDto userDto) {
-        this.userDto = userDto;
-    }
-
     public AboutReviewUserDto getAboutReviewUserDto() {
         return aboutReviewUserDto;
     }
@@ -89,36 +81,43 @@ public class ReviewDto {
     public ReviewDto() {
     }
 
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public int getSoftwareId() {
+        return softwareId;
+    }
+
+    public void setSoftwareId(int softwareId) {
+        this.softwareId = softwareId;
+    }
+
+    @Override
+    public String toString() {
+        return "ReviewDto [reviewId=" + reviewId + ", title=" + title + ", whatYouLike=" + whatYouLike
+                + ", whatYouDislike=" + whatYouDislike + ", userRole=" + userRole + ", rating=" + rating + ", userId="
+                + userId + ", aboutReviewUserDto=" + aboutReviewUserDto + ", aboutReviewProductDto="
+                + aboutReviewProductDto + ", softwareId=" + softwareId + "]";
+    }
+
     public ReviewDto(int reviewId, String title, String whatYouLike, String whatYouDislike, String userRole,
-            double rating, UserDto userDto, AboutReviewUserDto aboutReviewUserDto,
-            AboutReviewProductDto aboutReviewProductDto,
-            SoftwareDto softwareDto) {
+            double rating, int userId, AboutReviewUserDto aboutReviewUserDto,
+            AboutReviewProductDto aboutReviewProductDto, int softwareId) {
         this.reviewId = reviewId;
         this.title = title;
         this.whatYouLike = whatYouLike;
         this.whatYouDislike = whatYouDislike;
         this.userRole = userRole;
         this.rating = rating;
-        this.userDto = userDto;
+        this.userId = userId;
         this.aboutReviewUserDto = aboutReviewUserDto;
         this.aboutReviewProductDto = aboutReviewProductDto;
-        this.softwareDto = softwareDto;
-    }
-
-    public SoftwareDto getSoftwareDto() {
-        return softwareDto;
-    }
-
-    public void setSoftwareDto(SoftwareDto softwareDto) {
-        this.softwareDto = softwareDto;
-    }
-
-    @Override
-    public String toString() {
-        return "ReviewDto [reviewId=" + reviewId + ", title=" + title + ", whatYouLike=" + whatYouLike
-                + ", whatYouDislike=" + whatYouDislike + ", userRole=" + userRole + ", rating=" + rating + ", userDto="
-                + userDto + ", aboutReviewUser=" + aboutReviewUserDto + ", aboutReviewProduct=" + aboutReviewProductDto
-                + ", software=" + softwareDto + "]";
+        this.softwareId = softwareId;
     }
 
 }

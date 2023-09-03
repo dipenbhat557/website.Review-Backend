@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import com.websiteReview.Dtos.ReviewDto;
 import com.websiteReview.Exception.ResourceNotFoundException;
-import com.websiteReview.Helper.DtoToModel;
 import com.websiteReview.Helper.ModelToDto;
 import com.websiteReview.Helper.ReviewRequest;
 import com.websiteReview.Helper.ReviewResponse;
@@ -35,9 +34,6 @@ public class ReviewServiceImpl implements ReviewService {
 
         @Autowired
         private SoftwareRepository softwareRepository;
-
-        @Autowired
-        private DtoToModel DtoToModel;
 
         @Autowired
         private ModelToDto ModelToDto;
@@ -86,7 +82,7 @@ public class ReviewServiceImpl implements ReviewService {
         }
 
         @Override
-        public ReviewResponse viewByUser(String username,int pageNumber, int pageSize ) {
+        public ReviewResponse viewByUser(String username, int pageNumber, int pageSize) {
                 User user = this.userRepository.findByEmail(username)
                                 .orElseThrow(() -> new ResourceNotFoundException(
                                                 "The expected user is not found while getting review by user"));
@@ -120,10 +116,14 @@ public class ReviewServiceImpl implements ReviewService {
 
                 Software software = review.getSoftware();
                 software.setRating(software.getRating() * software.getNoOfResponses() - review.getRating());
-                software.setEaseOfUseRating(software.getEaseOfUseRating() * software.getNoOfResponses() - aboutReviewProduct.getEaseOfUseRating());
-                software.setMeetsRequirementRating(software.getMeetsRequirementRating() * software.getNoOfResponses() - aboutReviewProduct.getMeetsRequirementRating());
-                software.setNotionDirectionRating(software.getNotionDirectionRating() * software.getNoOfResponses() - aboutReviewProduct.getNotionDirectionRating());
-                software.setQualitySupportRating(software.getQualitySupportRating() * software.getNoOfResponses() - aboutReviewProduct.getQualitySupportRating());
+                software.setEaseOfUseRating(software.getEaseOfUseRating() * software.getNoOfResponses()
+                                - aboutReviewProduct.getEaseOfUseRating());
+                software.setMeetsRequirementRating(software.getMeetsRequirementRating() * software.getNoOfResponses()
+                                - aboutReviewProduct.getMeetsRequirementRating());
+                software.setNotionDirectionRating(software.getNotionDirectionRating() * software.getNoOfResponses()
+                                - aboutReviewProduct.getNotionDirectionRating());
+                software.setQualitySupportRating(software.getQualitySupportRating() * software.getNoOfResponses()
+                                - aboutReviewProduct.getQualitySupportRating());
                 software.setNoOfResponses(software.getNoOfResponses() - 1);
                 this.softwareRepository.save(software);
         }

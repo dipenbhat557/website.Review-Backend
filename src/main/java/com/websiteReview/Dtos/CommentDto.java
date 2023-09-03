@@ -11,9 +11,9 @@ public class CommentDto {
 
     private LocalDateTime date;
 
-    private UserDto userDto;
+    private int userId;
 
-    private QuestionDto questionDto;
+    private int questionId;
 
     public int getCommentId() {
         return commentId;
@@ -31,22 +31,6 @@ public class CommentDto {
         this.date = date;
     }
 
-    public UserDto getUserDto() {
-        return userDto;
-    }
-
-    public void setUserDto(UserDto userDto) {
-        this.userDto = userDto;
-    }
-
-    public QuestionDto getQuestionDto() {
-        return questionDto;
-    }
-
-    public void setQuestionDto(QuestionDto questionDto) {
-        this.questionDto = questionDto;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -58,18 +42,34 @@ public class CommentDto {
     public CommentDto() {
     }
 
-    public CommentDto(int commentId, String description, LocalDateTime date, UserDto userDto, QuestionDto questionDto) {
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public int getQuestionId() {
+        return questionId;
+    }
+
+    public void setQuestionId(int questionId) {
+        this.questionId = questionId;
+    }
+
+    public CommentDto(int commentId, String description, LocalDateTime date, int userId, int questionId) {
         this.commentId = commentId;
         this.description = description;
         this.date = date;
-        this.userDto = userDto;
-        this.questionDto = questionDto;
+        this.userId = userId;
+        this.questionId = questionId;
     }
 
     @Override
     public String toString() {
-        return "CommentDto [commentId=" + commentId + ", description=" + description + ", date=" + date + ", userDto="
-                + userDto + ", questionDto=" + questionDto + "]";
+        return "CommentDto [commentId=" + commentId + ", description=" + description + ", date=" + date + ", userId="
+                + userId + ", questionId=" + questionId + "]";
     }
 
 }

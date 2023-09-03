@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import com.websiteReview.Dtos.ReviewDto;
 import com.websiteReview.Dtos.SoftwareDto;
 import com.websiteReview.Exception.ResourceNotFoundException;
-import com.websiteReview.Helper.DtoToModel;
 import com.websiteReview.Helper.ModelToDto;
 import com.websiteReview.Helper.SoftwareRequest;
 import com.websiteReview.Helper.SoftwareResponse;
@@ -42,9 +41,6 @@ public class SoftwareServiceImpl implements SoftwareService {
 
         @Autowired
         private CompanySizeRepository companySizeRepository;
-
-        @Autowired
-        private DtoToModel DtoToModel;
 
         @Autowired
         private ModelToDto ModelToDto;

@@ -24,7 +24,7 @@ public class UserDto {
 
     private RefreshTokenDto refreshTokenDto;
 
-    private List<ReviewDto> reviewDtos = new ArrayList<>();
+    private List<Integer> reviewIds = new ArrayList<>();
 
     public int getUserId() {
         return userId;
@@ -98,19 +98,19 @@ public class UserDto {
         this.refreshTokenDto = refreshTokenDto;
     }
 
-    public List<ReviewDto> getReviewDtos() {
-        return reviewDtos;
-    }
-
-    public void setReviewDtos(List<ReviewDto> reviewDtos) {
-        this.reviewDtos = reviewDtos;
-    }
-
     public UserDto() {
     }
 
+    public List<Integer> getReviewIds() {
+        return reviewIds;
+    }
+
+    public void setReviewIds(List<Integer> reviewIds) {
+        this.reviewIds = reviewIds;
+    }
+
     public UserDto(int userId, String name, String email, String imageUrl, Boolean emailVerified, String password,
-            AuthProvider provider, String providerId, RefreshTokenDto refreshTokenDto, List<ReviewDto> reviewDtos) {
+            AuthProvider provider, String providerId, RefreshTokenDto refreshTokenDto, List<Integer> reviewIds) {
         this.userId = userId;
         this.name = name;
         this.email = email;
@@ -120,14 +120,14 @@ public class UserDto {
         this.provider = provider;
         this.providerId = providerId;
         this.refreshTokenDto = refreshTokenDto;
-        this.reviewDtos = reviewDtos;
+        this.reviewIds = reviewIds;
     }
 
     @Override
     public String toString() {
         return "UserDto [userId=" + userId + ", name=" + name + ", email=" + email + ", imageUrl=" + imageUrl
-                + ", emailVerified=" + emailVerified + ", provider=" + provider
-                + ", providerId=" + providerId + ", refreshTokenDto=" + refreshTokenDto + ", reviewDtos=" + reviewDtos
+                + ", emailVerified=" + emailVerified + ", password=" + password + ", provider=" + provider
+                + ", providerId=" + providerId + ", refreshTokenDto=" + refreshTokenDto + ", reviewIds=" + reviewIds
                 + "]";
     }
 

@@ -3,8 +3,6 @@ package com.websiteReview.Dtos;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.ManyToOne;
-
 public class PricingDto {
 
     private int pricingId;
@@ -12,8 +10,7 @@ public class PricingDto {
     private List<String> features = new ArrayList<>();
     private double price;
 
-    @ManyToOne
-    private SoftwareDto softwareDto;
+    private int softwareId;
 
     public int getPricingId() {
         return pricingId;
@@ -39,29 +36,7 @@ public class PricingDto {
         this.price = price;
     }
 
-    public SoftwareDto getSoftwareDto() {
-        return softwareDto;
-    }
-
-    public void setSoftwareDto(SoftwareDto softwareDto) {
-        this.softwareDto = softwareDto;
-    }
-
-    public PricingDto(int pricingId, String title, List<String> features, double price, SoftwareDto softwareDto) {
-        this.pricingId = pricingId;
-        this.title = title;
-        this.features = features;
-        this.price = price;
-        this.softwareDto = softwareDto;
-    }
-
     public PricingDto() {
-    }
-
-    @Override
-    public String toString() {
-        return "PricingDto [pricingId=" + pricingId + ", title=" + title + ", features=" + features + ", price=" + price
-                + ", softwareDto=" + softwareDto + "]";
     }
 
     public String getTitle() {
@@ -70,6 +45,28 @@ public class PricingDto {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public int getSoftwareId() {
+        return softwareId;
+    }
+
+    public void setSoftwareId(int softwareId) {
+        this.softwareId = softwareId;
+    }
+
+    public PricingDto(int pricingId, String title, List<String> features, double price, int softwareId) {
+        this.pricingId = pricingId;
+        this.title = title;
+        this.features = features;
+        this.price = price;
+        this.softwareId = softwareId;
+    }
+
+    @Override
+    public String toString() {
+        return "PricingDto [pricingId=" + pricingId + ", title=" + title + ", features=" + features + ", price=" + price
+                + ", softwareId=" + softwareId + "]";
     }
 
 }

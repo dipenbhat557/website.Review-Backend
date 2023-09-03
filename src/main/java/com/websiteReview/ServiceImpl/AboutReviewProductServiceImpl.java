@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import com.websiteReview.Dtos.AboutReviewProductDto;
 import com.websiteReview.Exception.ResourceNotFoundException;
 import com.websiteReview.Helper.AboutReviewProductRequest;
-import com.websiteReview.Helper.DtoToModel;
 import com.websiteReview.Helper.ModelToDto;
 import com.websiteReview.Model.AboutReviewProduct;
 import com.websiteReview.Model.Review;
@@ -24,9 +23,6 @@ public class AboutReviewProductServiceImpl implements AboutReviewProductService 
 
         @Autowired
         private ReviewRepository reviewRepository;
-
-        @Autowired
-        private DtoToModel DtoToModel;
 
         @Autowired
         private ModelToDto ModelToDto;

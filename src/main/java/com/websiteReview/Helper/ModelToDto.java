@@ -40,13 +40,13 @@ public class ModelToDto {
 
     public AboutReviewProductDto aboutReviewProductDto(AboutReviewProduct aboutReviewProduct) {
         AboutReviewProductDto aboutReviewProductDto = modelMapper.map(aboutReviewProduct, AboutReviewProductDto.class);
-        aboutReviewProductDto.setReviewDto(modelMapper.map(aboutReviewProduct.getReview(), ReviewDto.class));
+        aboutReviewProductDto.setReviewId(aboutReviewProduct.getReview().getReviewId());
         return aboutReviewProductDto;
     }
 
     public AboutReviewUserDto aboutReviewUserDto(AboutReviewUser aboutReviewUser) {
         AboutReviewUserDto aboutReviewUserDto = modelMapper.map(aboutReviewUser, AboutReviewUserDto.class);
-        aboutReviewUserDto.setReviewDto(modelMapper.map(aboutReviewUser.getReview(), ReviewDto.class));
+        aboutReviewUserDto.setReviewId(aboutReviewUser.getReview().getReviewId());
         return aboutReviewUserDto;
     }
 
@@ -67,19 +67,14 @@ public class ModelToDto {
 
         Question question = comment.getQuestion();
         User user = comment.getUser();
-        commentDto.setQuestionDto(modelMapper.map(question, QuestionDto.class));
-        commentDto.setUserDto(modelMapper.map(user, UserDto.class));
+        commentDto.setQuestionId(question.getQuestionId());
+        commentDto.setUserId(user.getUserId());
 
         return commentDto;
     }
 
     public CompanySizeDto companySizeDto(CompanySize companySize) {
         CompanySizeDto companySizeDto = modelMapper.map(companySize, CompanySizeDto.class);
-
-        List<Software> softwares = companySize.getSoftwares();
-        List<SoftwareDto> softwarerDtos = softwares.stream()
-                .map(software -> modelMapper.map(software, SoftwareDto.class)).collect(Collectors.toList());
-        companySizeDto.setSoftwareDtos(softwarerDtos);
 
         return companySizeDto;
     }
@@ -88,8 +83,7 @@ public class ModelToDto {
         PricingDto pricingDto = modelMapper.map(pricing, PricingDto.class);
 
         Software software = pricing.getSoftware();
-        SoftwareDto softwareDto = modelMapper.map(software, SoftwareDto.class);
-        pricingDto.setSoftwareDto(softwareDto);
+        pricingDto.setSoftwareId(software.getSoftwareId());
 
         return pricingDto;
     }
@@ -103,8 +97,8 @@ public class ModelToDto {
 
         questionDto.setCommentDtos(comments.stream().map(comment -> modelMapper.map(comment, CommentDto.class))
                 .collect(Collectors.toList()));
-        questionDto.setSoftwareDto(modelMapper.map(software, SoftwareDto.class));
-        questionDto.setUserDto(modelMapper.map(user, UserDto.class));
+        questionDto.setSoftwareId(software.getSoftwareId());
+        questionDto.setUserId(user.getUserId());
 
         return questionDto;
     }
@@ -113,7 +107,7 @@ public class ModelToDto {
         RefreshTokenDto refreshTokenDto = modelMapper.map(refreshToken, RefreshTokenDto.class);
 
         User user = refreshToken.getUser();
-        refreshTokenDto.setUserDto(modelMapper.map(user, UserDto.class));
+        refreshTokenDto.setUserId(user.getUserId());
 
         return refreshTokenDto;
     }
@@ -126,7 +120,7 @@ public class ModelToDto {
         AboutReviewUser aboutReviewUser = review.getAboutReviewUser();
         User user = review.getUser();
 
-        reviewDto.setSoftwareDto(modelMapper.map(software, SoftwareDto.class));
+        reviewDto.setSoftwareId(software.getSoftwareId());
         if (aboutReviewProduct != null) {
             reviewDto.setAboutReviewProductDto(modelMapper.map(aboutReviewProduct, AboutReviewProductDto.class));
         }
@@ -135,7 +129,7 @@ public class ModelToDto {
             reviewDto.setAboutReviewUserDto(modelMapper.map(aboutReviewUser, AboutReviewUserDto.class));
         }
 
-        reviewDto.setUserDto(modelMapper.map(user, UserDto.class));
+        reviewDto.setUserId(user.getUserId());
 
         return reviewDto;
     }
@@ -149,13 +143,13 @@ public class ModelToDto {
         CompanySize companySize = software.getCompanySize();
         List<Question> questions = software.getQuestions();
 
-        softwareDto.setReviewDtos(
-                reviews.stream().map(review -> modelMapper.map(review, ReviewDto.class)).collect(Collectors.toList()));
+        softwareDto.setReviewIds(
+                reviews.stream().map(review -> review.getReviewId()).collect(Collectors.toList()));
         softwareDto.setSubCategoryDto(modelMapper.map(subCategory, SubCategoryDto.class));
         softwareDto.setPricingDtos(pricings.stream().map(pricing -> modelMapper.map(pricing, PricingDto.class))
                 .collect(Collectors.toList()));
         softwareDto.setCompanySizeDto(modelMapper.map(companySize, CompanySizeDto.class));
-        softwareDto.setQuestionDtos(questions.stream().map(question -> modelMapper.map(question, QuestionDto.class))
+        softwareDto.setQuestionIds(questions.stream().map(question -> question.getQuestionId())
                 .collect(Collectors.toList()));
 
         return softwareDto;
@@ -164,19 +158,14 @@ public class ModelToDto {
     public SubCategoryDto subCategoryDto(SubCategory subCategory) {
         SubCategoryDto subCategoryDto = modelMapper.map(subCategory, SubCategoryDto.class);
 
-        List<Category> categories = subCategory.getCategories();
-        List<Software> softwares = subCategory.getSoftwares();
-
-        subCategoryDto.setCategoryDtos(categories.stream().map(category -> modelMapper.map(category, CategoryDto.class))
-                .collect(Collectors.toList()));
-        subCategoryDto.setSoftwareDtos(softwares.stream().map(software -> modelMapper.map(software, SoftwareDto.class))
-                .collect(Collectors.toList()));
-
         return subCategoryDto;
     }
 
     public UserDto userDto(User user) {
         UserDto userDto = modelMapper.map(user, UserDto.class);
+        userDto.setRefreshTokenDto(this.modelMapper.map(user.getRefreshToken(), RefreshTokenDto.class));
+        userDto.setReviewIds(
+                user.getReviews().stream().map(review -> review.getReviewId()).collect(Collectors.toList()));
         return userDto;
     }
 

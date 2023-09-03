@@ -3,7 +3,6 @@ com\websiteReview\Exception\BadRequestException.class
 com\websiteReview\Helper\QuestionRequest.class
 com\websiteReview\Config\AppProperties$OAuth2.class
 com\websiteReview\Controller\SearchController.class
-com\websiteReview\Helper\DtoToModel.class
 com\websiteReview\Service\FileUploadService.class
 com\websiteReview\Helper\CategoryRequest.class
 com\websiteReview\Helper\AboutReviewProductRequest.class

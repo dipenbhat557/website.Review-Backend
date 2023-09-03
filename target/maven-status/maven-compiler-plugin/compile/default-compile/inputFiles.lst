@@ -76,7 +76,6 @@ D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Security\oauth2\u
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Service\EmailService.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Helper\SoftwareResponse.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\ServiceImpl\AboutReviewProductServiceImpl.java
-D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Helper\DtoToModel.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Respository\QuestionRepository.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Dtos\UserDto.java
 D:\STS_workspace\websiteReview\src\main\java\com\websiteReview\Controller\CompanySizeController.java

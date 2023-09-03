@@ -15,9 +15,9 @@ public class QuestionDto {
 
     private List<CommentDto> commentDtos = new ArrayList<>();
 
-    private SoftwareDto softwareDto;
+    private int softwareId;
 
-    private UserDto userDto;
+    private int userId;
 
     public int getQuestionId() {
         return questionId;
@@ -43,22 +43,6 @@ public class QuestionDto {
         this.commentDtos = commentDtos;
     }
 
-    public SoftwareDto getSoftwareDto() {
-        return softwareDto;
-    }
-
-    public void setSoftwareDto(SoftwareDto softwareDto) {
-        this.softwareDto = softwareDto;
-    }
-
-    public UserDto getUserDto() {
-        return userDto;
-    }
-
-    public void setUserDto(UserDto userDto) {
-        this.userDto = userDto;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -70,20 +54,36 @@ public class QuestionDto {
     public QuestionDto() {
     }
 
+    public int getSoftwareId() {
+        return softwareId;
+    }
+
+    public void setSoftwareId(int softwareId) {
+        this.softwareId = softwareId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
     public QuestionDto(int questionId, String description, LocalDateTime date, List<CommentDto> commentDtos,
-            SoftwareDto softwareDto, UserDto userDto) {
+            int softwareId, int userId) {
         this.questionId = questionId;
         this.description = description;
         this.date = date;
         this.commentDtos = commentDtos;
-        this.softwareDto = softwareDto;
-        this.userDto = userDto;
+        this.softwareId = softwareId;
+        this.userId = userId;
     }
 
     @Override
     public String toString() {
         return "QuestionDto [questionId=" + questionId + ", description=" + description + ", date=" + date
-                + ", commentDtos=" + commentDtos + ", softwareDto=" + softwareDto + ", userDto=" + userDto + "]";
+                + ", commentDtos=" + commentDtos + ", softwareId=" + softwareId + ", userId=" + userId + "]";
     }
 
 }

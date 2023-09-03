@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.websiteReview.Dtos.UserDto;
 import com.websiteReview.Exception.ResourceNotFoundException;
-import com.websiteReview.Helper.DtoToModel;
 import com.websiteReview.Helper.ModelToDto;
 import com.websiteReview.Helper.UserRequest;
 import com.websiteReview.Model.AuthProvider;
@@ -25,9 +24,6 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private DtoToModel DtoToModel;
 
     @Autowired
     private ModelToDto ModelToDto;

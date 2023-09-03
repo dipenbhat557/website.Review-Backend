@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import com.websiteReview.Dtos.SubCategoryDto;
 import com.websiteReview.Exception.ResourceNotFoundException;
-import com.websiteReview.Helper.DtoToModel;
 import com.websiteReview.Helper.ModelToDto;
 import com.websiteReview.Helper.SubCategoryRequest;
 import com.websiteReview.Helper.SubCategoryResponse;
@@ -32,9 +31,6 @@ public class SubCategoryServiceImpl implements SubCategoryService {
     private SubCategoryRepository subCategoryRepository;
 
     @Autowired
-    private DtoToModel DtoToModel;
-
-    @Autowired
     private ModelToDto ModelToDto;
 
     @Override
@@ -45,7 +41,7 @@ public class SubCategoryServiceImpl implements SubCategoryService {
 
         List<Category> categories = new ArrayList<>();
         for (Category category : subCategoryRequest.getCategories()) {
-            List<SubCategory> subCategories = category.getSubCategories(); 
+            List<SubCategory> subCategories = category.getSubCategories();
             subCategories.add(subCategory);
             category.setSubCategories(subCategories);
             this.categoryRepository.save(category);

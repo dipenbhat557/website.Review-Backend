@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.websiteReview.Dtos.PricingDto;
 import com.websiteReview.Exception.ResourceNotFoundException;
-import com.websiteReview.Helper.DtoToModel;
 import com.websiteReview.Helper.ModelToDto;
 import com.websiteReview.Helper.PricingRequest;
 import com.websiteReview.Model.Pricing;
@@ -25,9 +24,6 @@ public class PricingServiceImpl implements PricingService {
 
     @Autowired
     private SoftwareRepository softwareRepository;
-
-    @Autowired
-    private DtoToModel DtoToModel;
 
     @Autowired
     private ModelToDto ModelToDto;

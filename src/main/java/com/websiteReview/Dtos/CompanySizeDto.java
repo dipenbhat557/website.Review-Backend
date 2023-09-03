@@ -9,8 +9,6 @@ public class CompanySizeDto {
 
     private String title;
 
-    private List<SoftwareDto> softwareDtos = new ArrayList<>();
-
     public int getSizeId() {
         return sizeId;
     }
@@ -27,26 +25,17 @@ public class CompanySizeDto {
         this.title = title;
     }
 
-    public List<SoftwareDto> getSoftwareDtos() {
-        return softwareDtos;
+    public CompanySizeDto() {
     }
 
-    public void setSoftwareDtos(List<SoftwareDto> softwareDtos) {
-        this.softwareDtos = softwareDtos;
-    }
-
-    public CompanySizeDto(int sizeId, String title, List<SoftwareDto> softwareDtos) {
+    public CompanySizeDto(int sizeId, String title) {
         this.sizeId = sizeId;
         this.title = title;
-        this.softwareDtos = softwareDtos;
-    }
-
-    public CompanySizeDto() {
     }
 
     @Override
     public String toString() {
-        return "CompanySizeDto [sizeId=" + sizeId + ", title=" + title + ", softwares=" + softwareDtos + "]";
+        return "CompanySizeDto [sizeId=" + sizeId + ", title=" + title + "]";
     }
 
 }

@@ -22,7 +22,6 @@ import com.websiteReview.Dtos.RefreshTokenDto;
 import com.websiteReview.Dtos.UserDto;
 import com.websiteReview.Exception.BadRequestException;
 import com.websiteReview.Exception.ResourceNotFoundException;
-import com.websiteReview.Helper.DtoToModel;
 import com.websiteReview.Helper.JwtRequest;
 import com.websiteReview.Helper.JwtResponse;
 import com.websiteReview.Helper.ModelToDto;
@@ -57,9 +56,6 @@ public class AuthController {
 
     @Autowired
     private ModelMapper modelMapper;
-
-    @Autowired
-    private DtoToModel dtoToModel;
 
     @Autowired
     private UserRepository userRepository;
@@ -101,12 +97,14 @@ public class AuthController {
     public ResponseEntity<?> refreshJwtToken(@RequestBody RefreshTokenRequest request) {
 
         RefreshTokenDto refreshTokenDto = this.refreshTokenService.verifyRefreshToken(request.getRefreshToken());
-        UserDto userDto = refreshTokenDto.getUserDto();
-        String token = this.jwtHelper.generateToken(UserPrincipal.create(dtoToModel.user(userDto)));
+        int userId = refreshTokenDto.getUserId();
+        User user = this.userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("The expected user is not found"));
+        String token = this.jwtHelper.generateToken(UserPrincipal.create(user));
 
         JwtResponse jwtResponse = new JwtResponse(token,
                 refreshTokenDto.getRefreshToken(),
-                this.modelMapper.map(userDto, User.class));
+                user);
 
         return new ResponseEntity<>(jwtResponse, HttpStatus.OK);
 

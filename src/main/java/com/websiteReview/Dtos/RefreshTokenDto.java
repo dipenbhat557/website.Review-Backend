@@ -10,7 +10,7 @@ public class RefreshTokenDto {
 
     private Instant expiry;
 
-    private UserDto userDto;
+    private int userId;
 
     public String getRefreshToken() {
         return refreshToken;
@@ -28,34 +28,7 @@ public class RefreshTokenDto {
         this.expiry = expiry;
     }
 
-    public UserDto getUserDto() {
-        return userDto;
-    }
-
-    public void setUserDto(UserDto userDto) {
-        this.userDto = userDto;
-    }
-
     public RefreshTokenDto() {
-    }
-
-    public RefreshTokenDto(int tokenId, String refreshToken, Instant expiry, UserDto userDto) {
-        this.tokenId = tokenId;
-        this.refreshToken = refreshToken;
-        this.expiry = expiry;
-        this.userDto = userDto;
-    }
-
-    public RefreshTokenDto(String refreshToken, Instant expiry, UserDto userDto) {
-        this.refreshToken = refreshToken;
-        this.expiry = expiry;
-        this.userDto = userDto;
-    }
-
-    @Override
-    public String toString() {
-        return "RefreshToken [tokenId=" + tokenId + ", refreshToken=" + refreshToken + ", expiry=" + expiry + ", user="
-                + userDto + "]";
     }
 
     public int getTokenId() {
@@ -64,6 +37,33 @@ public class RefreshTokenDto {
 
     public void setTokenId(int tokenId) {
         this.tokenId = tokenId;
+    }
+
+    public RefreshTokenDto(int tokenId, String refreshToken, Instant expiry, int userId) {
+        this.tokenId = tokenId;
+        this.refreshToken = refreshToken;
+        this.expiry = expiry;
+        this.userId = userId;
+    }
+
+    public RefreshTokenDto(String refreshToken, Instant expiry, int userId) {
+        this.refreshToken = refreshToken;
+        this.expiry = expiry;
+        this.userId = userId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    @Override
+    public String toString() {
+        return "RefreshTokenDto [tokenId=" + tokenId + ", refreshToken=" + refreshToken + ", expiry=" + expiry
+                + ", userId=" + userId + "]";
     }
 
 }

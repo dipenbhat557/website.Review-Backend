@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.websiteReview.Dtos.CategoryDto;
 import com.websiteReview.Exception.ResourceNotFoundException;
 import com.websiteReview.Helper.CategoryRequest;
-import com.websiteReview.Helper.DtoToModel;
 import com.websiteReview.Helper.ModelToDto;
 import com.websiteReview.Model.Category;
 import com.websiteReview.Model.SubCategory;
@@ -25,9 +24,6 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
     private SubCategoryRepository subCategoryRepository;
-
-    @Autowired
-    private DtoToModel DtoToModel;
 
     @Autowired
     private ModelToDto ModelToDto;

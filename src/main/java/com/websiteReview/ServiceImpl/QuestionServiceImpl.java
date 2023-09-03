@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import com.websiteReview.Dtos.QuestionDto;
 import com.websiteReview.Exception.ResourceNotFoundException;
-import com.websiteReview.Helper.DtoToModel;
 import com.websiteReview.Helper.ModelToDto;
 import com.websiteReview.Helper.QuestionRequest;
 import com.websiteReview.Helper.QuestionResponse;
@@ -36,9 +35,6 @@ public class QuestionServiceImpl implements QuestionService {
 
         @Autowired
         private UserRepository userRepository;
-
-        @Autowired
-        private DtoToModel DtoToModel;
 
         @Autowired
         private ModelToDto ModelToDto;

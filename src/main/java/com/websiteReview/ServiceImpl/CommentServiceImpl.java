@@ -15,7 +15,6 @@ import com.websiteReview.Dtos.CommentDto;
 import com.websiteReview.Exception.ResourceNotFoundException;
 import com.websiteReview.Helper.CommentRequest;
 import com.websiteReview.Helper.CommentResponse;
-import com.websiteReview.Helper.DtoToModel;
 import com.websiteReview.Helper.ModelToDto;
 import com.websiteReview.Model.Comment;
 import com.websiteReview.Model.Question;
@@ -36,9 +35,6 @@ public class CommentServiceImpl implements CommentService {
 
         @Autowired
         private UserRepository userRepository;
-
-        @Autowired
-        private DtoToModel DtoToModel;
 
         @Autowired
         private ModelToDto ModelToDto;

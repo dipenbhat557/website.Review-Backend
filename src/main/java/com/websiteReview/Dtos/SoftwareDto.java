@@ -28,11 +28,11 @@ public class SoftwareDto {
     private double meetsRequirementRating;
     private double qualitySupportRating;
 
-    private List<ReviewDto> reviewDtos = new ArrayList<>();
+    private List<Integer> reviewIds = new ArrayList<>();
     private SubCategoryDto subCategoryDto;
     private List<PricingDto> pricingDtos = new ArrayList<>();
     private CompanySizeDto companySizeDto;
-    private List<QuestionDto> questionDtos = new ArrayList<>();
+    private List<Integer> questionIds = new ArrayList<>();
 
     public int getSoftwareId() {
         return softwareId;
@@ -194,14 +194,6 @@ public class SoftwareDto {
         this.qualitySupportRating = qualitySupportRating;
     }
 
-    public List<ReviewDto> getReviewDtos() {
-        return reviewDtos;
-    }
-
-    public void setReviewDtos(List<ReviewDto> reviewDtos) {
-        this.reviewDtos = reviewDtos;
-    }
-
     public SubCategoryDto getSubCategoryDto() {
         return subCategoryDto;
     }
@@ -229,13 +221,29 @@ public class SoftwareDto {
     public SoftwareDto() {
     }
 
+    public List<Integer> getReviewIds() {
+        return reviewIds;
+    }
+
+    public void setReviewIds(List<Integer> reviewIds) {
+        this.reviewIds = reviewIds;
+    }
+
+    public List<Integer> getQuestionIds() {
+        return questionIds;
+    }
+
+    public void setQuestionIds(List<Integer> questionIds) {
+        this.questionIds = questionIds;
+    }
+
     public SoftwareDto(int softwareId, String title, String description, String location, int yearFounded,
             String language, String differenceFromOthers, String profileImageName, String websiteLink, String twitterId,
             String linkedInId, Map<String, String> features, String videoName, List<String> screenshots,
             int noOfResponses, double rating, double notionDirectionRating, double easeOfUseRating,
-            double meetsRequirementRating, double qualitySupportRating, List<ReviewDto> reviewDtos,
+            double meetsRequirementRating, double qualitySupportRating, List<Integer> reviewIds,
             SubCategoryDto subCategoryDto, List<PricingDto> pricingDtos, CompanySizeDto companySizeDto,
-            List<QuestionDto> questionDtos) {
+            List<Integer> questionIds) {
         this.softwareId = softwareId;
         this.title = title;
         this.description = description;
@@ -256,11 +264,11 @@ public class SoftwareDto {
         this.easeOfUseRating = easeOfUseRating;
         this.meetsRequirementRating = meetsRequirementRating;
         this.qualitySupportRating = qualitySupportRating;
-        this.reviewDtos = reviewDtos;
+        this.reviewIds = reviewIds;
         this.subCategoryDto = subCategoryDto;
         this.pricingDtos = pricingDtos;
         this.companySizeDto = companySizeDto;
-        this.questionDtos = questionDtos;
+        this.questionIds = questionIds;
     }
 
     @Override
@@ -272,17 +280,9 @@ public class SoftwareDto {
                 + ", features=" + features + ", videoName=" + videoName + ", screenshots=" + screenshots
                 + ", noOfResponses=" + noOfResponses + ", rating=" + rating + ", notionDirectionRating="
                 + notionDirectionRating + ", easeOfUseRating=" + easeOfUseRating + ", meetsRequirementRating="
-                + meetsRequirementRating + ", qualitySupportRating=" + qualitySupportRating + ", reviewDtos="
-                + reviewDtos + ", subCategoryDto=" + subCategoryDto + ", pricingDtos=" + pricingDtos
-                + ", companySizeDto=" + companySizeDto + ", questionDtos=" + questionDtos + "]";
-    }
-
-    public List<QuestionDto> getQuestionDtos() {
-        return questionDtos;
-    }
-
-    public void setQuestionDtos(List<QuestionDto> questionDtos) {
-        this.questionDtos = questionDtos;
+                + meetsRequirementRating + ", qualitySupportRating=" + qualitySupportRating + ", reviewIds=" + reviewIds
+                + ", subCategoryDto=" + subCategoryDto + ", pricingDtos=" + pricingDtos + ", companySizeDto="
+                + companySizeDto + ", questionIds=" + questionIds + "]";
     }
 
 }

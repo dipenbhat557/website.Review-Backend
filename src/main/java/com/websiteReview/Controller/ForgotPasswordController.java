@@ -21,7 +21,7 @@ import com.websiteReview.ServiceImpl.UserServiceImpl;
 import jakarta.servlet.http.HttpSession;
 
 @RestController
-@RequestMapping("/forgot")
+@RequestMapping("/forgot-password")
 public class ForgotPasswordController {
 
     @Autowired
@@ -33,8 +33,8 @@ public class ForgotPasswordController {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
-    @GetMapping("/sendOTP/{forgotEmail}")
-    public ResponseEntity<String> sendOTP(@PathVariable String forgotEmail, HttpSession session) {
+    @PostMapping("/send-otp")
+    public ResponseEntity<String> sendOTP(@RequestParam("email") String forgotEmail, HttpSession session) {
 
         Random random = new Random(10000);
         int OTP = random.nextInt(100000);
@@ -73,8 +73,8 @@ public class ForgotPasswordController {
 
     }
 
-    @GetMapping("/verifyOTP/{OTP}")
-    public ResponseEntity<String> verifyOTP(@PathVariable int OTP, HttpSession session) {
+    @PostMapping("/verify-otp")
+    public ResponseEntity<String> verifyOTP(@RequestParam("otp") int OTP, HttpSession session) {
 
         int myOtp = (int) session.getAttribute("OTP");
 
@@ -87,7 +87,7 @@ public class ForgotPasswordController {
         }
     }
 
-    @PostMapping("/changePassword")
+    @PostMapping("/change-password")
     public ResponseEntity<String> changePassword(@RequestParam("newPassword") String newPassword, HttpSession session) {
 
         String email = (String) session.getAttribute("email");
