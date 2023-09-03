@@ -39,20 +39,39 @@ public class ModelToDto {
     private ModelMapper modelMapper;
 
     public AboutReviewProductDto aboutReviewProductDto(AboutReviewProduct aboutReviewProduct) {
-        AboutReviewProductDto aboutReviewProductDto = modelMapper.map(aboutReviewProduct, AboutReviewProductDto.class);
+        AboutReviewProductDto aboutReviewProductDto = new AboutReviewProductDto();
+
+        aboutReviewProductDto.setAboutProductId(aboutReviewProduct.getAboutProductId());
+        aboutReviewProductDto.setTitle(aboutReviewProduct.getTitle());
+        aboutReviewProductDto.setEaseOfUseRating(aboutReviewProduct.getEaseOfUseRating());
+        aboutReviewProductDto.setMeetsRequirementRating(aboutReviewProduct.getMeetsRequirementRating());
+        aboutReviewProductDto.setNotionDirectionRating(aboutReviewProduct.getNotionDirectionRating());
+        aboutReviewProductDto.setPurposeOfUse(aboutReviewProduct.getPurposeOfUse());
+        aboutReviewProductDto.setQualitySupportRating(aboutReviewProduct.getQualitySupportRating());
         aboutReviewProductDto.setReviewId(aboutReviewProduct.getReview().getReviewId());
         return aboutReviewProductDto;
     }
 
     public AboutReviewUserDto aboutReviewUserDto(AboutReviewUser aboutReviewUser) {
-        AboutReviewUserDto aboutReviewUserDto = modelMapper.map(aboutReviewUser, AboutReviewUserDto.class);
+        AboutReviewUserDto aboutReviewUserDto = new AboutReviewUserDto();
+
+        aboutReviewUserDto.setReviewUserId(aboutReviewUser.getReviewUserId());
+        aboutReviewUserDto.setOrganizationSize(aboutReviewUser.getOrganizationSize());
+        aboutReviewUserDto.setCurrentUser(aboutReviewUser.isCurrentUser());
+        aboutReviewUserDto.setSwitchFromAnother(aboutReviewUser.isSwitchFromAnother());
+        aboutReviewUserDto.setScreenshotName(aboutReviewUser.getScreenshotName());
+        aboutReviewUserDto.setPreviousVendor(aboutReviewUser.getPreviousVendor());
+        aboutReviewUserDto.setReasonOfSwitch(aboutReviewUser.getReasonOfSwitch());
         aboutReviewUserDto.setReviewId(aboutReviewUser.getReview().getReviewId());
         return aboutReviewUserDto;
     }
 
     public CategoryDto categoryDto(Category category) {
-        CategoryDto categoryDto = modelMapper.map(category, CategoryDto.class);
+        CategoryDto categoryDto = new CategoryDto();
 
+        categoryDto.setCategoryId(category.getCategoryId());
+        categoryDto.setTitle(category.getTitle());
+        categoryDto.setPurposes(category.getPurposes());
         List<SubCategory> subCategories = category.getSubCategories();
         List<SubCategoryDto> subCategoryDtos = subCategories.stream()
                 .map(subCategory -> modelMapper.map(subCategory, SubCategoryDto.class))
@@ -63,25 +82,36 @@ public class ModelToDto {
     }
 
     public CommentDto commentDto(Comment comment) {
-        CommentDto commentDto = modelMapper.map(comment, CommentDto.class);
+        CommentDto commentDto = new CommentDto();
+
+        commentDto.setCommentId(comment.getCommentId());
+        commentDto.setDescription(comment.getDescription());
+        commentDto.setDate(comment.getDate());
+
+        User user = comment.getUser();
+        commentDto.setUserId(user.getUserId());
 
         Question question = comment.getQuestion();
-        User user = comment.getUser();
         commentDto.setQuestionId(question.getQuestionId());
-        commentDto.setUserId(user.getUserId());
 
         return commentDto;
     }
 
     public CompanySizeDto companySizeDto(CompanySize companySize) {
-        CompanySizeDto companySizeDto = modelMapper.map(companySize, CompanySizeDto.class);
+        CompanySizeDto companySizeDto = new CompanySizeDto();
 
+        companySizeDto.setSizeId(companySize.getSizeId());
+        companySizeDto.setTitle(companySize.getTitle());
         return companySizeDto;
     }
 
     public PricingDto pricingDto(Pricing pricing) {
-        PricingDto pricingDto = modelMapper.map(pricing, PricingDto.class);
+        PricingDto pricingDto = new PricingDto();
 
+        pricingDto.setPricingId(pricing.getPricingId());
+        pricingDto.setTitle(pricing.getTitle());
+        pricingDto.setFeatures(pricing.getFeatures());
+        pricingDto.setPrice(pricing.getPrice());
         Software software = pricing.getSoftware();
         pricingDto.setSoftwareId(software.getSoftwareId());
 
@@ -89,7 +119,11 @@ public class ModelToDto {
     }
 
     public QuestionDto questionDto(Question question) {
-        QuestionDto questionDto = modelMapper.map(question, QuestionDto.class);
+        QuestionDto questionDto = new QuestionDto();
+
+        questionDto.setQuestionId(question.getQuestionId());
+        questionDto.setDescription(question.getDescription());
+        questionDto.setDate(question.getDate());
 
         List<Comment> comments = question.getComments();
         Software software = question.getSoftware();
@@ -104,16 +138,25 @@ public class ModelToDto {
     }
 
     public RefreshTokenDto refreshTokenDto(RefreshToken refreshToken) {
-        RefreshTokenDto refreshTokenDto = modelMapper.map(refreshToken, RefreshTokenDto.class);
+        RefreshTokenDto refreshTokenDto = new RefreshTokenDto();
 
-        User user = refreshToken.getUser();
-        refreshTokenDto.setUserId(user.getUserId());
+        refreshTokenDto.setTokenId(refreshToken.getTokenId());
+        refreshTokenDto.setRefreshToken(refreshToken.getRefreshToken());
+        refreshTokenDto.setUserId(refreshToken.getUser().getUserId());
+        refreshTokenDto.setExpiry(refreshToken.getExpiry());
 
         return refreshTokenDto;
     }
 
     public ReviewDto reviewDto(Review review) {
-        ReviewDto reviewDto = modelMapper.map(review, ReviewDto.class);
+        ReviewDto reviewDto = new ReviewDto();
+
+        reviewDto.setReviewId(review.getReviewId());
+        reviewDto.setTitle(review.getTitle());
+        reviewDto.setWhatYouLike(review.getWhatYouLike());
+        reviewDto.setWhatYouDislike(review.getWhatYouDislike());
+        reviewDto.setUserRole(review.getUserRole());
+        reviewDto.setRating(review.getRating());
 
         Software software = review.getSoftware();
         AboutReviewProduct aboutReviewProduct = review.getAboutReviewProduct();
@@ -135,7 +178,28 @@ public class ModelToDto {
     }
 
     public SoftwareDto software(Software software) {
-        SoftwareDto softwareDto = modelMapper.map(software, SoftwareDto.class);
+        SoftwareDto softwareDto = new SoftwareDto();
+
+        softwareDto.setSoftwareId(software.getSoftwareId());
+        softwareDto.setTitle(software.getTitle());
+        softwareDto.setDescription(software.getDescription());
+        softwareDto.setLocation(software.getLocation());
+        softwareDto.setYearFounded(software.getYearFounded());
+        softwareDto.setLanguage(software.getLanguage());
+        softwareDto.setDifferenceFromOthers(software.getDifferenceFromOthers());
+        softwareDto.setProfileImageName(software.getProfileImageName());
+        softwareDto.setWebsiteLink(software.getWebsiteLink());
+        softwareDto.setTwitterId(software.getTwitterId());
+        softwareDto.setLinkedInId(software.getLinkedInId());
+        softwareDto.setFeatures(software.getFeatures());
+        softwareDto.setVideoName(software.getVideoName());
+        softwareDto.setScreenshots(software.getScreenshots());
+        softwareDto.setNoOfResponses(software.getNoOfResponses());
+        softwareDto.setRating(software.getRating());
+        softwareDto.setNotionDirectionRating(software.getNotionDirectionRating());
+        softwareDto.setEaseOfUseRating(software.getEaseOfUseRating());
+        softwareDto.setMeetsRequirementRating(software.getMeetsRequirementRating());
+        softwareDto.setQualitySupportRating(software.getQualitySupportRating());
 
         List<Review> reviews = software.getReviews();
         SubCategory subCategory = software.getSubCategory();
@@ -156,14 +220,27 @@ public class ModelToDto {
     }
 
     public SubCategoryDto subCategoryDto(SubCategory subCategory) {
-        SubCategoryDto subCategoryDto = modelMapper.map(subCategory, SubCategoryDto.class);
+        SubCategoryDto subCategoryDto = new SubCategoryDto();
+
+        subCategoryDto.setSubCategoryId(subCategory.getSubCategoryId());
+        subCategoryDto.setTitle(subCategory.getTitle());
 
         return subCategoryDto;
     }
 
     public UserDto userDto(User user) {
-        UserDto userDto = modelMapper.map(user, UserDto.class);
-        userDto.setRefreshTokenDto(this.modelMapper.map(user.getRefreshToken(), RefreshTokenDto.class));
+        UserDto userDto = new UserDto();
+
+        userDto.setUserId(user.getUserId());
+        userDto.setName(user.getName());
+        userDto.setEmail(user.getEmail());
+        userDto.setImageUrl(user.getImageUrl());
+        userDto.setEmailVerified(user.getEmailVerified());
+        userDto.setPassword(user.getPassword());
+        userDto.setProvider(user.getProvider());
+        userDto.setProviderId(user.getProviderId());
+
+        userDto.setRefreshTokenDto(this.refreshTokenDto(user.getRefreshToken()));
         userDto.setReviewIds(
                 user.getReviews().stream().map(review -> review.getReviewId()).collect(Collectors.toList()));
         return userDto;

@@ -16,6 +16,8 @@ public interface ReviewService {
 
         public ReviewResponse viewAll(int pageNumber, int pageSize);
 
+        public ReviewResponse viewBySoftware(int softwareId, int pageNumber, int pageSize);
+
         public ReviewResponse filterReviewsByOrganizationSize(int minSize, int maxSize, int pageNumber, int pageSize);
 
         public ReviewResponse viewByRating(int rating, int pageNumber, int pageSize);

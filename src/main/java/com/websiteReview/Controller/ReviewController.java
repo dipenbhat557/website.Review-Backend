@@ -102,6 +102,15 @@ public class ReviewController {
                 this.reviewService.viewAll(pageNumber, pageSize), HttpStatus.OK);
     }
 
+    @GetMapping("/software/{softwareId}")
+    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
+    public ResponseEntity<ReviewResponse> viewBySoftware(@PathVariable int softwareId,
+            @RequestParam(value = "pageSize", defaultValue = AppConstants.pageSizeString, required = false) int pageSize,
+            @RequestParam(value = "pageNumber", defaultValue = AppConstants.pageNumberString, required = false) int pageNumber) {
+        return new ResponseEntity<ReviewResponse>(
+                this.reviewService.viewBySoftware(softwareId, pageNumber, pageSize), HttpStatus.OK);
+    }
+
     // filtering reviews by organizationSize
     @PostMapping("/filterBySize")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })

@@ -229,4 +229,25 @@ public class ReviewServiceImpl implements ReviewService {
 
                 return response;
         }
+
+        public ReviewResponse viewBySoftware(int softwareId, int pageNumber, int pageSize) {
+                Pageable pageable = PageRequest.of(pageNumber, pageSize);
+                Software software = this.softwareRepository.findById(softwareId)
+                                .orElseThrow(() -> new ResourceNotFoundException("The expected software is not found"));
+                Page<Review> page = this.reviewRepository.findBySoftware(software, pageable);
+                List<Review> pageReview = page.getContent();
+
+                List<ReviewDto> pageReviewDtos = pageReview.stream()
+                                .map(review -> ModelToDto.reviewDto(review))
+                                .collect(Collectors.toList());
+
+                ReviewResponse response = new ReviewResponse();
+                response.setContent(pageReviewDtos);
+                response.setPageNumber(page.getNumber());
+                response.setPageSize(page.getSize());
+                response.setTotalPages(page.getTotalPages());
+                response.setLastPage(page.isLast());
+
+                return response;
+        }
 }

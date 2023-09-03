@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.websiteReview.Model.Review;
+import com.websiteReview.Model.Software;
 import com.websiteReview.Model.User;
 
 public interface ReviewRepository extends JpaRepository<Review, Integer> {
@@ -22,4 +23,6 @@ public interface ReviewRepository extends JpaRepository<Review, Integer> {
     public Page<Review> findByPurposeOfUseIgnoreCase(String purpose, Pageable pageable);
 
     public Page<Review> findByUserRole(String userRole, Pageable pageable);
+
+    public Page<Review> findBySoftware(Software software, Pageable pageable);
 }
