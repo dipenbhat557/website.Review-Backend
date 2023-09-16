@@ -29,12 +29,11 @@ import com.websiteReview.Security.oauth2.HttpCookieOAuth2AuthorizationRequestRep
 import com.websiteReview.Security.oauth2.OAuth2AuthenticationFailureHandler;
 import com.websiteReview.Security.oauth2.OAuth2AuthenticationSuccessHandler;
 
-// import com.websiteReview.Security.CustomerOAuth2UserService;
-
 @Configuration
 @EnableWebMvc
 public class SecurityConfig {
 
+        // Define public URLs that do not require authentication
         public static final String[] PUBLIC_URLS = {
                         "/user/create",
                         "/auth/**",
@@ -71,24 +70,27 @@ public class SecurityConfig {
         @Autowired
         private HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
 
+        // Bean to configure OAuth2 authorization request repository
         @Bean
         public HttpCookieOAuth2AuthorizationRequestRepository cookieAuthorizationRequestRepository() {
                 return new HttpCookieOAuth2AuthorizationRequestRepository();
         }
 
+        // Bean to configure password encoder (BCrypt)
         @Bean
         public PasswordEncoder passwordEncoder() {
                 return new BCryptPasswordEncoder();
         }
 
+        // Bean to configure authentication manager
         @Bean
         public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
                 return config.getAuthenticationManager();
         }
 
+        // Bean to configure security filter chain
         @Bean
         public SecurityFilterChain configure(HttpSecurity http) throws Exception {
-
                 http.csrf(csrf -> csrf.disable())
                                 .authorizeHttpRequests(auth -> auth
                                                 .requestMatchers(PUBLIC_URLS)
@@ -106,21 +108,19 @@ public class SecurityConfig {
                                                                 .userService(customOAuth2UserService))
                                                 .successHandler(oAuth2AuthenticationSuccessHandler)
                                                 .failureHandler(oAuth2AuthenticationFailureHandler))
-
                                 .formLogin(Customizer.withDefaults())
                                 .exceptionHandling(ex -> ex.authenticationEntryPoint(jwtAuthenticationEntryPoint))
                                 .sessionManagement(session -> session
                                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-
                                 .logout(logout -> logout.permitAll());
 
-                // http.addFilterBefore(new InterceptorFilter(),
-                // UsernamePasswordAuthenticationFilter.class);
+                // Add custom JWT authentication filter
                 http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
                 return http.build();
         }
 
+        // Bean to configure DaoAuthenticationProvider for user authentication
         @Bean
         public DaoAuthenticationProvider daoAuthenticationProvider() {
                 DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider(passwordEncoder());
@@ -129,7 +129,7 @@ public class SecurityConfig {
                 return daoAuthenticationProvider;
         }
 
-        // registering CORS filter
+        // Bean to register CORS filter
         @Bean
         public FilterRegistrationBean<CorsFilter> corsFilter() {
                 UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -144,5 +144,4 @@ public class SecurityConfig {
                 bean.setOrder(Ordered.HIGHEST_PRECEDENCE); // Set the desired order
                 return bean;
         }
-
 }

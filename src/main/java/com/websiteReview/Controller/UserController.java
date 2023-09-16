@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.websiteReview.Dtos.UserDto;
-import com.websiteReview.Helper.UserRequest;
 import com.websiteReview.Security.CurrentUser;
 import com.websiteReview.Security.UserPrincipal;
 import com.websiteReview.ServiceImpl.FileUploadServiceImpl;
@@ -38,25 +37,21 @@ public class UserController {
 
 	private String path = "src/user/profiles";
 
-	// @PostMapping("/create")
-	// public ResponseEntity<UserDto> createUser(@RequestBody UserRequest
-	// userRequest) {
-	// return new ResponseEntity<UserDto>(this.userService.create(userRequest),
-	// HttpStatus.CREATED);
-	// }
-
+	// Get all users
 	@GetMapping
 	@Operation(security = { @SecurityRequirement(name = "BearerJWT") })
 	public ResponseEntity<List<UserDto>> getAllUsers() {
 		return new ResponseEntity<List<UserDto>>(this.userService.viewAll(), HttpStatus.OK);
 	}
 
+	// Get user by ID
 	@GetMapping("/{userId}")
 	@Operation(security = { @SecurityRequirement(name = "BearerJWT") })
 	public ResponseEntity<UserDto> getUserById(@PathVariable int userId) {
 		return new ResponseEntity<UserDto>(this.userService.viewById(userId), HttpStatus.ACCEPTED);
 	}
 
+	// Delete user by ID
 	@DeleteMapping("/{userId}")
 	@Operation(security = { @SecurityRequirement(name = "BearerJWT") })
 	public ResponseEntity<String> deleteUser(@PathVariable int userId) {
@@ -65,13 +60,13 @@ public class UserController {
 		return new ResponseEntity<String>("User Deleted Successfully !! ", HttpStatus.OK);
 	}
 
+	// Get current user
 	@GetMapping("/me")
-	// @PreAuthorize("hasRole('USER')")
 	public ResponseEntity<UserDto> getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {
-
 		return new ResponseEntity<UserDto>(this.userService.viewById(userPrincipal.getId()), HttpStatus.OK);
 	}
 
+	// Change user profile picture
 	@PostMapping("/profile/{userId}")
 	public ResponseEntity<UserDto> changeProfile(@PathVariable int userId, @RequestBody MultipartFile file) {
 		UserDto user = this.userService.viewById(userId);
@@ -81,5 +76,4 @@ public class UserController {
 
 		return new ResponseEntity<UserDto>(this.userService.update(user, userId), HttpStatus.OK);
 	}
-
 }

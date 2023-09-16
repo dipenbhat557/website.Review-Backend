@@ -31,7 +31,7 @@ public class DiscussionCommentController {
     @Autowired
     private CommentServiceImpl commentService;
 
-    // comments started
+    // Create a new comment for a discussion question
     @PostMapping("/{questionId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<CommentDto> createComment(@RequestBody CommentRequest commentRequest, Principal principal,
@@ -40,25 +40,14 @@ public class DiscussionCommentController {
                 this.commentService.create(commentRequest, principal.getName(), questionId), HttpStatus.CREATED);
     }
 
+    // Get a comment by its ID
     @GetMapping("/{commentId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<CommentDto> viewCommentById(@PathVariable int commentId) {
         return new ResponseEntity<CommentDto>(this.commentService.viewById(commentId), HttpStatus.OK);
     }
 
-    // @GetMapping("/user")
-    // @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
-    // public ResponseEntity<CommentResponse> viewCommentsByUser(Principal
-    // principal,
-    // @RequestParam(value = "pageNumber", defaultValue =
-    // AppConstants.pageNumberString, required = false) int pageNumber,
-    // @RequestParam(value = "pageSize", defaultValue = AppConstants.pageSizeString,
-    // required = false) int pageSize) {
-    // return new ResponseEntity<CommentResponse>(
-    // this.commentService.viewByUser(principal.getName(), pageNumber, pageSize),
-    // HttpStatus.OK);
-    // }
-
+    // Get comments by question ID with pagination
     @GetMapping("/question/{questionId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<CommentResponse> viewCommentsByQuestion(@PathVariable int questionId,
@@ -68,6 +57,7 @@ public class DiscussionCommentController {
                 HttpStatus.OK);
     }
 
+    // Delete a comment by its ID
     @DeleteMapping("/{commentId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<String> deleteComment(@PathVariable int commentId) {
@@ -75,6 +65,7 @@ public class DiscussionCommentController {
         return new ResponseEntity<String>("Successfully deleted...", HttpStatus.OK);
     }
 
+    // Update a comment by its ID
     @PutMapping("/{commentId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<CommentDto> updateComment(@RequestBody CommentRequest commentRequest,
@@ -83,5 +74,4 @@ public class DiscussionCommentController {
         return new ResponseEntity<CommentDto>(
                 this.commentService.update(commentId, commentRequest, principal.getName()), HttpStatus.OK);
     }
-
 }

@@ -38,9 +38,9 @@ public class SoftwareController {
     private FileUploadServiceImpl fileUploadService;
 
     private String path = "src/software/screenshots";
-
     private String videoPath = "src/software/videos";
 
+    // Create a new software entry
     @PostMapping("/{subCategoryId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<SoftwareDto> create(@RequestBody SoftwareRequest softwareRequest,
@@ -49,18 +49,21 @@ public class SoftwareController {
                 HttpStatus.CREATED);
     }
 
+    // Get software details by ID
     @GetMapping("/{softwareId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<SoftwareDto> viewById(@PathVariable int softwareId) {
         return new ResponseEntity<SoftwareDto>(this.softwareService.viewById(softwareId), HttpStatus.OK);
     }
 
+    // Get all software entries
     @GetMapping
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<List<SoftwareDto>> viewAllSoftwares() {
         return new ResponseEntity<List<SoftwareDto>>(this.softwareService.viewAll(), HttpStatus.OK);
     }
 
+    // Delete a software entry by ID
     @DeleteMapping("/{softwareId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<String> delete(@PathVariable int softwareId) {
@@ -68,6 +71,7 @@ public class SoftwareController {
         return new ResponseEntity<String>("Successfully deleted...", HttpStatus.OK);
     }
 
+    // Upload software files (screenshots, video, profile image)
     @PostMapping("/uploadFiles/{softwareId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<?> uploadScreenshots(@PathVariable int softwareId,
@@ -81,10 +85,10 @@ public class SoftwareController {
         String profileImageName = null;
 
         try {
-
             screenshotNames = this.fileUploadService.uploadImages(path, screenshots);
             videoName = this.fileUploadService.uploadImage(videoPath, video);
             profileImageName = this.fileUploadService.uploadImage(path, profileImage);
+
             softwareDto.setScreenshots(screenshotNames);
             softwareDto.setVideoName(videoName);
             softwareDto.setProfileImageName(profileImageName);
@@ -100,6 +104,7 @@ public class SoftwareController {
         }
     }
 
+    // Filter software by rating
     @GetMapping("/filterByRating/{rating}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<SoftwareResponse> filterByRating(@PathVariable int rating,
@@ -110,6 +115,7 @@ public class SoftwareController {
                 HttpStatus.ACCEPTED);
     }
 
+    // Filter software by category
     @GetMapping("/filterByCategory/{categoryId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<SoftwareResponse> filterByCategory(@PathVariable int categoryId,
@@ -120,6 +126,7 @@ public class SoftwareController {
                 this.softwareService.viewBySubCategory(categoryId, pageNumber, pageSize), HttpStatus.ACCEPTED);
     }
 
+    // Filter software by segment
     @GetMapping("/filterBySegment/{sizeId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<SoftwareResponse> filterBySegment(@PathVariable int sizeId,
@@ -129,5 +136,4 @@ public class SoftwareController {
         return new ResponseEntity<SoftwareResponse>(this.softwareService.viewBySegment(sizeId, pageNumber, pageSize),
                 HttpStatus.ACCEPTED);
     }
-
 }

@@ -15,14 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.websiteReview.Dtos.CommentDto;
 import com.websiteReview.Dtos.QuestionDto;
 import com.websiteReview.Helper.AppConstants;
-import com.websiteReview.Helper.CommentRequest;
-import com.websiteReview.Helper.CommentResponse;
 import com.websiteReview.Helper.QuestionRequest;
 import com.websiteReview.Helper.QuestionResponse;
-import com.websiteReview.ServiceImpl.CommentServiceImpl;
 import com.websiteReview.ServiceImpl.QuestionServiceImpl;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,7 +31,7 @@ public class DiscussionQuestionController {
     @Autowired
     private QuestionServiceImpl questionService;
 
-    // question part
+    // Create a new discussion question for a software
     @PostMapping("/{softwareId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<QuestionDto> createQuestion(@RequestBody QuestionRequest questionRequest, Principal principal,
@@ -45,6 +41,7 @@ public class DiscussionQuestionController {
         return new ResponseEntity<QuestionDto>(savedQuestionDto, HttpStatus.CREATED);
     }
 
+    // Get a discussion question by its ID
     @GetMapping("/{questionId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<QuestionDto> viewQuestionById(
@@ -52,6 +49,7 @@ public class DiscussionQuestionController {
         return new ResponseEntity<QuestionDto>(this.questionService.viewById(questionId), HttpStatus.OK);
     }
 
+    // Get questions by the user who posted them with pagination
     @GetMapping("/user")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<QuestionResponse> viewQuestionsByUser(Principal principal,
@@ -62,6 +60,7 @@ public class DiscussionQuestionController {
                 HttpStatus.OK);
     }
 
+    // Get questions associated with a software by software ID with pagination
     @GetMapping("/software/{softwareId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<QuestionResponse> viewQuestionsBySoftware(@PathVariable int softwareId,
@@ -71,6 +70,7 @@ public class DiscussionQuestionController {
                 this.questionService.viewBySoftware(softwareId, pageNumber, pageSize), HttpStatus.OK);
     }
 
+    // Delete a discussion question by its ID
     @DeleteMapping("/{questionId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<String> deleteQuestion(@PathVariable int questionId) {
@@ -78,6 +78,7 @@ public class DiscussionQuestionController {
         return new ResponseEntity<String>("Successfully deleted question...", HttpStatus.OK);
     }
 
+    // Update a discussion question by its ID
     @PutMapping("/{questionId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<QuestionDto> updateQuestion(@RequestBody QuestionRequest questionRequest,

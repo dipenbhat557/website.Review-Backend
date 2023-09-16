@@ -28,6 +28,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private ModelToDto ModelToDto;
 
+    // Create a new user.
     @Override
     public UserDto create(UserRequest userRequest) {
         User user = new User();
@@ -45,6 +46,7 @@ public class UserServiceImpl implements UserService {
         return userDto;
     }
 
+    // View all users.
     @Override
     public List<UserDto> viewAll() {
         List<User> users = this.userRepository.findAll();
@@ -53,6 +55,7 @@ public class UserServiceImpl implements UserService {
         return userDtos;
     }
 
+    // View a user by their ID.
     @Override
     public UserDto viewById(int userId) {
         User user = this.userRepository.findById(userId)
@@ -60,12 +63,14 @@ public class UserServiceImpl implements UserService {
         return ModelToDto.userDto(user);
     }
 
+    // View a user by their email.
     public UserDto viewByEmail(String email) {
         User user = this.userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("The expected user is not found"));
         return ModelToDto.userDto(user);
     }
 
+    // Delete a user by their email.
     @Override
     public void delete(String email) {
         User user = this.userRepository.findByEmail(email)
@@ -73,12 +78,13 @@ public class UserServiceImpl implements UserService {
         this.userRepository.delete(user);
     }
 
+    // Update user information by their ID.
     @Override
     public UserDto update(UserDto userDto, int userId) {
         User oldUser = this.userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("The requested user is not found while updating"));
 
-        // setting new password into oldUser
+        // Set the new password into the oldUser.
         oldUser.setPassword(userDto.getPassword());
 
         if (userDto.getImageUrl() != null) {
@@ -87,9 +93,7 @@ public class UserServiceImpl implements UserService {
 
         this.userRepository.save(oldUser);
 
-        // oldUser to oldUserDto
+        // Convert oldUser to oldUserDto.
         return ModelToDto.userDto(oldUser);
-
     }
-
 }

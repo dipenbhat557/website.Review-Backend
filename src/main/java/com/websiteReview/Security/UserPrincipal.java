@@ -26,6 +26,7 @@ public class UserPrincipal implements OAuth2User, UserDetails {
         this.authorities = authorities;
     }
 
+    // Create a UserPrincipal instance based on a User entity
     public static UserPrincipal create(User user) {
         List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
 
@@ -36,6 +37,7 @@ public class UserPrincipal implements OAuth2User, UserDetails {
                 authorities);
     }
 
+    // Create a UserPrincipal instance with attributes (for OAuth2 users)
     public static UserPrincipal create(User user, Map<String, Object> attributes) {
         UserPrincipal userPrincipal = UserPrincipal.create(user);
         userPrincipal.setAttributes(attributes);

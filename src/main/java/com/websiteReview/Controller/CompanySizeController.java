@@ -27,30 +27,33 @@ public class CompanySizeController {
     @Autowired
     private CompanySizeServiceImpl companySizeService;
 
-    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
+    // Create a new company size
     @PostMapping
+    @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<CompanySizeDto> createCompanySize(@RequestBody CompanySizeRequest companySizeRequest) {
         return new ResponseEntity<CompanySizeDto>(this.companySizeService.create(companySizeRequest),
                 HttpStatus.CREATED);
     }
 
+    // Get a company size by its ID
     @GetMapping("/{sizeId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
-    public ResponseEntity<CompanySizeDto> viewById(@PathVariable int sizeId) {
+    public ResponseEntity<CompanySizeDto> getCompanySizeById(@PathVariable int sizeId) {
         return new ResponseEntity<CompanySizeDto>(this.companySizeService.viewById(sizeId), HttpStatus.OK);
     }
 
+    // Delete a company size by its ID
     @DeleteMapping("/{sizeId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
-    public ResponseEntity<String> deleteSize(@PathVariable int sizeId) {
+    public ResponseEntity<String> deleteCompanySize(@PathVariable int sizeId) {
         this.companySizeService.delete(sizeId);
         return new ResponseEntity<String>("Deleted Successfully", HttpStatus.OK);
     }
 
+    // Get all company sizes
     @GetMapping
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
-    public ResponseEntity<List<CompanySizeDto>> viewAllSizes() {
+    public ResponseEntity<List<CompanySizeDto>> getAllCompanySizes() {
         return new ResponseEntity<List<CompanySizeDto>>(this.companySizeService.viewAll(), HttpStatus.OK);
     }
-
 }

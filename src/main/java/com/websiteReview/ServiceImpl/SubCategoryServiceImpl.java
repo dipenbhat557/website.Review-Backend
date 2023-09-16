@@ -33,6 +33,7 @@ public class SubCategoryServiceImpl implements SubCategoryService {
     @Autowired
     private ModelToDto ModelToDto;
 
+    // Create a new sub-category.
     @Override
     public SubCategoryDto create(SubCategoryRequest subCategoryRequest) {
 
@@ -54,6 +55,7 @@ public class SubCategoryServiceImpl implements SubCategoryService {
         return ModelToDto.subCategoryDto(subCategory);
     }
 
+    // View a sub-category by its ID.
     @Override
     public SubCategoryDto viewById(int subCategoryId) {
         SubCategory subCategory = this.subCategoryRepository.findById(subCategoryId)
@@ -61,6 +63,7 @@ public class SubCategoryServiceImpl implements SubCategoryService {
         return ModelToDto.subCategoryDto(subCategory);
     }
 
+    // View all sub-categories.
     @Override
     public List<SubCategoryDto> viewAll() {
         List<SubCategory> subCategories = this.subCategoryRepository.findAll();
@@ -70,6 +73,7 @@ public class SubCategoryServiceImpl implements SubCategoryService {
         return subCategoryDtos;
     }
 
+    // Delete a sub-category by its ID.
     @Override
     public void delete(int subCategoryId) {
         SubCategory subCategory = this.subCategoryRepository.findById(subCategoryId)
@@ -77,6 +81,7 @@ public class SubCategoryServiceImpl implements SubCategoryService {
         this.subCategoryRepository.delete(subCategory);
     }
 
+    // View sub-categories by category with pagination.
     @Override
     public SubCategoryResponse viewByCategory(int categoryId, int pageSize, int pageNumber) {
         Category category = this.categoryRepository.findById(categoryId)

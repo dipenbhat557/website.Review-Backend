@@ -14,13 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.websiteReview.Dtos.CategoryDto;
 import com.websiteReview.Dtos.SubCategoryDto;
 import com.websiteReview.Helper.AppConstants;
-import com.websiteReview.Helper.CategoryRequest;
 import com.websiteReview.Helper.SubCategoryRequest;
 import com.websiteReview.Helper.SubCategoryResponse;
-import com.websiteReview.ServiceImpl.CategoryServiceImpl;
 import com.websiteReview.ServiceImpl.SubCategoryServiceImpl;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,7 +30,7 @@ public class SubCategoryController {
     @Autowired
     private SubCategoryServiceImpl subCategoryService;
 
-    // sub category started
+    // Create a new sub-category
     @PostMapping("/{categoryId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<SubCategoryDto> createSubCategory(@RequestBody SubCategoryRequest subCategoryRequest) {
@@ -41,6 +38,7 @@ public class SubCategoryController {
                 HttpStatus.CREATED);
     }
 
+    // Get sub-category details by ID
     @GetMapping("/{subCategoryId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<SubCategoryDto> viewBySubCategoryId(@PathVariable int subCategoryId) {
@@ -48,6 +46,7 @@ public class SubCategoryController {
                 HttpStatus.OK);
     }
 
+    // Get all sub-categories
     @GetMapping
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<List<SubCategoryDto>> viewAllSubCategories() {
@@ -55,6 +54,7 @@ public class SubCategoryController {
                 HttpStatus.ACCEPTED);
     }
 
+    // Delete a sub-category by ID
     @DeleteMapping("/{subCategoryId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<String> deleteSubCategory(@PathVariable int subCategoryId) {
@@ -62,6 +62,7 @@ public class SubCategoryController {
         return new ResponseEntity<String>("Successfully deleted......", HttpStatus.OK);
     }
 
+    // Get sub-categories by category ID
     @GetMapping("/category/{categoryId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<SubCategoryResponse> viewAllCategoriesByCategory(@PathVariable int categoryId,

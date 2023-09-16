@@ -23,14 +23,15 @@ public class SearchController {
     @Autowired
     private SoftwareServiceImpl softwareService;
 
+    // Handle software search based on a query
     @GetMapping("/{query}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<SoftwareResponse> search(@PathVariable String query,
             @RequestParam(value = "pageNumber", defaultValue = AppConstants.pageNumberString, required = false) int pageNumber,
             @RequestParam(value = "pageSize", defaultValue = AppConstants.pageSizeString, required = false) int pageSize) {
 
+        // Call the softwareService to perform the search
         return new ResponseEntity<SoftwareResponse>(this.softwareService.search(query, pageNumber, pageSize),
                 HttpStatus.ACCEPTED);
     }
-
 }

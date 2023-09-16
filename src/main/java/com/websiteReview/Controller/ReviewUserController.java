@@ -1,6 +1,5 @@
 package com.websiteReview.Controller;
 
-import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
@@ -17,16 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.websiteReview.Dtos.AboutReviewProductDto;
 import com.websiteReview.Dtos.AboutReviewUserDto;
-import com.websiteReview.Dtos.ReviewDto;
-import com.websiteReview.Helper.AboutReviewProductRequest;
 import com.websiteReview.Helper.AboutReviewUserRequest;
-import com.websiteReview.Helper.AppConstants;
-import com.websiteReview.Helper.FilterByOrganizationSizeRequest;
-import com.websiteReview.Helper.FilterByPurposeRequest;
-import com.websiteReview.Helper.ReviewRequest;
-import com.websiteReview.Helper.ReviewResponse;
 import com.websiteReview.ServiceImpl.AboutReviewProductServiceImpl;
 import com.websiteReview.ServiceImpl.AboutReviewUserServiceImpl;
 import com.websiteReview.ServiceImpl.FileUploadServiceImpl;
@@ -47,16 +38,11 @@ public class ReviewUserController {
     private FileUploadServiceImpl fileUploadService;
 
     @Autowired
-    private AboutReviewProductServiceImpl aboutReviewProductService;
-
-    @Autowired
-    private ReviewServiceImpl reviewService;
-
-    @Autowired
     private SoftwareServiceImpl softwareService;
 
     private String imagePath = "src/review/currentUser/screenshot";
 
+    // Create information about a review user for a specific review
     @PostMapping("/{reviewId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<AboutReviewUserDto> createAboutReviewUser(@PathVariable int reviewId,
@@ -66,7 +52,7 @@ public class ReviewUserController {
                 HttpStatus.CREATED);
     }
 
-    // viewing the user details writing the review using review id
+    // Get user details associated with a review using the review ID
     @GetMapping("/review/{reviewId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<AboutReviewUserDto> viewByReview(@PathVariable int reviewId) {
@@ -74,13 +60,14 @@ public class ReviewUserController {
                 HttpStatus.OK);
     }
 
-    // getting the user details using review user id
+    // Get user details by user ID
     @GetMapping("/{userId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<AboutReviewUserDto> viewUserById(@PathVariable int userId) {
         return new ResponseEntity<AboutReviewUserDto>(this.aboutReviewUserService.viewById(userId), HttpStatus.OK);
     }
 
+    // Delete user information by user ID
     @DeleteMapping("/{aboutReviewUserId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<String> deleteAboutReviewUser(@PathVariable int aboutReviewUserId) {
@@ -88,8 +75,7 @@ public class ReviewUserController {
         return new ResponseEntity<String>("Deleted successfully..", HttpStatus.OK);
     }
 
-    // uploading the screenshot for confirmation of user as a current user of the
-    // notion
+    // Upload a screenshot as proof of the user being a current user of the notion
     @PostMapping("/uploadScreenshot/{reviewUserId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<?> uploadScreenshotProof(@PathVariable int reviewUserId,
@@ -113,6 +99,7 @@ public class ReviewUserController {
         }
     }
 
+    // Get a list of purposes associated with a software
     @GetMapping("/viewPurposes/{softwareId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<List<String>> viewPurposes(@PathVariable int softwareId) {

@@ -18,6 +18,7 @@ public class HttpCookieOAuth2AuthorizationRequestRepository
     public static final String REDIRECT_URI_PARAM_COOKIE_NAME = "redirect_uri";
     private static final int cookieExpireSeconds = 180;
 
+    // Load an OAuth2 authorization request from cookies
     @Override
     public OAuth2AuthorizationRequest loadAuthorizationRequest(HttpServletRequest request) {
         return CookieUtils.getCookie(request, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME)
@@ -25,15 +26,18 @@ public class HttpCookieOAuth2AuthorizationRequestRepository
                 .orElse(null);
     }
 
+    // Save an OAuth2 authorization request to cookies
     @Override
     public void saveAuthorizationRequest(OAuth2AuthorizationRequest authorizationRequest, HttpServletRequest request,
             HttpServletResponse response) {
         if (authorizationRequest == null) {
+            // If there is no authorization request, delete related cookies
             CookieUtils.deleteCookie(request, response, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME);
             CookieUtils.deleteCookie(request, response, REDIRECT_URI_PARAM_COOKIE_NAME);
             return;
         }
 
+        // Save the authorization request and related redirect URI to cookies
         CookieUtils.addCookie(response, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME,
                 CookieUtils.serialize(authorizationRequest), cookieExpireSeconds);
         String redirectUriAfterLogin = request.getParameter(REDIRECT_URI_PARAM_COOKIE_NAME);
@@ -42,12 +46,14 @@ public class HttpCookieOAuth2AuthorizationRequestRepository
         }
     }
 
+    // Remove an OAuth2 authorization request from cookies
     @Override
     public OAuth2AuthorizationRequest removeAuthorizationRequest(HttpServletRequest request,
             HttpServletResponse response) {
         return this.loadAuthorizationRequest(request);
     }
 
+    // Remove authorization request related cookies
     public void removeAuthorizationRequestCookies(HttpServletRequest request, HttpServletResponse response) {
         CookieUtils.deleteCookie(request, response, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME);
         CookieUtils.deleteCookie(request, response, REDIRECT_URI_PARAM_COOKIE_NAME);
@@ -64,5 +70,4 @@ public class HttpCookieOAuth2AuthorizationRequestRepository
     public String getNonce(HttpServletRequest request) {
         return CookieUtils.getCookie(request, "nonce").map(Cookie::getValue).orElse(null);
     }
-
 }

@@ -1,8 +1,6 @@
 package com.websiteReview.Controller;
 
 import java.security.Principal;
-import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,13 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.websiteReview.Dtos.AboutReviewProductDto;
-import com.websiteReview.Dtos.AboutReviewUserDto;
 import com.websiteReview.Dtos.ReviewDto;
-import com.websiteReview.Helper.AboutReviewProductRequest;
-import com.websiteReview.Helper.AboutReviewUserRequest;
 import com.websiteReview.Helper.AppConstants;
 import com.websiteReview.Helper.FilterByOrganizationSizeRequest;
 import com.websiteReview.Helper.FilterByPurposeRequest;
@@ -39,25 +32,10 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 @RestController
 @RequestMapping("/reviews")
 public class ReviewController {
-
-    @Autowired
-    private AboutReviewUserServiceImpl aboutReviewUserService;
-
-    @Autowired
-    private FileUploadServiceImpl fileUploadService;
-
-    @Autowired
-    private AboutReviewProductServiceImpl aboutReviewProductService;
-
     @Autowired
     private ReviewServiceImpl reviewService;
 
-    @Autowired
-    private SoftwareServiceImpl softwareService;
-
-    private String imagePath = "src/review/currentUser/screenshot";
-
-    // creating review
+    // Create a new review for a software
     @PostMapping("/{softwareId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<ReviewDto> createReview(@RequestBody ReviewRequest reviewRequest, Principal principal,
@@ -68,14 +46,14 @@ public class ReviewController {
                 HttpStatus.CREATED);
     }
 
-    // getting review by id
+    // Get review details by review ID
     @GetMapping("/{reviewId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<ReviewDto> viewById(@PathVariable int reviewId) {
         return new ResponseEntity<ReviewDto>(this.reviewService.viewById(reviewId), HttpStatus.OK);
     }
 
-    // getting review by user
+    // Get reviews by user
     @GetMapping("/user")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<ReviewResponse> viewByUser(Principal principal,
@@ -85,7 +63,7 @@ public class ReviewController {
                 this.reviewService.viewByUser(principal.getName(), pageNumber, pageSize), HttpStatus.OK);
     }
 
-    // deleting the review
+    // Delete a review by review ID
     @DeleteMapping("/{reviewId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<String> delete(@PathVariable int reviewId) {
@@ -93,6 +71,7 @@ public class ReviewController {
         return new ResponseEntity<String>("Successffully deleted...", HttpStatus.OK);
     }
 
+    // gettting all the reviews
     @GetMapping
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<ReviewResponse> viewAll(
@@ -102,6 +81,7 @@ public class ReviewController {
                 this.reviewService.viewAll(pageNumber, pageSize), HttpStatus.OK);
     }
 
+    // Get reviews for a specific software
     @GetMapping("/software/{softwareId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<ReviewResponse> viewBySoftware(@PathVariable int softwareId,
@@ -111,7 +91,7 @@ public class ReviewController {
                 this.reviewService.viewBySoftware(softwareId, pageNumber, pageSize), HttpStatus.OK);
     }
 
-    // filtering reviews by organizationSize
+    // Filter reviews by organization size
     @PostMapping("/filterBySize")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<ReviewResponse> filterBySize(@RequestBody FilterByOrganizationSizeRequest request,
@@ -122,7 +102,7 @@ public class ReviewController {
         return new ResponseEntity<ReviewResponse>(reviewResponse, HttpStatus.OK);
     }
 
-    // filtering by rating
+    // Filter reviews by rating
     @GetMapping("/filterByRating/{rating}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<ReviewResponse> filterByRating(@PathVariable int rating,
@@ -134,7 +114,7 @@ public class ReviewController {
         return new ResponseEntity<ReviewResponse>(response, HttpStatus.OK);
     }
 
-    // filtering by purpose
+    // Filter reviews by purpose
     @PostMapping("/filterByPurpose")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<ReviewResponse> filterByPurpose(@RequestBody FilterByPurposeRequest request,
@@ -146,7 +126,7 @@ public class ReviewController {
         return new ResponseEntity<ReviewResponse>(response, HttpStatus.OK);
     }
 
-    // filtering by user role
+    // Filter reviews by user role
     @GetMapping("/filterByUserRole/{userRole}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<ReviewResponse> filterByUserRole(@PathVariable String userRole,

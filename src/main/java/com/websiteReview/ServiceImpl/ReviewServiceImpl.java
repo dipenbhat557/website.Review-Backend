@@ -38,6 +38,7 @@ public class ReviewServiceImpl implements ReviewService {
         @Autowired
         private ModelToDto ModelToDto;
 
+        // Create a new review.
         @Override
         public ReviewDto create(String username, ReviewRequest reviewRequest, int softwareId) {
                 User user = this.userRepository.findByEmail(username).orElseThrow(
@@ -63,9 +64,6 @@ public class ReviewServiceImpl implements ReviewService {
                 review.setRating(reviewRequest.getRating() / 2);
                 review.setSoftware(software);
 
-                // List<Review> reviews = software.getReviews();
-                // reviews.add(review);
-
                 this.softwareRepository.save(software);
 
                 ReviewDto savedReviewDto = ModelToDto.reviewDto(this.reviewRepository.save(review));
@@ -73,6 +71,7 @@ public class ReviewServiceImpl implements ReviewService {
                 return savedReviewDto;
         }
 
+        // View a review by its ID.
         @Override
         public ReviewDto viewById(int reviewId) {
                 Review review = this.reviewRepository.findById(reviewId)
@@ -81,6 +80,7 @@ public class ReviewServiceImpl implements ReviewService {
                 return reviewDto;
         }
 
+        // View reviews by a specific user with pagination.
         @Override
         public ReviewResponse viewByUser(String username, int pageNumber, int pageSize) {
                 User user = this.userRepository.findByEmail(username)
@@ -105,6 +105,7 @@ public class ReviewServiceImpl implements ReviewService {
                 return response;
         }
 
+        // Delete a review by its ID.
         @Override
         public void delete(int reviewId) {
                 Review review = this.reviewRepository.findById(reviewId)
@@ -128,9 +129,9 @@ public class ReviewServiceImpl implements ReviewService {
                 this.softwareRepository.save(software);
         }
 
+        // Filter reviews by organization size range with pagination.
         @Override
         public ReviewResponse filterReviewsByOrganizationSize(int minSize, int maxSize, int pageNumber, int pageSize) {
-
                 Pageable pageable = PageRequest.of(pageNumber, pageSize);
                 Page<Review> page = this.reviewRepository.findByOrganizationSizeRange(minSize, maxSize, pageable);
                 List<Review> pageReview = page.getContent();
@@ -149,6 +150,7 @@ public class ReviewServiceImpl implements ReviewService {
                 return response;
         }
 
+        // View reviews by rating range with pagination.
         @Override
         public ReviewResponse viewByRating(int rating, int pageNumber, int pageSize) {
                 Pageable pageable = PageRequest.of(pageNumber, pageSize);
@@ -169,6 +171,7 @@ public class ReviewServiceImpl implements ReviewService {
                 return response;
         }
 
+        // View reviews by purpose with pagination.
         @Override
         public ReviewResponse viewByPurpose(String purpose, int pageNumber, int pageSize) {
                 Pageable pageable = PageRequest.of(pageNumber, pageSize);
@@ -189,6 +192,7 @@ public class ReviewServiceImpl implements ReviewService {
                 return response;
         }
 
+        // View reviews by user role with pagination.
         @Override
         public ReviewResponse viewByUserRole(String userRole, int pageNumber, int pageSize) {
                 Pageable pageable = PageRequest.of(pageNumber, pageSize);
@@ -209,9 +213,9 @@ public class ReviewServiceImpl implements ReviewService {
                 return response;
         }
 
+        // View all reviews with pagination.
         @Override
         public ReviewResponse viewAll(int pageNumber, int pageSize) {
-
                 Pageable pageable = PageRequest.of(pageNumber, pageSize);
                 Page<Review> page = this.reviewRepository.findAll(pageable);
                 List<Review> reviews = page.getContent();
@@ -230,6 +234,8 @@ public class ReviewServiceImpl implements ReviewService {
                 return response;
         }
 
+        // View reviews for a specific software product with pagination.
+        @Override
         public ReviewResponse viewBySoftware(int softwareId, int pageNumber, int pageSize) {
                 Pageable pageable = PageRequest.of(pageNumber, pageSize);
                 Software software = this.softwareRepository.findById(softwareId)

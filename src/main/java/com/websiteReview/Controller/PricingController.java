@@ -27,6 +27,7 @@ public class PricingController {
     @Autowired
     private PricingServiceImpl pricingService;
 
+    // Create a new pricing for a software
     @PostMapping("/{softwareId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<PricingDto> createPricing(@RequestBody PricingRequest pricingRequest,
@@ -35,22 +36,25 @@ public class PricingController {
                 HttpStatus.CREATED);
     }
 
+    // Get pricing details by pricing ID
     @GetMapping("/{pricingId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<PricingDto> getById(@PathVariable int pricingId) {
         return new ResponseEntity<PricingDto>(this.pricingService.viewById(pricingId), HttpStatus.ACCEPTED);
     }
 
+    // Get pricing details for a specific software
     @GetMapping("/software/{softwareId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<List<PricingDto>> getBySoftware(@PathVariable int softwareId) {
         return new ResponseEntity<List<PricingDto>>(this.pricingService.viewBySoftware(softwareId), HttpStatus.OK);
     }
 
+    // Delete a pricing entry by pricing ID
     @DeleteMapping("/{pricingId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<String> deletePricing(@PathVariable int pricingId) {
         this.pricingService.delete(pricingId);
-        return new ResponseEntity<String>("Deleted Successfully......", HttpStatus.OK);
+        return new ResponseEntity<String>("Deleted Successfully", HttpStatus.OK);
     }
 }

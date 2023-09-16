@@ -11,15 +11,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.websiteReview.Dtos.CategoryDto;
-import com.websiteReview.Dtos.SubCategoryDto;
-import com.websiteReview.Helper.AppConstants;
 import com.websiteReview.Helper.CategoryRequest;
-import com.websiteReview.Helper.SubCategoryRequest;
-import com.websiteReview.Helper.SubCategoryResponse;
 import com.websiteReview.ServiceImpl.CategoryServiceImpl;
 import com.websiteReview.ServiceImpl.SubCategoryServiceImpl;
 
@@ -36,36 +31,40 @@ public class CategoryController {
     @Autowired
     private SubCategoryServiceImpl subCategoryService;
 
+    // Create a new category
     @PostMapping
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
-    public ResponseEntity<CategoryDto> createCatgory(@RequestBody CategoryRequest categoryRequest) {
+    public ResponseEntity<CategoryDto> createCategory(@RequestBody CategoryRequest categoryRequest) {
         return new ResponseEntity<CategoryDto>(this.categoryService.create(categoryRequest), HttpStatus.CREATED);
     }
 
+    // Get a category by its ID
     @GetMapping("/{categoryId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
-    public ResponseEntity<CategoryDto> getById(@PathVariable int categoryId) {
+    public ResponseEntity<CategoryDto> getCategoryById(@PathVariable int categoryId) {
         return new ResponseEntity<>(this.categoryService.viewById(categoryId), HttpStatus.OK);
     }
 
+    // Get all categories
     @GetMapping
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<List<CategoryDto>> getAllCategories() {
         return new ResponseEntity<List<CategoryDto>>(this.categoryService.viewAll(), HttpStatus.OK);
     }
 
+    // Delete a category by its ID
     @DeleteMapping("/{categoryId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
     public ResponseEntity<String> deleteCategory(@PathVariable int categoryId) {
         this.categoryService.delete(categoryId);
-        return new ResponseEntity<String>("Message deleted successfully.......", HttpStatus.OK);
+        return new ResponseEntity<String>("Category deleted successfully.......", HttpStatus.OK);
     }
 
+    // Get categories associated with a subcategory by subcategory ID
     @GetMapping("/subCategory/{subCategoryId}")
     @Operation(security = { @SecurityRequirement(name = "BearerJWT") })
-    public ResponseEntity<List<CategoryDto>> viewBySubCategories(@PathVariable int subCategoryId) {
+    public ResponseEntity<List<CategoryDto>> viewCategoriesBySubCategory(@PathVariable int subCategoryId) {
         return new ResponseEntity<List<CategoryDto>>(this.categoryService.viewBySubCategories(subCategoryId),
                 HttpStatus.ACCEPTED);
     }
-
 }

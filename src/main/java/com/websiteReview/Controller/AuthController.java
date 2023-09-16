@@ -1,7 +1,5 @@
 package com.websiteReview.Controller;
 
-import java.net.URI;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,15 +14,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.websiteReview.Dtos.RefreshTokenDto;
-import com.websiteReview.Dtos.UserDto;
 import com.websiteReview.Exception.BadRequestException;
 import com.websiteReview.Exception.ResourceNotFoundException;
 import com.websiteReview.Helper.JwtRequest;
 import com.websiteReview.Helper.JwtResponse;
-import com.websiteReview.Helper.ModelToDto;
 import com.websiteReview.Helper.RefreshTokenRequest;
 import com.websiteReview.Helper.SignUpRequest;
 import com.websiteReview.Model.AuthProvider;
@@ -32,9 +27,7 @@ import com.websiteReview.Model.User;
 import com.websiteReview.Respository.UserRepository;
 import com.websiteReview.Security.JwtHelper;
 import com.websiteReview.Security.UserPrincipal;
-import com.websiteReview.Service.UserService;
 import com.websiteReview.ServiceImpl.RefreshTokenServiceImpl;
-import com.websiteReview.ServiceImpl.UserServiceImpl;
 
 import jakarta.validation.Valid;
 
@@ -55,9 +48,6 @@ public class AuthController {
     private RefreshTokenServiceImpl refreshTokenService;
 
     @Autowired
-    private ModelMapper modelMapper;
-
-    @Autowired
     private UserRepository userRepository;
 
     @Autowired
@@ -65,19 +55,24 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<JwtResponse> login(@RequestBody JwtRequest request) {
-
+        // Authenticate the user
         this.authenticateUser(request.getUsername(), request.getPassword());
 
+        // Load user details
         UserDetails userDetails = this.userDetailsService.loadUserByUsername(request.getUsername());
 
+        // Generate JWT token
         String token = this.jwtHelper.generateToken(userDetails);
-        System.out.println(userDetails.getUsername());
+
+        // Create a refresh token
         RefreshTokenDto refreshTokenDto = this.refreshTokenService.createRefreshToken(userDetails.getUsername());
 
+        // Create a response containing the JWT token and refresh token
         JwtResponse jwtResponse = new JwtResponse();
         jwtResponse.setToken(token);
         jwtResponse.setRefreshToken(refreshTokenDto.getRefreshToken());
 
+        // Get user details and add them to the response
         User user = this.userRepository.findByEmail(userDetails.getUsername())
                 .orElseThrow(() -> new ResourceNotFoundException("The expected user is not found"));
         jwtResponse.setUser(user);
@@ -87,6 +82,7 @@ public class AuthController {
 
     private void authenticateUser(String username, String password) {
         try {
+            // Attempt to authenticate the user
             this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         } catch (BadCredentialsException e) {
             throw new ResourceNotFoundException("Invalid username or password");
@@ -95,19 +91,21 @@ public class AuthController {
 
     @PostMapping("/refresh")
     public ResponseEntity<?> refreshJwtToken(@RequestBody RefreshTokenRequest request) {
-
+        // Verify and retrieve the refresh token
         RefreshTokenDto refreshTokenDto = this.refreshTokenService.verifyRefreshToken(request.getRefreshToken());
         int userId = refreshTokenDto.getUserId();
+
+        // Find the user associated with the refresh token
         User user = this.userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("The expected user is not found"));
+
+        // Generate a new JWT token
         String token = this.jwtHelper.generateToken(UserPrincipal.create(user));
 
-        JwtResponse jwtResponse = new JwtResponse(token,
-                refreshTokenDto.getRefreshToken(),
-                user);
+        // Create a response containing the new JWT token and refresh token
+        JwtResponse jwtResponse = new JwtResponse(token, refreshTokenDto.getRefreshToken(), user);
 
         return new ResponseEntity<>(jwtResponse, HttpStatus.OK);
-
     }
 
     @PostMapping("/signup")
@@ -116,18 +114,19 @@ public class AuthController {
             throw new BadRequestException("Email address already in use.");
         }
 
-        // Creating user's account
+        // Create a new user account
         User user = new User();
         user.setName(signUpRequest.getName());
         user.setEmail(signUpRequest.getEmail());
         user.setPassword(signUpRequest.getPassword());
         user.setProvider(AuthProvider.local);
 
+        // Encode the user's password
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
+        // Save the user to the database
         User result = userRepository.save(user);
 
         return new ResponseEntity<>("Registered Successfully", HttpStatus.CREATED);
     }
-
 }

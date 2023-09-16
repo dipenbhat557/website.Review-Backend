@@ -28,35 +28,36 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) throws OAuth2AuthenticationException {
-        System.out.println("inside o auth222 service");
+        // This method is called when loading user details from OAuth2 provider.
         OAuth2User oAuth2User = super.loadUser(oAuth2UserRequest);
 
         try {
+            // Process the received OAuth2 user data.
             return processOAuth2User(oAuth2UserRequest, oAuth2User);
         } catch (AuthenticationException ex) {
-            System.out.println("This is authentication exception");
             throw ex;
         } catch (Exception ex) {
-            // Throwing an instance of AuthenticationException will trigger the
-            // OAuth2AuthenticationFailureHandler
-            System.out.println("This is other exceptions");
+            // Throwing an instance of InternalAuthenticationServiceException will trigger
+            // the OAuth2AuthenticationFailureHandler.
             throw new InternalAuthenticationServiceException(ex.getMessage(), ex.getCause());
         }
     }
 
     private OAuth2User processOAuth2User(OAuth2UserRequest oAuth2UserRequest, OAuth2User oAuth2User) {
-        System.out.println("processing");
+        // Process the received OAuth2 user data and map it to your application's user
+        // model.
         OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(
                 oAuth2UserRequest.getClientRegistration().getRegistrationId(), oAuth2User.getAttributes());
+
         if (StringUtils.isEmpty(oAuth2UserInfo.getEmail())) {
             throw new OAuth2AuthenticationProcessingException("Email not found from OAuth2 provider");
         }
 
-        System.out.println(oAuth2UserInfo);
-        System.out.println(oAuth2UserInfo.getEmail());
         Optional<User> userOptional = userRepository.findByEmail(oAuth2UserInfo.getEmail());
         User user = null;
+
         if (userOptional.isPresent()) {
+            // If the user is already registered, update their information if needed.
             user = userOptional.get();
             if (!user.getProvider()
                     .equals(AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()))) {
@@ -66,17 +67,18 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             }
             user = updateExistingUser(user, oAuth2UserInfo);
         } else {
+            // If the user is not registered, create a new user based on OAuth2 data.
             user = registerNewUser(oAuth2UserRequest, oAuth2UserInfo);
         }
 
+        // Return a UserPrincipal object based on the user data for further
+        // authentication.
         return UserPrincipal.create(user, oAuth2User.getAttributes());
     }
 
     private User registerNewUser(OAuth2UserRequest oAuth2UserRequest, OAuth2UserInfo oAuth2UserInfo) {
+        // Create a new user based on OAuth2 user data and save it to the database.
         User user = new User();
-        System.out.println(oAuth2UserInfo);
-        System.out.println(oAuth2UserRequest);
-
         user.setProvider(AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()));
         user.setProviderId(oAuth2UserInfo.getId());
         user.setName(oAuth2UserInfo.getName());
@@ -87,9 +89,9 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     }
 
     private User updateExistingUser(User existingUser, OAuth2UserInfo oAuth2UserInfo) {
+        // Update the existing user's information with new OAuth2 data.
         existingUser.setName(oAuth2UserInfo.getName());
         existingUser.setImageUrl(oAuth2UserInfo.getImageUrl());
         return userRepository.save(existingUser);
     }
-
 }

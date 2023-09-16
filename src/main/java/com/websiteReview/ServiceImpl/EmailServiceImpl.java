@@ -21,43 +21,47 @@ public class EmailServiceImpl implements EmailService {
     public boolean sendEmail(String subject, String message, String to) {
         boolean f = false;
 
+        // Sender's email address(change it to company's)
         String from = "bhattadipen557@gmail.com";
 
+        // SMTP server host
         String host = "smtp.gmail.com";
 
+        // Create properties to configure the SMTP connection
         Properties properties = System.getProperties();
 
+        // Output the properties for debugging
         System.out.println(properties);
 
-        // setting information to properties
+        // Configure SMTP properties
         properties.put("mail.smtp.host", host);
         properties.put("mail.smtp.port", "465");
         properties.put("mail.smtp.ssl.enable", "true");
         properties.put("mail.smtp.auth", "true");
 
-        // Step 1:getting session obj
+        // Step 1: Create a mail session
         Session session = Session.getInstance(properties, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-
+                // Provide your Gmail username and password here
                 return new PasswordAuthentication("bhattadipen557@gmail.com", "qjvmnmtkvfguzgss");
             }
         });
         session.setDebug(true);
 
-        // Step 2:Compose msg
+        // Step 2: Compose the email message
         MimeMessage m = new MimeMessage(session);
         try {
             m.setFrom(from);
             m.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
             m.setSubject(subject);
-            // m.setText(message);
+            // Set the email content as HTML
             m.setContent(message, "text/html");
 
-            // Step 3:Sending message
+            // Step 3: Sending the message
             Transport.send(m);
 
-            System.out.println("Sent success......");
+            System.out.println("Email sent successfully.");
             f = true;
         } catch (MessagingException e) {
             e.printStackTrace();
@@ -65,5 +69,4 @@ public class EmailServiceImpl implements EmailService {
 
         return f;
     }
-
 }

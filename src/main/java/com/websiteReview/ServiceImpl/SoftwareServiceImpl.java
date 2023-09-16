@@ -6,15 +6,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.xml.crypto.KeySelector.Purpose;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.websiteReview.Dtos.ReviewDto;
 import com.websiteReview.Dtos.SoftwareDto;
 import com.websiteReview.Exception.ResourceNotFoundException;
 import com.websiteReview.Helper.ModelToDto;
@@ -22,7 +19,6 @@ import com.websiteReview.Helper.SoftwareRequest;
 import com.websiteReview.Helper.SoftwareResponse;
 import com.websiteReview.Model.Category;
 import com.websiteReview.Model.CompanySize;
-import com.websiteReview.Model.Review;
 import com.websiteReview.Model.Software;
 import com.websiteReview.Model.SubCategory;
 import com.websiteReview.Respository.CompanySizeRepository;
@@ -45,6 +41,7 @@ public class SoftwareServiceImpl implements SoftwareService {
         @Autowired
         private ModelToDto ModelToDto;
 
+        // Create a new software.
         @Override
         public SoftwareDto create(SoftwareRequest softwareRequest, int subCategoryId) {
                 Software software = new Software();
@@ -73,6 +70,7 @@ public class SoftwareServiceImpl implements SoftwareService {
                 return ModelToDto.software(software);
         }
 
+        // View a software by its ID.
         @Override
         public SoftwareDto viewById(int softwareId) {
                 Software software = this.softwareRepository.findById(softwareId)
@@ -80,6 +78,7 @@ public class SoftwareServiceImpl implements SoftwareService {
                 return ModelToDto.software(software);
         }
 
+        // View all software products.
         @Override
         public List<SoftwareDto> viewAll() {
                 List<Software> softwares = this.softwareRepository.findAll();
@@ -89,6 +88,7 @@ public class SoftwareServiceImpl implements SoftwareService {
                 return softwareDtos;
         }
 
+        // Delete a software by its ID.
         @Override
         public void delete(int softwareId) {
                 this.softwareRepository.delete(this.softwareRepository.findById(softwareId).orElseThrow(
@@ -96,6 +96,7 @@ public class SoftwareServiceImpl implements SoftwareService {
                                                 "The expected resource is not found while trying to delete it")));
         }
 
+        // View all unique purposes of a software.
         @Override
         public List<String> viewAllPurposes(int softwareId) {
                 Software software = this.softwareRepository.findById(softwareId)
@@ -114,6 +115,7 @@ public class SoftwareServiceImpl implements SoftwareService {
                 return new ArrayList<>(uniquePurposes); // Convert Set to List
         }
 
+        // View software products by rating range with pagination.
         @Override
         public SoftwareResponse viewByRating(int rating, int pageNumber, int pageSize) {
                 Pageable pageable = PageRequest.of(pageNumber, pageSize);
@@ -134,6 +136,7 @@ public class SoftwareServiceImpl implements SoftwareService {
                 return response;
         }
 
+        // View software products by sub-category with pagination.
         @Override
         public SoftwareResponse viewBySubCategory(int subCategoryId, int pageNumber, int pageSize) {
                 SubCategory subCategory = this.subCategoryRepository.findById(subCategoryId)
@@ -158,6 +161,7 @@ public class SoftwareServiceImpl implements SoftwareService {
                 return response;
         }
 
+        // View software products by company size segment with pagination.
         @Override
         public SoftwareResponse viewBySegment(int sizeId, int pageNumber, int pageSize) {
                 CompanySize companySize = this.companySizeRepository.findById(sizeId)
@@ -182,9 +186,9 @@ public class SoftwareServiceImpl implements SoftwareService {
                 return response;
         }
 
+        // Update a software by its ID.
         @Override
         public SoftwareDto update(int softwareId, SoftwareDto softwareDto) {
-
                 Software oldSoftware = this.softwareRepository.findById(softwareId)
                                 .orElseThrow(() -> new ResourceNotFoundException(
                                                 "The expected software has not been found while updating the screenshots..."));
@@ -212,8 +216,8 @@ public class SoftwareServiceImpl implements SoftwareService {
                 return ModelToDto.software(this.softwareRepository.save(oldSoftware));
         }
 
+        // Search for software products by title with pagination.
         public SoftwareResponse search(String query, int pageNumber, int pageSize) {
-
                 Pageable pageable = PageRequest.of(pageNumber, pageSize);
                 Page<Software> page = this.softwareRepository.findByTitleContainingIgnoreCase(query, pageable);
                 List<Software> pageSoftwares = page.getContent();
